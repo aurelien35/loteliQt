@@ -1,3 +1,5 @@
+﻿# -*- coding: utf-8 -*-
+		  
 from PyQt4 import QtCore, QtGui
 from MainMenu_ui import Ui_MainMenu
 

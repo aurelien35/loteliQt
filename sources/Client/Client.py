@@ -1,3 +1,5 @@
+﻿# -*- coding: utf-8 -*-
+		  
 from datetime	import date
 from PyQt4		import QtCore
 
