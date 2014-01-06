@@ -1,10 +1,12 @@
 <RCC>
   <qresource>
+    <file>resources/next.png</file>
+    <file>resources/previous.png</file>
     <file>resources/remove.png</file>
     <file>resources/calendar.png</file>
     <file>resources/add.png</file>
-    <file>resources\Globe1.png</file>
-    <file>resources\home.png</file>
-    <file>resources\USB-icon.png</file>
+    <file>resources/Globe1.png</file>
+    <file>resources/home.png</file>
+    <file>resources/USB-icon.png</file>
   </qresource>
 </RCC>

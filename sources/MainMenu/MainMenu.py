@@ -1,9 +1,11 @@
-﻿from PyQt4				import QtCore, QtGui
-from MainMenu_ui		import Ui_MainMenu
+﻿# -*- coding: utf-8 -*-
+		  
+from PyQt4				import QtCore, QtGui
 from Client.ClientForm	import ClientForm
 from Tools.ModalDialog	import ShowModalDialog
 from Tools.ModalDialog	import ModalDialog
 from Tools.DataBase		import DataBase
+from MainMenu_ui		import Ui_MainMenu
 
 class MainMenu(QtGui.QFrame) :
 

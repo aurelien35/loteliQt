@@ -1,69 +1,90 @@
-﻿from PyQt4	import QtCore
+﻿﻿# -*- coding: utf-8 -*-
+		  
+from datetime	import date
+from PyQt4		import QtCore
 
 class Client(object) :
 
 	def __init__(self) :
 		# Membres
 		self.m_id			= -1
-		self.m_name			= QtCore.QString()
-		self.m_firstName	= QtCore.QString()
-		self.m_birthDate	= QtCore.QDate()
-		self.m_phones		= QtCore.QStringList()
-		self.m_emails		= QtCore.QStringList()
-		self.m_address		= QtCore.QString()
-		self.m_comment		= QtCore.QString()
+		self.m_name			= ""
+		self.m_firstName	= ""
+		self.m_birthDate	= None
+		self.m_phones		= []
+		self.m_emails		= []
+		self.m_address		= ""
+		self.m_comment		= ""
 
 	def id(self) :
 		return self.m_id
-		
-	def setId(self, id) :
-		self.m_id = id	# TODO : checker le type
 
 	def name(self) :
 		return self.m_name
 		
 	def setName(self, name) :
-		self.m_name = name	# TODO : checker le type
+		if (type(name) is str) :
+			self.m_name = name
+		else :
+			raise Exception("Client::setName : name is " + type(name) + ", not a string.")
 
 	def firstName(self) :
 		return self.m_firstName
 		
 	def setFirstName(self, firstName) :
-		self.m_firstName = firstName	# TODO : checker le type
+		if (type(firstName) is str) :
+			self.m_firstName = firstName
+		else :
+			raise Exception("Client::setFirstName : firstName is " + type(firstName) + ", not a string.")
 
 	def birthDate(self) :
 		return self.m_birthDate
 		
-	def birthDateString(self) :
-		return self.m_birthDate.toString("dd/MM/yyyy (d MMMM yyyy)")
-		
 	def setBirthDate(self, birthDate) :
-		self.m_birthDate = birthDate	# TODO : checker le type
+		if (birthDate is None) :
+			self.m_birthDate = None
+		else :
+			if (type(birthDate) is date) :
+				self.m_birthDate = birthDate
+			else :
+				raise Exception("Client::setBirthDate : birthDate is " + str(type(birthDate)) + ", not a date.")
 
 	def phones(self) :
 		return self.m_phones
 		
 	def setPhones(self, phones) :
-		self.m_phones = phones	# TODO : checker le type
-		while (self.m_phones.count() > 5) :
-			self.m_phones.takeLast()
+		if (type(phones) is not str) and (type(phones) is list) :
+			while (self.m_phones.count() > 5) :
+				self.m_phones.takeLast()
+			self.m_phones = phones
+		else :
+			raise Exception("Client::setPhones : phones is " + type(phones) + ", not a string list.")
 
 	def emails(self) :
 		return self.m_emails
 		
 	def setEmails(self, emails) :
-		self.m_emails = emails	# TODO : checker le type
-		while (self.m_emails.count() > 5) :
-			self.m_emails.takeLast()
+		if (type(emails) is not str) and (type(emails) is list) :
+			self.m_emails = emails
+			while (self.m_emails.count() > 5) :
+				self.m_emails.takeLast()
+		else :
+			raise Exception("Client::setPhones : emails is " + type(emails) + ", not a string list.")
 
 	def address(self) :
 		return self.m_address
 		
 	def setAddress(self, address) :
-		self.m_address = address	# TODO : checker le type
+		if (type(address) is str) :
+			self.m_address = address
+		else :
+			raise Exception("Client::setAddress : address is " + type(address) + ", not a string.")
 
 	def comment(self) :
 		return self.m_comment
 		
 	def setComment(self, comment) :
-		self.m_comment = comment	# TODO : checker le type
+		if (type(comment) is str) :
+			self.m_comment = comment
+		else :
+			raise Exception("Client::setComment : comment is " + type(comment) + ", not a string.")
