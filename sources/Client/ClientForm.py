@@ -1,10 +1,11 @@
 ﻿# -*- coding: utf-8 -*-
 
 import sip
-from PyQt4				import QtCore, QtGui
-from Tools.DatePicker	import SelectDate
-from Client				import Client
-from ClientForm_ui		import Ui_ClientForm
+from PyQt4					import QtCore, QtGui
+from Tools.DatePicker		import SelectDate
+from Tools.StringConvert	import *
+from Client					import Client
+from ClientForm_ui			import Ui_ClientForm
 
 class ClientForm(QtGui.QFrame) :
 
@@ -64,9 +65,9 @@ class ClientForm(QtGui.QFrame) :
 
 	def addPhone(self) :
 		phones = self.m_client.phones()
-		phones.append(QtCore.QString())
-		if (phones.count() == 1) :
-			phones.append(QtCore.QString())
+		phones.append("")
+		if (len(phones) == 1) :
+			phones.append("")
 		self.m_client.setPhones(phones)
 		self.updatePhonesEditors()
 		self.updateFormsValues();
@@ -76,7 +77,7 @@ class ClientForm(QtGui.QFrame) :
 		phones = self.m_client.phones()
 		for phoneEditor in self.m_phonesEditors :
 			if (self.sender() == phoneEditor[1]) :
-				phones.removeAt(index)
+				del (phones[index])
 				break
 			index += 1
 		self.m_client.setPhones(phones)
@@ -85,9 +86,9 @@ class ClientForm(QtGui.QFrame) :
 			
 	def addEmail(self) :
 		emails = self.m_client.emails()
-		emails.append(QtCore.QString())
-		if (emails.count() == 1) :
-			emails.append(QtCore.QString())
+		emails.append("")
+		if (len(emails) == 1) :
+			emails.append("")
 		self.m_client.setEmails(emails)
 		self.updateEmailsEditors()
 		self.updateFormsValues()
@@ -97,7 +98,7 @@ class ClientForm(QtGui.QFrame) :
 		emails = self.m_client.emails()
 		for emailEditor in self.m_emailsEditors :
 			if (self.sender() == emailEditor[1]) :
-				emails.removeAt(index)
+				del (emails[index])
 				break
 			index += 1
 		self.m_client.setEmails(emails)
@@ -105,19 +106,19 @@ class ClientForm(QtGui.QFrame) :
 		self.updateFormsValues()
 		
 	def updateFormsValues(self) :
-		self.m_ui.lineEditName.setText(self.m_client.name())
-		self.m_ui.lineEditFirstName.setText(self.m_client.firstName())
-		self.m_ui.lineEditBirthDate.setText(self.m_client.birthDateString())
-		self.m_ui.textEditAddress.setText(self.m_client.address())
-		self.m_ui.textEditComment.setText(self.m_client.comment())
+		self.m_ui.lineEditName.setText(str2QString(self.m_client.name()))
+		self.m_ui.lineEditFirstName.setText(str2QString(self.m_client.firstName()))
+		self.m_ui.lineEditBirthDate.setText(date2QString(self.m_client.birthDate()))
+		self.m_ui.textEditAddress.setText(str2QString(self.m_client.address()))
+		self.m_ui.textEditComment.setText(str2QString(self.m_client.comment()))
 		
 		# Mise à jour des numéro de téléphone
-		for index in range(self.m_client.phones().count()) :
-			self.m_phonesEditors[index][0].setText(self.m_client.phones()[index])
+		for index in range(len(self.m_client.phones())) :
+			self.m_phonesEditors[index][0].setText(str2QString(self.m_client.phones()[index]))
 				
 		# Mise à jour des emails
-		for index in range(self.m_client.emails().count()) :
-			self.m_emailsEditors[index][0].setText(self.m_client.emails()[index])
+		for index in range(len(self.m_client.emails())) :
+			self.m_emailsEditors[index][0].setText(str2QString(self.m_client.emails()[index]))
 				
 	def updatePhonesEditors(self) :
 		self.createLineEditList(self.m_client.phones(), self.m_phonesEditors, self.m_ui.phonesContainer, self.clientPhoneChanged, self.addPhone, self.removePhone)
@@ -126,19 +127,19 @@ class ClientForm(QtGui.QFrame) :
 		self.createLineEditList(self.m_client.emails(), self.m_emailsEditors, self.m_ui.emailsContainer, self.clientEmailChanged, self.addEmail, self.removeEmail)
 	
 	def clientNameChanged(self) :
-		self.m_client.setName(self.m_ui.lineEditName.text())
+		self.m_client.setName(QString2str(self.m_ui.lineEditName.text()))
 
 	def clientFirstNameChanged(self) :
-		self.m_client.setFirstName(self.m_ui.lineEditFirstName.text())
+		self.m_client.setFirstName(QString2str(self.m_ui.lineEditFirstName.text()))
 
 	def clientPhoneChanged(self) :
 		index = 0
 		for phoneEditor in self.m_phonesEditors :
 			if (self.sender() == phoneEditor[0]) :
 				if (index == 0) :
-					self.m_client.phones().append(phoneEditor[0].text())
+					self.m_client.phones().append(QString2str(phoneEditor[0].text()))
 				else :
-					self.m_client.phones()[index] = phoneEditor[0].text()
+					self.m_client.phones()[index] = QString2str(phoneEditor[0].text())
 				break
 			index += 1
 
@@ -147,17 +148,17 @@ class ClientForm(QtGui.QFrame) :
 		for emailEditor in self.m_emailsEditors :
 			if (self.sender() == emailEditor[0]) :
 				if (index == 0) :
-					self.m_client.emails().append(emailEditor[0].text())
+					self.m_client.emails().append(QString2str(emailEditor[0].text()))
 				else :
-					self.m_client.emails()[index] = emailEditor[0].text()
+					self.m_client.emails()[index] = QString2str(emailEditor[0].text())
 				break
 			index += 1
 		
 	def clientAddressChanged(self) :
-		self.m_client.setAddress(self.m_ui.textEditAddress.toPlainText())
+		self.m_client.setAddress(QString2str(self.m_ui.textEditAddress.toPlainText()))
 		
 	def clientCommentChanged(self) :
-		self.m_client.setComment(self.m_ui.textEditComment.toPlainText())
+		self.m_client.setComment(QString2str(self.m_ui.textEditComment.toPlainText()))
 
 	def createLineEditList(self, stringList, editorsList, container, onEditingFinished, onAddButtonClicked, onRemoveButtonClicked) :
 		for editor in editorsList :
@@ -167,7 +168,9 @@ class ClientForm(QtGui.QFrame) :
 			sip.delete(container.layout())
 			
 		editorsList[:]	= []
-		editorsCount	= stringList.count()
+		editorsCount	= 0
+		if (stringList != None) :
+			editorsCount = len(stringList)
 		if (editorsCount == 0) :
 			editorsCount = 1
 		

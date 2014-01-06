@@ -4,8 +4,8 @@ from PyQt4	import QtCore
 		  
 def str2QString(text) :
 	if (text == None) :
-		return unicode("", 'utf-8')
-	return unicode(text, 'utf-8')
+		return QtCore.QString()
+	return QtCore.QString(text)
 	
 def strList2QStringList(strList) :
 	result = QtCore.QStringList()
@@ -15,7 +15,7 @@ def strList2QStringList(strList) :
 	return result
 	
 def QString2str(text) :
-	return str(text.toUtf8())
+	return unicode(text)
 	
 def date2str(date) :
 	if (date == None) :

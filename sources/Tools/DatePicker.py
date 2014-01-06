@@ -10,10 +10,10 @@ def SelectDate(button, date) :
 	datePicker	= DatePicker(date)
 	result		= ShowModalDialog(datePicker, "Choisir une date", None, "Annuler", "Effacer", datePicker.m_ui.calendar.clicked, position)
 	if (result == ModalDialog.Result.Ok) :
-		return datePicker.m_ui.calendar.selectedDate()
+		return datePicker.m_ui.calendar.selectedDate().toPyDate()
 	elif (result == ModalDialog.Result.Cancel) :
 		return date
-	return QtCore.QDate()
+	return None
 
 class DatePicker(QtGui.QDialog) :
 
@@ -22,5 +22,6 @@ class DatePicker(QtGui.QDialog) :
 		
 		self.m_ui = Ui_DatePicker()
 		self.m_ui.setupUi(self)
-		self.m_ui.calendar.setSelectedDate(date)
+		if (date != None) :
+			self.m_ui.calendar.setSelectedDate(QtCore.QDate(date.year, date.month, date.day))
 		self.resize(375, 300)

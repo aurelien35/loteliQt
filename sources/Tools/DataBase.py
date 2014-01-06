@@ -1,7 +1,8 @@
 ﻿# -*- coding: utf-8 -*-
 
 import sqlite3
-from PyQt4	import QtCore
+from PyQt4					import QtCore
+from Tools.StringConvert	import *
 
 class DataBase(object) :
 
@@ -11,12 +12,12 @@ class DataBase(object) :
 		
 	def insertClient(self, client) :
 		self.m_cursor.execute('''INSERT INTO clients(name, firstName, birthDate, phones, emails, address, comment) VALUES(?,?,?,?,?,?,?)''', (
-								str(client.name().toUtf8()),
-								str(client.firstName().toUtf8()),
-								str(client.birthDate().toString("yyyy-MM-dd").toUtf8()),
-								str(client.phones().join("¤").toUtf8()),
-								str(client.emails().join("¤").toUtf8()),
-								str(client.address().toUtf8()),
-								str(client.comment().toUtf8())))
+								client.name(),
+								client.firstName(),
+								date2str(client.birthDate()),
+								u"¤".join(client.phones()),
+								u"¤".join(client.emails()),
+								client.address(),
+								client.comment()))
 		self.m_db.commit()
 		print "insertClient !"

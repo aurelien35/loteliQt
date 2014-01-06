@@ -23,19 +23,19 @@ class Client(object) :
 		return self.m_name
 		
 	def setName(self, name) :
-		if (type(name) is str) :
+		if (type(name) is unicode) :
 			self.m_name = name
 		else :
-			raise Exception("Client::setName : name is " + type(name) + ", not a string.")
+			raise Exception("Client::setName : name is " + str(type(name)) + ", not a string.")
 
 	def firstName(self) :
 		return self.m_firstName
 		
 	def setFirstName(self, firstName) :
-		if (type(firstName) is str) :
+		if (type(firstName) is unicode) :
 			self.m_firstName = firstName
 		else :
-			raise Exception("Client::setFirstName : firstName is " + type(firstName) + ", not a string.")
+			raise Exception("Client::setFirstName : firstName is " + str(type(firstName)) + ", not a string.")
 
 	def birthDate(self) :
 		return self.m_birthDate
@@ -53,38 +53,38 @@ class Client(object) :
 		return self.m_phones
 		
 	def setPhones(self, phones) :
-		if (type(phones) is not str) and (type(phones) is list) :
-			while (self.m_phones.count() > 5) :
-				self.m_phones.takeLast()
+		if (type(phones) is list) :
 			self.m_phones = phones
+			while (len(self.m_phones) > 5) :
+				del(self.m_phones[len(self.m_phones)-1])
 		else :
-			raise Exception("Client::setPhones : phones is " + type(phones) + ", not a string list.")
+			raise Exception("Client::setPhones : phones is " + str(type(phones)) + ", not a string list.")
 
 	def emails(self) :
 		return self.m_emails
 		
 	def setEmails(self, emails) :
-		if (type(emails) is not str) and (type(emails) is list) :
+		if (type(emails) is list) :
 			self.m_emails = emails
-			while (self.m_emails.count() > 5) :
-				self.m_emails.takeLast()
+			while (len(self.m_emails) > 5) :
+				del(self.m_emails[len(self.m_emails)-1])
 		else :
-			raise Exception("Client::setPhones : emails is " + type(emails) + ", not a string list.")
+			raise Exception("Client::setPhones : emails is " + str(type(emails)) + ", not a string list.")
 
 	def address(self) :
 		return self.m_address
 		
 	def setAddress(self, address) :
-		if (type(address) is str) :
+		if (type(address) is unicode) :
 			self.m_address = address
 		else :
-			raise Exception("Client::setAddress : address is " + type(address) + ", not a string.")
+			raise Exception("Client::setAddress : address is " + str(type(address)) + ", not a string.")
 
 	def comment(self) :
 		return self.m_comment
 		
 	def setComment(self, comment) :
-		if (type(comment) is str) :
+		if (type(comment) is unicode) :
 			self.m_comment = comment
 		else :
-			raise Exception("Client::setComment : comment is " + type(comment) + ", not a string.")
+			raise Exception("Client::setComment : comment is " + str(type(comment)) + ", not a string.")
