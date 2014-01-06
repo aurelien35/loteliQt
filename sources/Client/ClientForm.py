@@ -1,4 +1,6 @@
-﻿import sip
+﻿# -*- coding: utf-8 -*-
+
+import sip
 from PyQt4				import QtCore, QtGui
 from Tools.DatePicker	import SelectDate
 from Client				import Client

@@ -1,4 +1,6 @@
-﻿import sqlite3
+﻿# -*- coding: utf-8 -*-
+
+import sqlite3
 from PyQt4	import QtCore
 
 class DataBase(object) :

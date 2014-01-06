@@ -1,4 +1,6 @@
-﻿from PyQt4			import QtCore, QtGui
+﻿# -*- coding: utf-8 -*-
+
+from PyQt4			import QtCore, QtGui
 from ModalDialog_ui	import Ui_ModalDialog
 
 def ShowModalDialog(dialogContent, title, okText=None, cancelText=None, otherText=None, acceptSignal=None, position=None) :

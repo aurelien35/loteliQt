@@ -1,4 +1,6 @@
-﻿from PyQt4				import QtCore, QtGui
+﻿# -*- coding: utf-8 -*-
+
+from PyQt4				import QtCore, QtGui
 from Tools.ModalDialog	import ShowModalDialog
 from Tools.ModalDialog	import ModalDialog
 from DatePicker_ui		import Ui_DatePicker

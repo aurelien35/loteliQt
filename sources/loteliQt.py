@@ -1,4 +1,6 @@
-﻿from PyQt4				import QtCore
+﻿# -*- coding: utf-8 -*-
+
+from PyQt4				import QtCore
 from PyQt4				import QtGui
 from MainMenu.MainMenu	import MainMenu
 from Client.ClientForm	import ClientForm
