@@ -1,8 +1,8 @@
-from PyQt4 import QtCore
-from PyQt4 import QtGui
+﻿from PyQt4				import QtCore
+from PyQt4				import QtGui
+from MainMenu.MainMenu	import MainMenu
+from Client.ClientForm	import ClientForm
 import sys
-from MainMenu.MainMenu import MainMenu
-from Client.ClientForm import ClientForm
 
 # Creation de l'application
 app = QtGui.QApplication(sys.argv)
@@ -12,10 +12,12 @@ QtGui.QApplication.setStyle(QtGui.QStyleFactory.create("Cleanlooks"))
 QtGui.QApplication.setPalette(QtGui.QApplication.style().standardPalette())
 
 # Ouverture du menu principal
-# mainMenu = MainMenu()
-# mainMenu.showFullScreen()
-clientForm = ClientForm()
-clientForm.show()
+mainMenu = MainMenu()
+# mainMenu.setGeometry(50, 50, 800, 600)
+# mainMenu.show()
+mainMenu.showFullScreen()
+# clientForm = ClientForm()
+# clientForm.show()
 
 # Lancement de l'application
 app.exec_()

@@ -1,4 +1,4 @@
-from PyQt4 import QtCore
+﻿from PyQt4	import QtCore
 
 class Client(object) :
 
@@ -45,12 +45,16 @@ class Client(object) :
 		
 	def setPhones(self, phones) :
 		self.m_phones = phones	# TODO : checker le type
+		while (self.m_phones.count() > 5) :
+			self.m_phones.takeLast()
 
 	def emails(self) :
 		return self.m_emails
 		
 	def setEmails(self, emails) :
 		self.m_emails = emails	# TODO : checker le type
+		while (self.m_emails.count() > 5) :
+			self.m_emails.takeLast()
 
 	def address(self) :
 		return self.m_address

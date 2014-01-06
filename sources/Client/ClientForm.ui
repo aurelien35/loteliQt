@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>524</width>
-    <height>565</height>
+    <width>423</width>
+    <height>434</height>
    </rect>
   </property>
   <layout class="QFormLayout" name="formLayout">
@@ -115,42 +115,6 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLineEdit" name="lineEditPhone"/>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButtonAddPhone">
-       <property name="minimumSize">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="icon">
-        <iconset resource="../loteliQt.qrc">
-         <normaloff>:/resources/add.png</normaloff>:/resources/add.png</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>16</width>
-         <height>16</height>
-        </size>
-       </property>
-       <property name="flat">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
    <item row="4" column="0">
     <widget class="QLabel" name="label_7">
      <property name="font">
@@ -163,42 +127,6 @@
       <string>e-mail :</string>
      </property>
     </widget>
-   </item>
-   <item row="4" column="1">
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QLineEdit" name="lineEditEmail"/>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButtonAddEmail">
-       <property name="minimumSize">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="icon">
-        <iconset resource="../loteliQt.qrc">
-         <normaloff>:/resources/add.png</normaloff>:/resources/add.png</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>16</width>
-         <height>16</height>
-        </size>
-       </property>
-       <property name="flat">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </item>
    <item row="5" column="0">
     <widget class="QLabel" name="label_4">
@@ -231,6 +159,12 @@
    </item>
    <item row="6" column="1">
     <widget class="QTextEdit" name="textEditComment"/>
+   </item>
+   <item row="4" column="1">
+    <widget class="QFrame" name="emailsContainer"/>
+   </item>
+   <item row="3" column="1">
+    <widget class="QFrame" name="phonesContainer"/>
    </item>
   </layout>
  </widget>
