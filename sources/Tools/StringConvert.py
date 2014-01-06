@@ -1,3 +1,5 @@
+﻿# -*- coding: utf-8 -*-
+		  
 def str2QString(text) :
 	if (text == None) :
 		return unicode("", 'utf-8')

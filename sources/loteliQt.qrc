@@ -1,5 +1,7 @@
 <RCC>
   <qresource>
+    <file>resources/next.png</file>
+    <file>resources/previous.png</file>
     <file>resources/remove.png</file>
     <file>resources/calendar.png</file>
     <file>resources/add.png</file>
