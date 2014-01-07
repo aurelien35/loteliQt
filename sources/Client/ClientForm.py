@@ -9,8 +9,8 @@ from ClientForm_ui			import Ui_ClientForm
 
 class ClientForm(QtGui.QFrame) :
 
-	def __init__(self) :
-		super(ClientForm, self).__init__()
+	def __init__(self, parent=None) :
+		super(ClientForm, self).__init__(parent)
 		
 		# Membres
 		self.m_ui						= Ui_ClientForm()

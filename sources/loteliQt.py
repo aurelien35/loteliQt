@@ -4,6 +4,7 @@ from PyQt4					import QtCore
 from PyQt4					import QtGui
 from MainMenu.MainMenu		import MainMenu
 from Client.ClientForm		import ClientForm
+from Client.ClientList		import ClientList
 from Tools.DataTableView	import DataTableView
 import sys
 
@@ -23,10 +24,14 @@ mainMenu = MainMenu()
 # clientForm = ClientForm()
 # clientForm.show()
 
-dataTableView = DataTableView()
-dataTableView.setLabels([u"Id", u"Nom", u"Prénom", u"Téléphone", u"e-mail"])
-dataTableView.setQuery(u"SELECT rowId as [INTEGER], name, firstName, phones, emails FROM clients")
-dataTableView.show()
+# dataTableView = DataTableView()
+# dataTableView.setLabels([u"Id", u"Nom", u"Prénom", u"Téléphone", u"e-mail"])
+# dataTableView.setQuery(u"SELECT rowId as [INTEGER], name, firstName, phones, emails FROM clients")
+# dataTableView.show()
+
+clientList = ClientList()
+clientList.show()
+
 
 # Lancement de l'application
 app.exec_()
