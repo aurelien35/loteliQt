@@ -1,9 +1,10 @@
 ﻿# -*- coding: utf-8 -*-
 
-from PyQt4				import QtCore
-from PyQt4				import QtGui
-from MainMenu.MainMenu	import MainMenu
-from Client.ClientForm	import ClientForm
+from PyQt4					import QtCore
+from PyQt4					import QtGui
+from MainMenu.MainMenu		import MainMenu
+from Client.ClientForm		import ClientForm
+from Tools.DataTableView	import DataTableView
 import sys
 
 # Creation de l'application
@@ -17,9 +18,15 @@ QtGui.QApplication.setPalette(QtGui.QApplication.style().standardPalette())
 mainMenu = MainMenu()
 # mainMenu.setGeometry(50, 50, 800, 600)
 # mainMenu.show()
-mainMenu.showFullScreen()
+# mainMenu.showFullScreen()
+
 # clientForm = ClientForm()
 # clientForm.show()
+
+dataTableView = DataTableView()
+dataTableView.setLabels([u"Nom", u"Prénom", u"Téléphone", u"e-mail"])
+dataTableView.setQuery(u"SELECT name, FirstName, phones, emails FROM clients")
+dataTableView.show()
 
 # Lancement de l'application
 app.exec_()
