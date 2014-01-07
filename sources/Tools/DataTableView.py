@@ -148,6 +148,6 @@ class DataTableView(QtGui.QFrame) :
 	def defaultRowFactory(data) :
 		result = []
 		for value in data :
-			result.append(QtGui.QStandardItem(str2QString(str(value))))
+			result.append(QtGui.QStandardItem(str2QString(unicode(value))))
 		return result
 		

@@ -1,9 +1,13 @@
 ﻿# -*- coding: utf-8 -*-
 
-from PyQt4			import QtCore, QtGui
-from Client			import Client
-from ClientList_ui	import Ui_ClientList
-from Tools.DataBase	import DataBase
+import copy
+from PyQt4				import QtCore, QtGui
+from Client				import Client
+from ClientForm			import ClientForm
+from ClientList_ui		import Ui_ClientList
+from Tools.DataBase		import DataBase
+from Tools.ModalDialog	import ShowModalDialog
+from Tools.ModalDialog	import ModalDialog
 
 class ClientList(QtGui.QFrame) :
 
@@ -24,12 +28,14 @@ class ClientList(QtGui.QFrame) :
 		# Connexions
 		self.m_ui.lineEditFilter.textChanged.connect(self.setFilter)
 		self.m_ui.pushButtonClearFilter.clicked.connect(self.clearFilter)
+		self.m_ui.pushButtonNewClient.clicked.connect(self.newClient)
+		self.m_ui.pushButtonEditClient.clicked.connect(self.editClient)
 		self.m_ui.dataTable.rowSelected.connect(self.rowSelected)
 		self.m_ui.dataTable.rowClicked.connect(self.rowClicked)
 		self.m_ui.dataTable.rowDoubleClicked.connect(self.rowDoubleClicked)
 
 		# Etat initial
-		self.m_ui.clientForm.setClient(Client())
+		self.m_ui.clientForm.setClient(None)
 		self.updateQuery()
 		
 	def setFilter(self, filter) :
@@ -54,18 +60,36 @@ class ClientList(QtGui.QFrame) :
 		if (rowIndex >= 0) :
 			self.m_ui.clientForm.setClient(self.m_db.loadClient(self.m_ui.dataTable.row(rowIndex)["rowid"]))
 		else :
-			self.m_ui.clientForm.setClient(Client())
+			self.m_ui.clientForm.setClient(None)
 	
 	def rowClicked(self, rowIndex) :
 		print "rowClicked : {0}".format(str(rowIndex))
 		if (rowIndex >= 0) :
 			self.m_ui.clientForm.setClient(self.m_db.loadClient(self.m_ui.dataTable.row(rowIndex)["rowid"]))
 		else :
-			self.m_ui.clientForm.setClient(Client())
+			self.m_ui.clientForm.setClient(None)
 	
 	def rowDoubleClicked(self, rowIndex) :
 		print "rowDoubleClicked : {0}".format(str(rowIndex))
 		if (rowIndex >= 0) :
 			self.m_ui.clientForm.setClient(self.m_db.loadClient(self.m_ui.dataTable.row(rowIndex)["rowid"]))
 		else :
-			self.m_ui.clientForm.setClient(Client())
+			self.m_ui.clientForm.setClient(None)
+		self.editClient()
+			
+	def newClient(self) :
+		client		= Client()
+		clientForm	= ClientForm()
+		clientForm.setClient(client)
+		if (ShowModalDialog(clientForm, "Ajouter un client", "Ok", "Annuler") == ModalDialog.Result.Ok) :
+			self.m_db.insertClient(client)
+			self.updateQuery()
+			
+	def editClient(self) :
+		if (self.m_ui.clientForm.client() != None) :
+			client		= copy.deepcopy(self.m_ui.clientForm.client())
+			clientForm	= ClientForm()
+			clientForm.setClient(client)
+			if (ShowModalDialog(clientForm, "Modifier un client", "Ok", "Annuler") == ModalDialog.Result.Ok) :
+				self.m_db.updateClient(client)
+				self.updateQuery()
