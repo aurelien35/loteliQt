@@ -69,7 +69,7 @@ class Client(object) :
 			while (len(self.m_emails) > 5) :
 				del(self.m_emails[len(self.m_emails)-1])
 		else :
-			raise Exception("Client::setPhones : emails is " + str(type(emails)) + ", not a string list.")
+			raise Exception("Client::setEmails : emails is " + str(type(emails)) + ", not a string list.")
 
 	def address(self) :
 		return self.m_address

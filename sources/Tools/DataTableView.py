@@ -20,6 +20,7 @@ class DataTableView(QtGui.QFrame) :
 		self.m_ui					= Ui_DataTableView()
 		self.m_db					= DataBase()
 		self.m_query				= None
+		self.m_tokens				= None
 		self.m_data					= None
 		self.m_labels				= []
 		self.m_model				= QtGui.QStandardItemModel()
@@ -34,6 +35,7 @@ class DataTableView(QtGui.QFrame) :
 		# Ui
 		self.m_ui.setupUi(self)
 		self.m_ui.tableView.setModel(self.m_model)
+		self.m_ui.navigationBar.hide()
 		self.m_selectionModel = self.m_ui.tableView.selectionModel()
 		
 		# Connexions
@@ -45,10 +47,11 @@ class DataTableView(QtGui.QFrame) :
 		self.m_selectionModel.selectionChanged.connect(self.itemSelectionChanged)
 
 	def query(self) :
-		return self.m_query
+		return (self.m_query, self.m_tokens)
 		
-	def setQuery(self, query) :
+	def setQuery(self, query, tokens) :
 		self.m_query				= query
+		self.m_tokens				= tokens
 		self.m_data					= None
 		self.m_rowsCount			= 0
 		self.m_pagesCount			= 0
@@ -58,17 +61,18 @@ class DataTableView(QtGui.QFrame) :
 
 		self.m_model.setRowCount(0)
 		if (self.m_query != None) :
-			self.m_data = self.m_db.selectData(self.m_query)
+			self.m_data = self.m_db.selectData(self.m_query, self.m_tokens)
 			
 			if (self.m_data != None) :
 				if (self.m_rowFactory != None) :
 					self.m_rowsCount	= len(self.m_data)
-					self.m_pagesCount	= int(max(0, math.floor(self.m_rowsCount / self.m_rowsPerPage)))
+					self.m_pagesCount	= int(max(0, 1 + math.floor(self.m_rowsCount / self.m_rowsPerPage)))
 					self.m_ui.comboBoxCurrentPage.clear()
-					for pageNumber in range(self.m_pagesCount + 1) :
-						self.m_ui.comboBoxCurrentPage.addItem(u"Page {0}/{1}".format(pageNumber+1, self.m_pagesCount+1))
+					for pageNumber in range(self.m_pagesCount) :
+						self.m_ui.comboBoxCurrentPage.addItem(u"Page {0}/{1}".format(pageNumber+1, self.m_pagesCount))
 		self.updateModel()
 		self.m_ui.tableView.resizeColumnsToContents()
+		self.m_ui.navigationBar.setVisible(self.m_pagesCount > 1)
 				
 	def data(self) :
 		return self.m_data
@@ -78,9 +82,6 @@ class DataTableView(QtGui.QFrame) :
 				
 	def rowsCount(self) :
 		return self.m_rowsCount
-				
-	def query(self) :
-		return self.m_query
 		
 	def labels(self) :
 		return self.m_labels
@@ -102,7 +103,7 @@ class DataTableView(QtGui.QFrame) :
 		self.m_rowFactory = rowFactory
 		
 	def setCurrentPage(self, currentPage) :
-		self.m_currentPage = min(max(0, currentPage), self.m_pagesCount)
+		self.m_currentPage = min(max(0, currentPage), self.m_pagesCount-1)
 		self.updateModel()
 
 	def previousPage(self) :

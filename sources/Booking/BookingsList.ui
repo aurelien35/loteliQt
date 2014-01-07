@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ClientList</class>
- <widget class="QFrame" name="ClientList">
+ <class>BookingList</class>
+ <widget class="QFrame" name="BookingList">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>841</width>
-    <height>483</height>
+    <width>752</width>
+    <height>609</height>
    </rect>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLabel" name="labelClientsCount">
+      <widget class="QLabel" name="labelRowsCount">
        <property name="font">
         <font>
          <weight>75</weight>
@@ -53,10 +53,10 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEditClientFilter"/>
+      <widget class="QLineEdit" name="lineEditFilter"/>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButtonClearClientFilter">
+      <widget class="QPushButton" name="pushButtonClearFilter">
        <property name="minimumSize">
         <size>
          <width>20</width>
@@ -80,6 +80,44 @@
      </item>
     </layout>
    </item>
+   <item row="1" column="0">
+    <widget class="DataTableView" name="dataTable">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="BookingForm" name="bookingForm">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>20</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+    </widget>
+   </item>
    <item row="0" column="1">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
@@ -96,74 +134,16 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButtonNewClient">
+      <widget class="QPushButton" name="pushButtonNewBooking">
        <property name="text">
-        <string>Ajouter un client</string>
+        <string>Ajouter un booking</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButtonEditClient">
+      <widget class="QPushButton" name="pushButtonEditBooking">
        <property name="text">
         <string>Modifier...</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="1" column="0">
-    <widget class="DataTableView" name="clients">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="ClientForm" name="clientForm">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>400</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>400</width>
-         <height>16777215</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="DataTableView" name="bookings">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>400</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>400</width>
-         <height>16777215</height>
-        </size>
        </property>
       </widget>
      </item>
@@ -179,9 +159,9 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>ClientForm</class>
+   <class>BookingForm</class>
    <extends>QFrame</extends>
-   <header>ClientForm</header>
+   <header>BookingForm</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

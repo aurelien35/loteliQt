@@ -17,8 +17,8 @@ QtGui.QApplication.setPalette(QtGui.QApplication.style().standardPalette())
 
 # Ouverture du menu principal
 mainMenu = MainMenu()
-# mainMenu.setGeometry(50, 50, 800, 600)
-# mainMenu.show()
+mainMenu.setGeometry(50, 50, 800, 600)
+mainMenu.show()
 # mainMenu.showFullScreen()
 
 # clientForm = ClientForm()
@@ -26,11 +26,11 @@ mainMenu = MainMenu()
 
 # dataTableView = DataTableView()
 # dataTableView.setLabels([u"Id", u"Nom", u"Prénom", u"Téléphone", u"e-mail"])
-# dataTableView.setQuery(u"SELECT rowId as [INTEGER], name, firstName, phones, emails FROM clients")
+# dataTableView.setQuery(u"SELECT rowId as [INTEGER], name, firstName, phones, emails FROM clients", None)
 # dataTableView.show()
 
-clientList = ClientList()
-clientList.show()
+# clientList = ClientList()
+# clientList.show()
 
 
 # Lancement de l'application
