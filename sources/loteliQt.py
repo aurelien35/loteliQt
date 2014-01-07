@@ -24,8 +24,8 @@ mainMenu = MainMenu()
 # clientForm.show()
 
 dataTableView = DataTableView()
-dataTableView.setLabels([u"Nom", u"Prénom", u"Téléphone", u"e-mail"])
-dataTableView.setQuery(u"SELECT name, FirstName, phones, emails FROM clients")
+dataTableView.setLabels([u"Id", u"Nom", u"Prénom", u"Téléphone", u"e-mail"])
+dataTableView.setQuery(u"SELECT rowId as [INTEGER], name, firstName, phones, emails FROM clients")
 dataTableView.show()
 
 # Lancement de l'application

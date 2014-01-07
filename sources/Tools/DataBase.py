@@ -1,5 +1,6 @@
 ﻿# -*- coding: utf-8 -*-
 
+import os
 import sqlite3
 from PyQt4					import QtCore
 from Tools.StringConvert	import *
@@ -7,7 +8,7 @@ from Tools.StringConvert	import *
 class DataBase(object) :
 
 	def __init__(self) :
-		self.m_db = sqlite3.connect('D:/Dev/loteliQt/data/loteli.sqlite3')
+		self.m_db = sqlite3.connect('./data/loteli.sqlite3', detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
 		
 	def insertClient(self, client) :
 		cursor = self.m_db.cursor()
