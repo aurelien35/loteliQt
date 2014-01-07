@@ -76,6 +76,9 @@ class DataTableView(QtGui.QFrame) :
 	def row(self, rowIndex) :
 		return self.m_data[rowIndex]
 				
+	def rowsCount(self) :
+		return self.m_rowsCount
+				
 	def query(self) :
 		return self.m_query
 		
