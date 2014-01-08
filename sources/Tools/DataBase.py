@@ -29,20 +29,20 @@ class DataBase(object) :
 				client.setName		(clientData["name"])
 				client.setFirstName	(clientData["firstName"])
 				client.setBirthDate	(clientData["birthDate"])
-				client.setPhones	(clientData["phones"].split(u"¤"))
-				client.setEmails	(clientData["emails"].split(u"¤"))
+				client.setPhones	(filter(None, clientData["phones"].split(u"¤")))
+				client.setEmails	(filter(None, clientData["emails"].split(u"¤")))
 				client.setAddress	(clientData["address"])
 				client.setComment	(clientData["comment"])
 
 		return client
 		
-	def loadRooms(self) :
+	def loadRoomsCatalog(self) :
 		cursor = self.m_db.cursor()
 		cursor.execute(u'''SELECT rowid, * FROM rooms''')
 		data	= cursor.fetchall()
 		rooms	= {}
 		for room in data :
-			rooms[str(room["rowid"])] = room
+			rooms[room["rowid"]] = room
 		return rooms		
 		
 	def updateClient(self, client) :
@@ -92,7 +92,12 @@ class DataBase(object) :
 		cursor = self.m_db.cursor()
 		cursor.execute(u'''SELECT rowid, * FROM bookings WHERE (date >= :startDate) AND date(date, "+" || days || " days") < :endDate''', {'startDate':startDate, 'endDate':endDate})
 		data = cursor.fetchall()
-		
+
+		# Decodage
+		# for booking in data :
+			# booking["roomsId"]		= filter(None, booking["rooms"].split(";"))
+			# booking["clientsId"]	= filter(None, booking["clients"].split(";"))
+			
 		print "selectBookings : from {0} to {1}".format(date2str(startDate), date2str(endDate))
 		return data
 		

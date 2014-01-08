@@ -8,7 +8,7 @@ class Booking(object) :
 	def __init__(self) :
 		# Membres
 		self.m_id		= -1
-		self.m_date		= ""
+		self.m_date		= None
 		self.m_days		= 0
 		self.m_clients	= []
 		self.m_rooms	= []

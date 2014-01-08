@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>938</width>
-    <height>631</height>
+    <width>557</width>
+    <height>370</height>
    </rect>
   </property>
   <property name="frameShape">
@@ -29,13 +29,10 @@
       <enum>Qt::Monday</enum>
      </property>
      <property name="horizontalHeaderFormat">
-      <enum>QCalendarWidget::LongDayNames</enum>
+      <enum>QCalendarWidget::NoHorizontalHeader</enum>
      </property>
      <property name="verticalHeaderFormat">
       <enum>QCalendarWidget::NoVerticalHeader</enum>
-     </property>
-     <property name="navigationBarVisible">
-      <bool>true</bool>
      </property>
      <property name="dateEditEnabled">
       <bool>false</bool>
