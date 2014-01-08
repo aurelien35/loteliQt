@@ -1,6 +1,7 @@
 ﻿# -*- coding: utf-8 -*-
 
 import copy
+from datetime				import date
 from PyQt4					import QtCore, QtGui
 from Booking				import Booking
 from BookingPlanning_ui		import Ui_BookingPlanning
@@ -9,6 +10,11 @@ from Tools.StringConvert	import *
 
 class BookingPlanning(QtGui.QFrame) :
 
+	# Signaux
+	dateClicked			= QtCore.pyqtSignal(date)
+	dateDoubleClicked	= QtCore.pyqtSignal(date)
+	selectedDateChanged	= QtCore.pyqtSignal(date)
+	
 	def __init__(self, parent=None) :
 		super(BookingPlanning, self).__init__(parent)
 		
@@ -31,13 +37,16 @@ class BookingPlanning(QtGui.QFrame) :
 	def calendarDateDoubleClicked(self, qDate) :
 		date = qDate.toPyDate()
 		print "calendarDateDoubleClicked({0})".format(date2str(date))
+		self.dateClicked.emit(date)
 		
 	def calendarDateClicked(self, qDate) :
 		date = qDate.toPyDate()
 		print "calendarDateClicked({0})".format(date2str(date))
+		self.dateDoubleClicked.emit(date)
 	
 	def calendarPageChanged(self, year, month) :
 		print "calendarPageChanged({0}, {1})".format(year, month)
 		
 	def calendarSelectionChanged(self) :
 		print "calendarSelectionChanged"
+		self.selectedDateChanged.emit(self.m_ui.calendar.selectedDate().toPyDate())
