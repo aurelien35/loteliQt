@@ -36,6 +36,14 @@ class DataBase(object) :
 
 		return client
 		
+	def loadRooms(self) :
+		cursor = self.m_db.cursor()
+		cursor.execute(u'''SELECT rowid, * FROM rooms''')
+		data	= cursor.fetchall()
+		rooms	= {}
+		for room in data :
+			rooms[str(room["rowid"])] = room
+		return rooms		
 		
 	def updateClient(self, client) :
 		# TODO : gestion des erreurs : code de retour
