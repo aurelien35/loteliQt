@@ -1,13 +1,14 @@
 ﻿# -*- coding: utf-8 -*-
 
 import copy
-from PyQt4				import QtCore, QtGui
-from Client				import Client
-from ClientForm			import ClientForm
-from ClientList_ui		import Ui_ClientList
-from Tools.DataBase		import DataBase
-from Tools.ModalDialog	import ShowModalDialog
-from Tools.ModalDialog	import ModalDialog
+from PyQt4					import QtCore, QtGui
+from Client					import Client
+from ClientForm				import ClientForm
+from ClientList_ui			import Ui_ClientList
+from Tools.DataBase			import DataBase
+from Tools.ModalDialog		import ShowModalDialog
+from Tools.ModalDialog		import ModalDialog
+from Tools.StringConvert	import *
 
 class ClientList(QtGui.QFrame) :
 
@@ -42,8 +43,9 @@ class ClientList(QtGui.QFrame) :
 		self.updateQuery()
 		
 	def setClientFilter(self, clientFilter) :
-		self.m_clientFilter = clientFilter
-		if (self.m_clientFilter != None) :
+		self.m_clientFilter = None
+		if (clientFilter != None) :
+			self.m_clientFilter = QString2str(clientFilter)
 			if (len(self.m_clientFilter) == 0) :
 				self.m_clientFilter = None
 		self.updateQuery()
@@ -56,7 +58,7 @@ class ClientList(QtGui.QFrame) :
 		query = u'''SELECT rowId, name, firstName, phones, emails FROM clients'''
 		if (self.m_clientFilter != None) :
 			query = u'''{0} WHERE name LIKE :filter OR firstName LIKE :filter OR phones LIKE :filter OR emails LIKE :filter OR address LIKE :filter OR comment LIKE :filter'''.format(query)
-		self.m_ui.clients.setQuery(query, {'filter':self.m_clientFilter})
+		self.m_ui.clients.setQuery(query, {'filter':u"%{0}%".format(self.m_clientFilter)})
 		self.m_ui.labelClientsCount.setText(u"{0} résultats".format(self.m_ui.clients.rowsCount()))
 		
 	def clientSelected(self, clientIndex) :
