@@ -2,6 +2,7 @@
 
 import os
 import sqlite3
+from datetime				import *
 from PyQt4					import QtCore
 from Client.Client			import Client
 from Tools.StringConvert	import *
@@ -71,3 +72,19 @@ class DataBase(object) :
 			cursor.execute(query, tokens)
 		data = cursor.fetchall()
 		return data
+
+	def selectBookings(self, month, year) :
+		# Debut de la requete : 10 jours avant le 1er du mois
+		startDate = date(year, month, 1) - timedelta(10)
+		
+		# Fin de la requete : 40 jours après le 1er du mois
+		endDate = date(year, month, 1) + timedelta(40)
+
+		# Execution
+		cursor = self.m_db.cursor()
+		cursor.execute(u'''SELECT rowid, * FROM bookings WHERE (date >= :startDate) AND date(date, "+" || days || " days") < :endDate''', {'startDate':startDate, 'endDate':endDate})
+		data = cursor.fetchall()
+		
+		print "selectBookings : from {0} to {1}".format(date2str(startDate), date2str(endDate))
+		return data
+		

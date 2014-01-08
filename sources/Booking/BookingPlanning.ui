@@ -28,9 +28,6 @@
      <property name="firstDayOfWeek">
       <enum>Qt::Monday</enum>
      </property>
-     <property name="gridVisible">
-      <bool>true</bool>
-     </property>
      <property name="horizontalHeaderFormat">
       <enum>QCalendarWidget::LongDayNames</enum>
      </property>

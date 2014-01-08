@@ -26,8 +26,7 @@ class BookingPlanning(QtGui.QFrame) :
 		self.m_ui.calendar.selectionChanged.connect(self.calendarSelectionChanged)
 		
 		# Etat initial
-		currentDate = self.m_ui.calendar.selectedDate()
-		self.calendarPageChanged(currentDate.year(), currentDate.month())
+		self.calendarPageChanged(self.m_ui.calendar.yearShown(), self.m_ui.calendar.monthShown())
 		
 	def calendarDateDoubleClicked(self, qDate) :
 		date = qDate.toPyDate()
