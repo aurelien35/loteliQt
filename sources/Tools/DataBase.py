@@ -1,4 +1,26 @@
 ﻿# -*- coding: utf-8 -*-
+# SELECT
+	# bookings.rowid,
+	# bookings.date,
+	# bookings.days,
+	# clients.name,
+	# clients.firstName,
+	# rooms.name
+# FROM
+	# bookings
+# LEFT JOIN 
+	# clients
+# ON
+	# bookings.clients LIKE "%;" || clients.rowId || ";%"
+# LEFT JOIN 
+	# rooms
+# ON
+	# bookings.rooms LIKE "%;" || rooms.rowId || ";%"
+# WHERE
+	# bookings.date >= "2014-01-15"
+# AND
+	# date(bookings.date, "+" || bookings.days || " days") < "2014-03-15"
+
 
 import os
 import sqlite3
