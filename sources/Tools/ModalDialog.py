@@ -3,6 +3,8 @@
 from PyQt4			import QtCore, QtGui
 from ModalDialog_ui	import Ui_ModalDialog
 
+# TODO : bloquer la touche "echap" et pas de focus aux boutons par defaut
+
 def ShowModalDialog(dialogContent, title, okText=None, cancelText=None, otherText=None, acceptSignal=None, position=None) :
 	result = QtGui.QDialog.Rejected
 	if (dialogContent != None) :
@@ -51,23 +53,23 @@ class ModalDialog(QtGui.QDialog) :
 		self.m_ui.setupUi(self)
 		self.m_ui.containerLayout.addWidget(dialogContent)
 		self.finished.connect(self.aboutToClose)
-		self.m_ui.pushButtonOk.clicked.connect(self.accept)
-		self.m_ui.pushButtonCancel.clicked.connect(self.reject)
-		self.m_ui.pushButtonOther.clicked.connect(self.otherClicked)
+		self.m_ui.buttonOk.clicked.connect(self.accept)
+		self.m_ui.buttonCancel.clicked.connect(self.reject)
+		self.m_ui.buttonOther.clicked.connect(self.otherClicked)
 		
 		self.m_ui.labelTitle.setText(title)
 		if (okText == None) :
-			self.m_ui.pushButtonOk.hide()
+			self.m_ui.buttonOk.hide()
 		else :
-			self.m_ui.pushButtonOk.setText(okText)
+			self.m_ui.buttonOk.setText(okText)
 		if (cancelText == None) :
-			self.m_ui.pushButtonCancel.hide()
+			self.m_ui.buttonCancel.hide()
 		else :
-			self.m_ui.pushButtonCancel.setText(cancelText)
+			self.m_ui.buttonCancel.setText(cancelText)
 		if (otherText == None) :
-			self.m_ui.pushButtonOther.hide()
+			self.m_ui.buttonOther.hide()
 		else :
-			self.m_ui.pushButtonOther.setText(otherText)
+			self.m_ui.buttonOther.setText(otherText)
 		
 		self.setWindowFlags(QtCore.Qt.FramelessWindowHint);
 		self.adjustSize()

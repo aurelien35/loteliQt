@@ -17,6 +17,9 @@
    <property name="labelAlignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
+   <property name="margin">
+    <number>0</number>
+   </property>
    <item row="0" column="0">
     <widget class="QLabel" name="label">
      <property name="font">
@@ -103,14 +106,7 @@
     <widget class="QTextEdit" name="textEditComment"/>
    </item>
    <item row="2" column="1">
-    <widget class="QFrame" name="frame">
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-    </widget>
+    <widget class="QFrame" name="frame"/>
    </item>
   </layout>
  </widget>

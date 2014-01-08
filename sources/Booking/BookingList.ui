@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>BookingList</class>
+ <widget class="QFrame" name="BookingList">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>752</width>
+    <height>609</height>
+   </rect>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
+    <widget class="BookingPlanning" name="planning"/>
+   </item>
+   <item row="0" column="1">
+    <widget class="BookingForm" name="bookingForm"/>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>BookingForm</class>
+   <extends>QFrame</extends>
+   <header>BookingForm</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>BookingPlanning</class>
+   <extends>QFrame</extends>
+   <header>BookingPlanning</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../loteliQt.qrc"/>
+ </resources>
+ <connections/>
+</ui>

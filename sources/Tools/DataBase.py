@@ -6,6 +6,8 @@ from PyQt4					import QtCore
 from Client.Client			import Client
 from Tools.StringConvert	import *
 
+#TODO : logger les requetes
+
 class DataBase(object) :
 
 	def __init__(self) :
@@ -51,7 +53,7 @@ class DataBase(object) :
 	def insertClient(self, client) :
 		# TODO : gestion des erreurs : code de retour
 		cursor = self.m_db.cursor()
-		cursor.execute(u'''INSERT INTO clients(name, firstName, birthDate, phones, emails, address, comment) VALUES(?,?,?,?,?,?,?)''',
+		cursor.execute(u'''INSERT INTO clients(name, firstName, birthDate, phones, emails, address, comment) VALUES(:name, :firstName, :birthDate, :phones, :emails, :address, :comment)''',
 						{	'name':			client.name(),
 							'firstName':	client.firstName(),
 							'birthDate':	client.birthDate(),

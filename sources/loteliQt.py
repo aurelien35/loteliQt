@@ -3,6 +3,7 @@
 from PyQt4					import QtCore
 from PyQt4					import QtGui
 from MainMenu.MainMenu		import MainMenu
+from MainWindow.MainWindow	import MainWindow
 from Client.ClientForm		import ClientForm
 from Client.ClientList		import ClientList
 from Tools.DataTableView	import DataTableView
@@ -16,10 +17,14 @@ QtGui.QApplication.setStyle(QtGui.QStyleFactory.create("Cleanlooks"))
 QtGui.QApplication.setPalette(QtGui.QApplication.style().standardPalette())
 
 # Ouverture du menu principal
-mainMenu = MainMenu()
-mainMenu.setGeometry(50, 50, 800, 600)
-mainMenu.show()
+# mainMenu = MainMenu()
+# mainMenu.setGeometry(50, 50, 800, 600)
+# mainMenu.show()
 # mainMenu.showFullScreen()
+
+mainWindow = MainWindow()
+mainWindow.showMaximized()
+# mainWindow.showFullScreen()
 
 # clientForm = ClientForm()
 # clientForm.show()

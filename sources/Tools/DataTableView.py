@@ -39,8 +39,8 @@ class DataTableView(QtGui.QFrame) :
 		self.m_selectionModel = self.m_ui.tableView.selectionModel()
 		
 		# Connexions
-		self.m_ui.pushButtonPreviousPage.clicked.connect(self.previousPage)
-		self.m_ui.pushButtonNextPage.clicked.connect(self.nextPage)
+		self.m_ui.buttonPreviousPage.clicked.connect(self.previousPage)
+		self.m_ui.buttonNextPage.clicked.connect(self.nextPage)
 		self.m_ui.comboBoxCurrentPage.currentIndexChanged.connect(self.setCurrentPage)
 		self.m_ui.tableView.clicked.connect(self.itemClicked)
 		self.m_ui.tableView.doubleClicked.connect(self.itemDoubleClicked)

@@ -6,9 +6,47 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>380</width>
-    <height>254</height>
+    <width>395</width>
+    <height>268</height>
    </rect>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/* Boite de dialogue*/
+QFrame#frameDialog
+{
+	background-color:	#C4D1EC;
+	border-style:			solid;
+	border-color:			#000000;
+	border-width:			6px;
+}
+
+/* Barre de titre */
+QFrame#frameTitle
+{
+	background-color:	#535353;
+	border-style:			solid;
+	border-width:			0px 0px 2px 0px;
+	border-color:			#000000;
+}
+
+QFrame#frameTitle &gt; QLabel
+{
+	color:					#FFFFFF;
+	font-weight:		bold;
+	font-style:			italic;
+	font-size:				14pt;
+	font-family:			&quot;Verdana&quot;;
+}
+
+/* Barre de pied de page */
+QFrame#frameDialog &gt; QFrame#frameButtons
+{
+	background-color:	#535353;
+	border-style:			solid;
+	border-width:			2px 0px 0px 0px;
+	border-color:			#000000;
+}
+</string>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -21,80 +59,7 @@
     <number>0</number>
    </property>
    <item row="0" column="0">
-    <widget class="QFrame" name="frame">
-     <property name="palette">
-      <palette>
-       <active>
-        <colorrole role="Base">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>255</red>
-           <green>255</green>
-           <blue>255</blue>
-          </color>
-         </brush>
-        </colorrole>
-        <colorrole role="Window">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>196</red>
-           <green>209</green>
-           <blue>236</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </active>
-       <inactive>
-        <colorrole role="Base">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>255</red>
-           <green>255</green>
-           <blue>255</blue>
-          </color>
-         </brush>
-        </colorrole>
-        <colorrole role="Window">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>196</red>
-           <green>209</green>
-           <blue>236</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </inactive>
-       <disabled>
-        <colorrole role="Base">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>196</red>
-           <green>209</green>
-           <blue>236</blue>
-          </color>
-         </brush>
-        </colorrole>
-        <colorrole role="Window">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>196</red>
-           <green>209</green>
-           <blue>236</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </disabled>
-      </palette>
-     </property>
-     <property name="autoFillBackground">
-      <bool>true</bool>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::Box</enum>
-     </property>
-     <property name="lineWidth">
-      <number>6</number>
-     </property>
+    <widget class="QFrame" name="frameDialog">
      <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0">
       <property name="spacing">
        <number>0</number>
@@ -103,17 +68,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QFrame" name="containerTitle">
-        <property name="styleSheet">
-         <string notr="true">QFrame#containerTitle
-{
-	background-color: rgb(83, 83, 83);
-	border-style: solid;
-	border-width: 0px 0px 2px 0px;
-	border-color: rgb(0, 0, 0);
-}
-</string>
-        </property>
+       <widget class="QFrame" name="frameTitle">
         <layout class="QGridLayout">
          <property name="topMargin">
           <number>4</number>
@@ -132,52 +87,6 @@
          </property>
          <item row="0" column="0">
           <widget class="QLabel" name="labelTitle">
-           <property name="palette">
-            <palette>
-             <active>
-              <colorrole role="WindowText">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>255</red>
-                 <green>255</green>
-                 <blue>255</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </active>
-             <inactive>
-              <colorrole role="WindowText">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>255</red>
-                 <green>255</green>
-                 <blue>255</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </inactive>
-             <disabled>
-              <colorrole role="WindowText">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>118</red>
-                 <green>116</green>
-                 <blue>108</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </disabled>
-            </palette>
-           </property>
-           <property name="font">
-            <font>
-             <family>Verdana</family>
-             <pointsize>14</pointsize>
-             <weight>75</weight>
-             <italic>true</italic>
-             <bold>true</bold>
-            </font>
-           </property>
            <property name="text">
             <string>Titre</string>
            </property>
@@ -187,33 +96,18 @@
        </widget>
       </item>
       <item>
-       <widget class="QFrame" name="container">
+       <widget class="QFrame" name="frameContent">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <layout class="QVBoxLayout" name="containerLayout">
-         <property name="margin">
-          <number>0</number>
-         </property>
-        </layout>
+        <layout class="QVBoxLayout" name="containerLayout"/>
        </widget>
       </item>
       <item>
-       <widget class="QFrame" name="containerButtons">
-        <property name="styleSheet">
-         <string notr="true">QFrame#containerButtons
-{
-	background-color: rgb(83, 83, 83);
-	font: bold 20px &quot;Verdana&quot;;
-	color: rgb(255, 255, 255);
-	border-style: solid;
-	border-width: 2px 0px 0px 0px;
-	border-color: rgb(0, 0, 0);
-}</string>
-        </property>
+       <widget class="QFrame" name="frameButtons">
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <property name="topMargin">
           <number>6</number>
@@ -232,21 +126,21 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButtonOk">
+          <widget class="QPushButton" name="buttonOk">
            <property name="text">
             <string>Ok</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButtonCancel">
+          <widget class="QPushButton" name="buttonCancel">
            <property name="text">
             <string>Annuler</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButtonOther">
+          <widget class="QPushButton" name="buttonOther">
            <property name="text">
             <string>Other</string>
            </property>

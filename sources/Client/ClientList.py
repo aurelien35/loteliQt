@@ -3,7 +3,6 @@
 import copy
 from PyQt4					import QtCore, QtGui
 from Client					import Client
-from ClientForm				import ClientForm
 from ClientList_ui			import Ui_ClientList
 from Tools.DataBase			import DataBase
 from Tools.ModalDialog		import ShowModalDialog
@@ -29,9 +28,9 @@ class ClientList(QtGui.QFrame) :
 		
 		# Connexions
 		self.m_ui.lineEditClientFilter.textChanged.connect(self.setClientFilter)
-		self.m_ui.pushButtonClearClientFilter.clicked.connect(self.clearClientFilter)
-		self.m_ui.pushButtonNewClient.clicked.connect(self.newClient)
-		self.m_ui.pushButtonEditClient.clicked.connect(self.editClient)
+		self.m_ui.buttonClearClientFilter.clicked.connect(self.clearClientFilter)
+		self.m_ui.buttonNewClient.clicked.connect(self.newClient)
+		self.m_ui.buttonEditClient.clicked.connect(self.editClient)
 		self.m_ui.clients.rowSelected.connect(self.clientSelected)
 		self.m_ui.clients.rowClicked.connect(self.clientClicked)
 		self.m_ui.clients.rowDoubleClicked.connect(self.clientDoubleClicked)
@@ -60,6 +59,7 @@ class ClientList(QtGui.QFrame) :
 			query = u'''{0} WHERE name LIKE :filter OR firstName LIKE :filter OR phones LIKE :filter OR emails LIKE :filter OR address LIKE :filter OR comment LIKE :filter'''.format(query)
 		self.m_ui.clients.setQuery(query, {'filter':u"%{0}%".format(self.m_clientFilter)})
 		self.m_ui.labelClientsCount.setText(u"{0} résultats".format(self.m_ui.clients.rowsCount()))
+		self.m_ui.buttonEditClient.setVisible(self.m_ui.clients.rowsCount() > 0)
 		
 	def clientSelected(self, clientIndex) :
 		self.m_ui.clientForm.setClient(None)
