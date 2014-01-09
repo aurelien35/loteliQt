@@ -14,7 +14,7 @@ class BookingCalendar(QtGui.QCalendarWidget) :
 		# Membres
 		self.m_db					= DataBase()
 		self.m_roomsCatalog			= self.m_db.loadRoomsCatalog()
-		self.m_bookingByDate		= {}
+		self.m_bookingsDataByDate	= {}
 		self.m_cellPen				= QtGui.QPen(QtGui.QColor(0, 0, 0), 1.0)
 		self.m_cellBrush			= QtGui.QBrush(QtGui.QColor(255, 255, 255))
 		self.m_cellDisabledBrush	= QtGui.QBrush(QtGui.QColor(160, 160, 160))
@@ -33,6 +33,9 @@ class BookingCalendar(QtGui.QCalendarWidget) :
 		# Etat initial
 		self.updateData()
 
+	def bookingsDataByDate(self) :
+		return self.m_bookingsDataByDate
+	
 	def paintCell(self, painter, rect, date) :
 		painter.setRenderHints(QtGui.QPainter.TextAntialiasing, True)
 		pyDate				= date.toPyDate()
@@ -59,10 +62,10 @@ class BookingCalendar(QtGui.QCalendarWidget) :
 		painter.drawText(titleRect, QtCore.Qt.AlignCenter, QtCore.QString("%1").arg(date.day()))
 
 		# Reservations
-		if (self.m_bookingByDate.has_key(pyDate) == True) :
+		if (self.m_bookingsDataByDate.has_key(pyDate) == True) :
 			roomsCount		= len(self.m_roomsCatalog)
-			bookings		= self.m_bookingByDate[pyDate]
-			bookingsCount	= len(bookings);
+			bookingsData	= self.m_bookingsDataByDate[pyDate]
+			bookingsCount	= len(bookingsData);
 			if (bookingsCount > 0) :
 				roomsRectHMargin	= 3.0
 				roomsRectVMargin	= 0.0
@@ -76,10 +79,10 @@ class BookingCalendar(QtGui.QCalendarWidget) :
 				painter.setFont(self.m_roomsFont)
 				painter.setClipRect(rect)
 				
-				for booking in bookings :
-					start	= booking[0]
-					stop	= booking[1]
-					for roomId in filter(None, booking[2]["rooms"].split(";")) :
+				for bookingData in bookingsData :
+					start	= bookingData[0]
+					stop	= bookingData[1]
+					for roomId in filter(None, bookingData[2]["rooms"].split(";")) :
 						roomId = int(roomId)
 						roomRect = QtCore.QRect(rect.x(),
 												rect.y() + titleRectHeight + roomsRectVMargin + (roomsRectHeight + roomsRectSpacing) * (roomId-1.0),
@@ -107,27 +110,26 @@ class BookingCalendar(QtGui.QCalendarWidget) :
 				
 		
 	def updateData(self) :
-		self.m_roomsCatalog		= self.m_db.loadRoomsCatalog()
-		self.m_bookingByDate	= {}
+		self.m_bookingsDataByDate = {}
 		
 		# Recherche des reservations
-		bookings = self.m_db.selectBookings(self.monthShown(), self.yearShown())
+		bookingsData = self.m_db.selectBookings(self.monthShown(), self.yearShown())
 		
-		if (len(bookings) > 0) :
+		if (len(bookingsData) > 0) :
 			# Creation d'un index des reservations par date et d'un index des chambres par date
-			for booking in bookings :
-				bookingDate = booking["date"]
-				bookingDays	= booking["days"]
+			for bookingData in bookingsData :
+				bookingDate = bookingData["date"]
+				bookingDays	= bookingData["days"]
 				for day in range(bookingDays) :
 				
 					# Creation de la liste des reservation pour cette date
-					if (self.m_bookingByDate.has_key(bookingDate) == False) :
-						self.m_bookingByDate[bookingDate] = []
+					if (self.m_bookingsDataByDate.has_key(bookingDate) == False) :
+						self.m_bookingsDataByDate[bookingDate] = []
 						
 					# Ajout dans la liste des reservations pour cette date
 					start	= (day == 0)
 					stop	= (day == bookingDays-1)
-					self.m_bookingByDate[bookingDate].append((start, stop, booking))
+					self.m_bookingsDataByDate[bookingDate].append((start, stop, bookingData))
 						
 					# Incrementation de la date
 					bookingDate	= bookingDate + timedelta(1)

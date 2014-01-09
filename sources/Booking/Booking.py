@@ -3,6 +3,8 @@
 from datetime	import date
 from PyQt4		import QtCore
 
+# TODO : unicité des clients, unicité des chambres
+
 class Booking(object) :
 
 	def __init__(self) :
@@ -30,10 +32,10 @@ class Booking(object) :
 		return self.m_days
 		
 	def setDays(self, days) :
-		if (type(days) is integer) :
-			self.m_days = firstName
+		if (type(days) is int) :
+			self.m_days = days
 		else :
-			raise Exception("Booking::setDays : firstName is " + str(type(firstName)) + ", not a integer.")
+			raise Exception("Booking::setDays : days is " + str(type(days)) + ", not a integer.")
 
 	def clients(self) :
 		return self.m_clients

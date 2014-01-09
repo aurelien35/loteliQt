@@ -19,8 +19,9 @@ class BookingPlanning(QtGui.QFrame) :
 		super(BookingPlanning, self).__init__(parent)
 		
 		# Membres
-		self.m_ui	= Ui_BookingPlanning()
-		self.m_db	= DataBase()
+		self.m_ui			= Ui_BookingPlanning()
+		self.m_db			= DataBase()
+		self.m_selectedDate	= None
 		
 		# Initialisation
 		self.m_ui.setupUi(self)
@@ -33,6 +34,13 @@ class BookingPlanning(QtGui.QFrame) :
 		
 		# Etat initial
 		self.calendarPageChanged(self.m_ui.calendar.yearShown(), self.m_ui.calendar.monthShown())
+		self.calendarSelectionChanged()
+		
+	def bookingsDataByDate(self) :
+		return self.m_ui.calendar.bookingsDataByDate()
+	
+	def selectedDate(self) :
+		return self.m_selectedDate
 		
 	def calendarDateDoubleClicked(self, qDate) :
 		date = qDate.toPyDate()
@@ -49,4 +57,5 @@ class BookingPlanning(QtGui.QFrame) :
 		
 	def calendarSelectionChanged(self) :
 		print "calendarSelectionChanged"
-		self.selectedDateChanged.emit(self.m_ui.calendar.selectedDate().toPyDate())
+		self.m_selectedDate = self.m_ui.calendar.selectedDate().toPyDate()
+		self.selectedDateChanged.emit(self.m_selectedDate)
