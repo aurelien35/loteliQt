@@ -24,14 +24,17 @@
 
 import os
 import sqlite3
+import datetime
 from datetime				import *
 from PyQt4					import QtCore
-from Client.Client			import Client
 from Booking.Booking		import Booking
+from Client.Client			import Client
+from Room.Room				import Room
 from Tools.StringConvert	import *
 
 #TODO : logger les requetes
 #TODO : SORT BY
+#TODO : adapter pour des listes
 
 		# def adapt_point(point):
 			# return "%f;%f" % (point.x, point.y)
@@ -46,7 +49,7 @@ from Tools.StringConvert	import *
 		# Register the converter
 		# sqlite3.register_converter("point", convert_point)
 
-RoomsCatalog = None
+RoomsCatalog = {}
 
 class DataBase(object) :
 
@@ -57,16 +60,18 @@ class DataBase(object) :
 	def loadRoomsCatalog(self) :
 		# TODO : gestion des erreurs : lever une exception
 		global RoomsCatalog
-		if (RoomsCatalog == None) :
-			print "RoomsCatalog	: load"
+		if (len(RoomsCatalog) == 0) :
 			cursor = self.m_db.cursor()
 			cursor.execute(u'''SELECT rowid, * FROM rooms''')
-			data			= cursor.fetchall()
+			roomsData		= cursor.fetchall()
 			RoomsCatalog	= {}
-			for room in data :
-				RoomsCatalog[room["rowid"]] = room
-		else :
-			print "RoomsCatalog	already loaded"
+			for roomData in roomsData :
+				room			= Room()
+				room.m_id		= roomData["rowid"]
+				room.m_number	= roomData["number"]
+				room.m_name		= roomData["name"]
+				RoomsCatalog[room.m_id] = room
+				
 		return RoomsCatalog	
 		
 	def loadClient(self, clientId) :
@@ -104,6 +109,7 @@ class DataBase(object) :
 				bookingData			= result[0]
 				booking				= Booking()
 				booking.m_id 		= bookingData["rowid"]
+				booking.setDate		(bookingData["date"])
 				booking.setDays		(int(bookingData["days"]))
 				booking.setComment	(bookingData["comment"])
 				
@@ -165,7 +171,5 @@ class DataBase(object) :
 		cursor		= self.m_db.cursor()
 		cursor.execute(u'''SELECT rowid, * FROM bookings WHERE (date >= :startDate) AND date(date, "+" || days || " days") < :endDate''', {'startDate':startDate, 'endDate':endDate})
 		data		= cursor.fetchall()
-			
-		print "selectBookings : from {0} to {1}".format(date2str(startDate), date2str(endDate))
 		return data
 		

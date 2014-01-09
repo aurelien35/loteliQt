@@ -1,9 +1,9 @@
 ﻿# -*- coding: utf-8 -*-
 		  
-from datetime	import date
+import datetime
 from PyQt4		import QtCore
 
-# TODO : unicité des clients, unicité des chambres
+# TODO : unicité des clients, unicité des chambres, au moins un client, au moins une chambre
 
 class Booking(object) :
 
@@ -23,7 +23,7 @@ class Booking(object) :
 		return self.m_date
 		
 	def setDate(self, date) :
-		if (type(date) is date) :
+		if (type(date) is datetime.date) :
 			self.m_date = date
 		else :
 			raise Exception("Booking::setDate : date is " + str(type(date)) + ", not a date.")
@@ -36,6 +36,11 @@ class Booking(object) :
 			self.m_days = days
 		else :
 			raise Exception("Booking::setDays : days is " + str(type(days)) + ", not a integer.")
+
+	def endDate(self) :
+		if (self.m_date != None) :
+			return self.m_date + datetime.timedelta(self.m_days)
+		return None
 
 	def clients(self) :
 		return self.m_clients

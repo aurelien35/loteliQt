@@ -6,6 +6,12 @@ from DataTableView_ui		import Ui_DataTableView
 from Tools.DataBase			import DataBase
 from Tools.StringConvert	import *
 
+def DefaultRowFactory(data) :
+	result = []
+	for value in data :
+		result.append(QtGui.QStandardItem(str2QString(unicode(value))))
+	return result
+
 class DataTableView(QtGui.QFrame) :
 
 	# Signaux
@@ -24,7 +30,8 @@ class DataTableView(QtGui.QFrame) :
 		self.m_data					= None
 		self.m_labels				= []
 		self.m_model				= QtGui.QStandardItemModel()
-		self.m_rowFactory			= DataTableView.defaultRowFactory
+		self.m_selectionModel		= None
+		self.m_rowFactory			= DefaultRowFactory
 		self.m_rowsCount			= 0
 		self.m_rowsPerPage			= 70
 		self.m_pagesCount			= 0
@@ -129,6 +136,7 @@ class DataTableView(QtGui.QFrame) :
 				
 		self.m_ui.comboBoxCurrentPage.setCurrentIndex(self.m_currentPage)
 		self.m_ui.tableView.resizeRowsToContents()
+		self.m_ui.tableView.horizontalHeader().setStretchLastSection(True)
 		self.itemSelectionChanged()
 
 	def itemClicked(self, modelIndex) :
@@ -144,11 +152,4 @@ class DataTableView(QtGui.QFrame) :
 			if (len(selectedRows) > 0) :
 				selectedRow = selectedRows[0].data(QtCore.Qt.UserRole).toPyObject()
 		self.rowSelected.emit(selectedRow)
-		
-	@staticmethod
-	def defaultRowFactory(data) :
-		result = []
-		for value in data :
-			result.append(QtGui.QStandardItem(str2QString(unicode(value))))
-		return result
 		

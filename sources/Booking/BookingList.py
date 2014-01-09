@@ -21,7 +21,6 @@ class BookingList(QtGui.QFrame) :
 		
 		# Connexions
 		self.m_ui.planning.selectedDateChanged.connect(self.selectedDateChanged)
-		self.m_ui.bookingForm.setReadOnly(True)
 		self.selectedDateChanged(self.m_ui.planning.selectedDate())
 
 		# Etat initial
@@ -37,5 +36,6 @@ class BookingList(QtGui.QFrame) :
 				for bookingData in bookingsData :
 					bookings.append(self.m_db.loadBooking(bookingData[2]["rowid"]))					
 		
+		self.m_ui.tableView.setBookings(bookings)
 		print "selectedDateChanged({0})".format(date2str(date))
 		

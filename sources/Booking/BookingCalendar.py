@@ -104,7 +104,7 @@ class BookingCalendar(QtGui.QCalendarWidget) :
 						
 						# Draw label
 						if (start == True) :
-							painter.drawText(roomRect.adjusted(2 + roomsRectRadius, 0.5, 0, 2), QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter, self.m_roomsCatalog[roomId]["name"])
+							painter.drawText(roomRect.adjusted(2 + roomsRectRadius, 0.5, 0, 2), QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter, self.m_roomsCatalog[roomId].name())
 							
 				painter.restore()
 				

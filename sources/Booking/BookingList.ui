@@ -15,21 +15,21 @@
     <widget class="BookingPlanning" name="planning"/>
    </item>
    <item row="0" column="1">
-    <widget class="BookingForm" name="bookingForm"/>
+    <widget class="BookingTableView" name="tableView"/>
    </item>
   </layout>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>BookingForm</class>
-   <extends>QFrame</extends>
-   <header>BookingForm</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>BookingPlanning</class>
    <extends>QFrame</extends>
    <header>BookingPlanning</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>BookingTableView</class>
+   <extends>QFrame</extends>
+   <header>BookingTableView</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
