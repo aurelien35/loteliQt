@@ -33,8 +33,6 @@ from Room.Room				import Room
 from Tools.StringConvert	import *
 
 #TODO : logger les requetes
-#TODO : SORT BY
-#TODO : adapter pour des listes
 
 # Variable globale contenant le catalogue des chambres
 RoomsCatalog = {}
@@ -56,7 +54,7 @@ class DataBase(object) :
 		global RoomsCatalog
 		if (len(RoomsCatalog) == 0) :
 			cursor = self.m_db.cursor()
-			cursor.execute(u'''SELECT rowid, * FROM rooms''')
+			cursor.execute(u'''SELECT rowid, * FROM rooms ORDER BY rowid''')
 			roomsData		= cursor.fetchall()
 			RoomsCatalog	= {}
 			for roomData in roomsData :
@@ -163,7 +161,7 @@ class DataBase(object) :
 		startDate	= date(year, month, 1) - timedelta(10)			# Debut de la requete : 10 jours avant le 1er du mois
 		endDate		= date(year, month, 1) + timedelta(40)			# Fin de la requete : 40 jours après le 1er du mois
 		cursor		= self.m_db.cursor()
-		cursor.execute(u'''SELECT rowid, * FROM bookings WHERE (date >= :startDate) AND date(date, "+" || days || " days") < :endDate''', {'startDate':startDate, 'endDate':endDate})
+		cursor.execute(u'''SELECT rowid, * FROM bookings WHERE (date >= :startDate) AND date(date, "+" || days || " days") < :endDate ORDER BY date''', {'startDate':startDate, 'endDate':endDate})
 		data		= cursor.fetchall()
 		
 		for element in data :
