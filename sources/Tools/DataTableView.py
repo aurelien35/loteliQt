@@ -6,10 +6,15 @@ from DataTableView_ui		import Ui_DataTableView
 from Tools.DataBase			import DataBase
 from Tools.StringConvert	import *
 
-def DefaultRowFactory(data) :
+def DefaultRowFactory(data, columns) :
 	result = []
-	for value in data :
-		result.append(QtGui.QStandardItem(str2QString(unicode(value))))
+	for column in columns :
+		value = ""
+		if (data.has_key(column[1]) == True) :
+			value = unicode(data[column[1]])
+			if (u"¤" in value) :
+				value = u"\n".join(filter(None, value.split(u"¤")))
+		result.append(QtGui.QStandardItem(value))
 	return result
 
 class DataTableView(QtGui.QFrame) :
@@ -28,7 +33,7 @@ class DataTableView(QtGui.QFrame) :
 		self.m_query				= None
 		self.m_tokens				= None
 		self.m_data					= None
-		self.m_labels				= []
+		self.m_columns				= []
 		self.m_model				= QtGui.QStandardItemModel()
 		self.m_selectionModel		= None
 		self.m_rowFactory			= DefaultRowFactory
@@ -90,17 +95,19 @@ class DataTableView(QtGui.QFrame) :
 	def rowsCount(self) :
 		return self.m_rowsCount
 		
-	def labels(self) :
-		return self.m_labels
+	def columns(self) :
+		return self.m_columns
 			
-	def setLabels(self, labels) :
-		self.m_labels = labels
-		if (self.m_labels == None) :
-			self.m_labels = []
+	def setColumns(self, columns) :
+		self.m_columns = columns
+		if (self.m_columns == None) :
+			self.m_columns = []
 
-		labelsQStringList = strList2QStringList(self.m_labels)
-		self.m_model.setHorizontalHeaderLabels(labelsQStringList)
-		self.m_model.setColumnCount(labelsQStringList.count())
+		labels = QtCore.QStringList()
+		for column in self.m_columns :
+			labels.append(column[0])
+		self.m_model.setHorizontalHeaderLabels(labels)
+		self.m_model.setColumnCount(labels.count())
 		self.m_ui.tableView.resizeColumnsToContents()
 		
 	def rowFactory(self) :
@@ -126,9 +133,9 @@ class DataTableView(QtGui.QFrame) :
 		
 		self.m_model.setRowCount(0)
 		if (self.m_rowFactory != None) :
-			rowIndex = 0;
+			rowIndex = self.m_currentFirstIndex
 			for row in currentData :
-				items = self.m_rowFactory(row)
+				items = self.m_rowFactory(row, self.m_columns)
 				self.m_model.appendRow(items)
 				for item in items :
 					item.setData(QtCore.QVariant(int(rowIndex)), QtCore.Qt.UserRole)

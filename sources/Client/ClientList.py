@@ -3,6 +3,7 @@
 import copy
 from PyQt4					import QtCore, QtGui
 from Client					import Client
+from ClientForm				import ClientForm
 from ClientList_ui			import Ui_ClientList
 from Tools.DataBase			import DataBase
 from Tools.ModalDialog		import ShowModalDialog
@@ -21,10 +22,17 @@ class ClientList(QtGui.QFrame) :
 		
 		# Initialisation
 		self.m_ui.setupUi(self)
-		self.m_ui.clients.setLabels([u"Id  ", u"Nom    ", u"Prénom    ", u"Téléphone     ", u"e-mail     "])
+		self.m_ui.clients.setColumns([	(u"Id  ",			u"rowid"),
+										(u"Nom    ",		u"name"),
+										(u"Prénom    ",		u"firstName"),
+										(u"Téléphone     ",	u"phones"),
+										(u"e-mail     ",	u"emails")])
 		self.m_ui.clientForm.setReadOnly(True)
 		self.m_ui.labelClientsCount.setText("")
-		self.m_ui.bookings.setLabels([u"Id  ", u"Date    ", u"Days    ", u"Rooms     "])
+		self.m_ui.bookings.setColumns([	(u"Id  ",		u"rowid"),
+										(u"Date    ",	u"date"),
+										(u"Days    ",	u"days"),
+										(u"Rooms    ",	u"rooms")])
 		
 		# Connexions
 		self.m_ui.lineEditClientFilter.textChanged.connect(self.setClientFilter)
@@ -54,7 +62,7 @@ class ClientList(QtGui.QFrame) :
 		self.m_ui.lineEditClientFilter.setText(QtCore.QString())
 		
 	def updateQuery(self) :
-		query = u'''SELECT rowId, name, firstName, phones, emails FROM clients'''
+		query = u'''SELECT rowid, name, firstName, phones, emails FROM clients'''
 		if (self.m_clientFilter != None) :
 			query = u'''{0} WHERE name LIKE :filter OR firstName LIKE :filter OR phones LIKE :filter OR emails LIKE :filter OR address LIKE :filter OR comment LIKE :filter'''.format(query)
 		self.m_ui.clients.setQuery(query, {'filter':u"%{0}%".format(self.m_clientFilter)})
@@ -67,7 +75,7 @@ class ClientList(QtGui.QFrame) :
 		if (clientIndex >= 0) :
 			clientId = self.m_ui.clients.row(clientIndex)["rowid"]
 			self.m_ui.clientForm.setClient(self.m_db.loadClient(clientId))
-			self.m_ui.bookings.setQuery(u'''SELECT rowid, date, days, rooms FROM bookings WHERE clients LIKE :clientId''', {'clientId':u"%;{0};%".format(clientId)})
+			self.m_ui.bookings.setQuery(u'''SELECT rowid, date, days, rooms FROM bookings WHERE clients LIKE :clientId''', {'clientId':u"%¤{0}¤%".format(clientId)})
 			if (self.m_ui.bookings.rowsCount() > 0) :
 				self.m_ui.bookings.show()
 
@@ -91,6 +99,6 @@ class ClientList(QtGui.QFrame) :
 			editClient		= copy.deepcopy(self.m_ui.clientForm.client())
 			editClientForm	= ClientForm()
 			editClientForm.setClient(editClient)
-			if (ShowModalDialog(clientForm, "Modifier un client", "Ok", "Annuler") == ModalDialog.Result.Ok) :
+			if (ShowModalDialog(editClientForm, "Modifier un client", "Ok", "Annuler") == ModalDialog.Result.Ok) :
 				self.m_db.updateClient(editClient)
 				self.updateQuery()

@@ -36,26 +36,20 @@ from Tools.StringConvert	import *
 #TODO : SORT BY
 #TODO : adapter pour des listes
 
-		# def adapt_point(point):
-			# return "%f;%f" % (point.x, point.y)
-
-		# def convert_point(s):
-			# x, y = map(float, s.split(";"))
-			# return Point(x, y)
-
-		# Register the adapter
-		# sqlite3.register_adapter(Point, adapt_point)
-
-		# Register the converter
-		# sqlite3.register_converter("point", convert_point)
-
+# Variable globale contenant le catalogue des chambres
 RoomsCatalog = {}
+
+def DataBaseRowFactory(cursor, row):
+	d = {}
+	for idx, col in enumerate(cursor.description):
+		d[col[0]] = row[idx]
+	return d
 
 class DataBase(object) :
 
 	def __init__(self) :
 		self.m_db				= sqlite3.connect('./data/loteli.sqlite3', detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
-		self.m_db.row_factory	= sqlite3.Row
+		self.m_db.row_factory	= DataBaseRowFactory
 		
 	def loadRoomsCatalog(self) :
 		# TODO : gestion des erreurs : lever une exception
@@ -113,13 +107,13 @@ class DataBase(object) :
 				booking.setDays		(int(bookingData["days"]))
 				booking.setComment	(bookingData["comment"])
 				
-				clientsId	= filter(None, bookingData["clients"].split(";"))
+				clientsId	= filter(None, bookingData["clients"].split(u"¤"))
 				clients		= []
 				for clientId in clientsId :
 					clients.append(self.loadClient(clientId))
 				booking.setClients(clients)
 					
-				roomsId	= filter(None, bookingData["rooms"].split(";"))
+				roomsId	= filter(None, bookingData["rooms"].split(u"¤"))
 				rooms	= []
 				for roomId in roomsId :
 					rooms.append(roomsCatalog[int(roomId)])
@@ -134,8 +128,8 @@ class DataBase(object) :
 						{	'name':			client.name(),
 							'firstName':	client.firstName(),
 							'birthDate':	client.birthDate(),
-							'phones':		u"¤".join(client.phones()),
-							'emails':		u"¤".join(client.emails()),
+							'phones':		u"¤" + u"¤".join(client.phones()) + u"¤",
+							'emails':		u"¤" + u"¤".join(client.emails()) + u"¤",
 							'address':		client.address(),
 							'comment':		client.comment(),
 							'rowid':		client.id()			})
@@ -148,8 +142,8 @@ class DataBase(object) :
 						{	'name':			client.name(),
 							'firstName':	client.firstName(),
 							'birthDate':	client.birthDate(),
-							'phones':		u"¤".join(client.phones()),
-							'emails':		u"¤".join(client.emails()),
+							'phones':		u"¤" + u"¤".join(client.phones()) + u"¤",
+							'emails':		u"¤" + u"¤".join(client.emails()) + u"¤",
 							'address':		client.address(),
 							'comment':		client.comment()	})
 		self.m_db.commit()
@@ -171,5 +165,10 @@ class DataBase(object) :
 		cursor		= self.m_db.cursor()
 		cursor.execute(u'''SELECT rowid, * FROM bookings WHERE (date >= :startDate) AND date(date, "+" || days || " days") < :endDate''', {'startDate':startDate, 'endDate':endDate})
 		data		= cursor.fetchall()
+		
+		for element in data :
+			element["clients"]	= filter(None, element["clients"].split(u"¤"))
+			element["rooms"]	= filter(None, element["rooms"].split(u"¤"))
+
 		return data
 		

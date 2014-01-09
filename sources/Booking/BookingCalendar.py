@@ -82,7 +82,7 @@ class BookingCalendar(QtGui.QCalendarWidget) :
 				for bookingData in bookingsData :
 					start	= bookingData[0]
 					stop	= bookingData[1]
-					for roomId in filter(None, bookingData[2]["rooms"].split(";")) :
+					for roomId in bookingData[2]["rooms"] :
 						roomId = int(roomId)
 						roomRect = QtCore.QRect(rect.x(),
 												rect.y() + titleRectHeight + roomsRectVMargin + (roomsRectHeight + roomsRectSpacing) * (roomId-1.0),
