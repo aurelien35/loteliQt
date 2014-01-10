@@ -44,18 +44,15 @@ class BookingPlanning(QtGui.QFrame) :
 		
 	def calendarDateDoubleClicked(self, qDate) :
 		date = qDate.toPyDate()
-		print "calendarDateDoubleClicked({0})".format(date2str(date))
 		self.dateClicked.emit(date)
 		
 	def calendarDateClicked(self, qDate) :
 		date = qDate.toPyDate()
-		print "calendarDateClicked({0})".format(date2str(date))
 		self.dateDoubleClicked.emit(date)
 	
 	def calendarPageChanged(self, year, month) :
-		print "calendarPageChanged({0}, {1})".format(year, month)
+		foo = None
 		
 	def calendarSelectionChanged(self) :
-		print "calendarSelectionChanged"
 		self.m_selectedDate = self.m_ui.calendar.selectedDate().toPyDate()
 		self.selectedDateChanged.emit(self.m_selectedDate)

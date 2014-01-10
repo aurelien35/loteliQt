@@ -16,9 +16,9 @@ class ClientList(QtGui.QFrame) :
 		super(ClientList, self).__init__()
 		
 		# Membres
-		self.m_ui			= Ui_ClientList()
-		self.m_db			= DataBase()
-		self.m_clientFilter	= None
+		self.m_ui				= Ui_ClientList()
+		self.m_db				= DataBase()
+		self.m_clientFilter		= None
 		
 		# Initialisation
 		self.m_ui.setupUi(self)
@@ -66,7 +66,7 @@ class ClientList(QtGui.QFrame) :
 		if (self.m_clientFilter != None) :
 			query = u'''{0} WHERE name LIKE :filter OR firstName LIKE :filter OR phones LIKE :filter OR emails LIKE :filter OR address LIKE :filter OR comment LIKE :filter'''.format(query)
 		query = u'''{0} ORDER BY name'''.format(query)
-		self.m_ui.clients.setQuery(query, {'filter':u"%{0}%".format(self.m_clientFilter)})
+		self.m_ui.clients.setQuery(query, {'filter':u"%{0}%".format(self.m_clientFilter)}, "rowid")
 		self.m_ui.labelClientsCount.setText(u"{0} résultats".format(self.m_ui.clients.rowsCount()))
 		self.m_ui.buttonEditClient.setVisible(self.m_ui.clientForm.client() != None)
 		
@@ -104,3 +104,6 @@ class ClientList(QtGui.QFrame) :
 			if (ShowModalDialog(editClientForm, "Modifier un client", "Ok", "Annuler") == ModalDialog.Result.Ok) :
 				self.m_db.updateClient(editClient)
 				self.updateQuery()
+			
+	def showEvent(self, event) :
+		super(ClientList, self).showEvent(event)

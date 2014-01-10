@@ -37,5 +37,3 @@ class BookingList(QtGui.QFrame) :
 					bookings.append(self.m_db.loadBooking(bookingData[2]["rowid"]))					
 		
 		self.m_ui.tableView.setBookings(bookings)
-		print "selectedDateChanged({0})".format(date2str(date))
-		

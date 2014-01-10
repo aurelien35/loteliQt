@@ -77,15 +77,15 @@ class BookingTableView(QtGui.QTableView) :
 		self.itemSelectionChanged()
 
 	def itemClicked(self, modelIndex) :
-		print "itemClicked"
+		foo = None
 		# self.rowClicked.emit(modelIndex.data(QtCore.Qt.UserRole).toPyObject())
 		
 	def itemDoubleClicked(self, modelIndex) :
-		print "itemDoubleClicked"
+		foo = None
 		# self.rowDoubleClicked.emit(modelIndex.data(QtCore.Qt.UserRole).toPyObject())
 		
 	def itemSelectionChanged(self) :
-		print "itemSelectionChanged"
+		foo = None
 		# selectedRow = -1
 		# selectedRows = self.m_selectionModel.selectedRows()
 		# if (selectedRows != None) :

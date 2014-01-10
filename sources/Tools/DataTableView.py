@@ -36,24 +36,27 @@ class DataTableView(QtGui.QFrame) :
 		self.m_columns				= []
 		self.m_model				= QtGui.QStandardItemModel()
 		self.m_selectionModel		= None
+		self.m_selectedRow			= -1
 		self.m_rowFactory			= DefaultRowFactory
 		self.m_rowsCount			= 0
 		self.m_rowsPerPage			= 70
 		self.m_pagesCount			= 0
 		self.m_currentPage			= 0
-		self.m_currentFirstIndex	= 0
-		self.m_currentLastIndex		= 0
 		
 		# Ui
 		self.m_ui.setupUi(self)
 		self.m_ui.tableView.setModel(self.m_model)
 		self.m_ui.navigationBar.hide()
 		self.m_selectionModel = self.m_ui.tableView.selectionModel()
+		tableViewPalette = self.m_ui.tableView.palette()
+		tableViewPalette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Highlight,		tableViewPalette.brush(QtGui.QPalette.Active, QtGui.QPalette.Highlight))
+		tableViewPalette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.HighlightedText,	tableViewPalette.brush(QtGui.QPalette.Active, QtGui.QPalette.HighlightedText))
+		self.m_ui.tableView.setPalette(tableViewPalette)
 		
 		# Connexions
 		self.m_ui.buttonPreviousPage.clicked.connect(self.previousPage)
 		self.m_ui.buttonNextPage.clicked.connect(self.nextPage)
-		self.m_ui.comboBoxCurrentPage.currentIndexChanged.connect(self.setCurrentPage)
+		self.m_ui.comboBoxCurrentPage.currentIndexChanged.connect(self.setCurrentPageIndex)
 		self.m_ui.tableView.clicked.connect(self.itemClicked)
 		self.m_ui.tableView.doubleClicked.connect(self.itemDoubleClicked)
 		self.m_selectionModel.selectionChanged.connect(self.itemSelectionChanged)
@@ -61,30 +64,48 @@ class DataTableView(QtGui.QFrame) :
 	def query(self) :
 		return (self.m_query, self.m_tokens)
 		
-	def setQuery(self, query, tokens) :
-		self.m_query				= query
-		self.m_tokens				= tokens
-		self.m_data					= None
-		self.m_rowsCount			= 0
-		self.m_pagesCount			= 0
-		self.m_currentPage			= 0
-		self.m_currentFirstIndex	= 0
-		self.m_currentLastIndex		= 0
-
-		self.m_model.setRowCount(0)
+	def setQuery(self, query, tokens, selectionKey=None) :
+		# On recupere la selection courante
+		selectedValue = None
+		if ( (self.m_selectedRow >= 0) and (selectionKey != None) ) :
+			selectedValue = self.m_data[self.m_selectedRow][selectionKey]
+		
+		# On remet la vue à zero
+		self.m_ui.comboBoxCurrentPage.clear()
+		self.m_query		= query
+		self.m_tokens		= tokens
+		self.m_data			= None
+		self.m_rowsCount	= 0
+		self.m_pagesCount	= 0
+		self.m_currentPage	= 0
+		self.m_selectedRow	= -1
+		
+		# On re-rempli le modele
 		if (self.m_query != None) :
 			self.m_data = self.m_db.selectData(self.m_query, self.m_tokens)
 			
+			# On recupere la nouvelle selection
+			if ( (selectionKey != None) and (selectedValue) ) :
+				rowIndex	= -1
+				for element in self.m_data :
+					rowIndex += 1
+					if (element[selectionKey] == selectedValue) :
+						self.m_selectedRow = rowIndex
+						break;
+		
+			# On remplit la barre de navigation
 			if (self.m_data != None) :
 				if (self.m_rowFactory != None) :
 					self.m_rowsCount	= len(self.m_data)
-					self.m_pagesCount	= int(max(0, 1 + math.floor(self.m_rowsCount / self.m_rowsPerPage)))
-					self.m_ui.comboBoxCurrentPage.clear()
+					self.m_pagesCount	= int(max(1, 1 + math.floor(self.m_rowsCount / self.m_rowsPerPage)))
 					for pageNumber in range(self.m_pagesCount) :
 						self.m_ui.comboBoxCurrentPage.addItem(u"Page {0}/{1}".format(pageNumber+1, self.m_pagesCount))
-		self.updateModel()
-		self.m_ui.tableView.resizeColumnsToContents()
+						
 		self.m_ui.navigationBar.setVisible(self.m_pagesCount > 1)
+		
+		# On re-met à jour la selection
+		self.m_currentPage = int(max(1, 1 + math.floor(self.m_selectedRow / self.m_rowsPerPage)))
+		self.updateModel(self.m_selectedRow)
 				
 	def data(self) :
 		return self.m_data
@@ -109,6 +130,7 @@ class DataTableView(QtGui.QFrame) :
 		self.m_model.setHorizontalHeaderLabels(labels)
 		self.m_model.setColumnCount(labels.count())
 		self.m_ui.tableView.resizeColumnsToContents()
+		self.m_ui.tableView.horizontalHeader().setStretchLastSection(True)
 		
 	def rowFactory(self) :
 		return self.m_rowFactory
@@ -117,8 +139,13 @@ class DataTableView(QtGui.QFrame) :
 		self.m_rowFactory = rowFactory
 		
 	def setCurrentPage(self, currentPage) :
-		self.m_currentPage = min(max(0, currentPage), self.m_pagesCount-1)
-		self.updateModel()
+		currentPage = min(max(1, currentPage), self.m_pagesCount)
+		if (self.m_currentPage != currentPage) :
+			self.m_currentPage = currentPage
+			self.updateModel(self.m_selectedRow)
+		
+	def setCurrentPageIndex(self, currentPageIndex) :
+		self.setCurrentPage(currentPageIndex + 1)
 
 	def previousPage(self) :
 		self.setCurrentPage(self.m_currentPage - 1)
@@ -126,14 +153,17 @@ class DataTableView(QtGui.QFrame) :
 	def nextPage(self) :
 		self.setCurrentPage(self.m_currentPage + 1)
 		
-	def updateModel(self) :
-		self.m_currentFirstIndex	= self.m_currentPage * self.m_rowsPerPage
-		self.m_currentLastIndex		= (self.m_currentPage+1) * self.m_rowsPerPage
-		currentData					= self.m_data[self.m_currentFirstIndex:self.m_currentLastIndex]
+	def updateModel(self, rowToSelect=-1) :
+		if (rowToSelect >= 0) :
+			self.m_selectionModel.blockSignals(True)
+
+		currentFirstIndex	= (self.m_currentPage-1) * self.m_rowsPerPage
+		currentLastIndex	= self.m_currentPage * self.m_rowsPerPage
+		currentData			= self.m_data[currentFirstIndex:currentLastIndex]
 		
 		self.m_model.setRowCount(0)
 		if (self.m_rowFactory != None) :
-			rowIndex = self.m_currentFirstIndex
+			rowIndex = currentFirstIndex
 			for row in currentData :
 				items = self.m_rowFactory(row, self.m_columns)
 				self.m_model.appendRow(items)
@@ -141,10 +171,14 @@ class DataTableView(QtGui.QFrame) :
 					item.setData(QtCore.QVariant(int(rowIndex)), QtCore.Qt.UserRole)
 				rowIndex += 1
 				
-		self.m_ui.comboBoxCurrentPage.setCurrentIndex(self.m_currentPage)
+		self.m_ui.comboBoxCurrentPage.setCurrentIndex(self.m_currentPage - 1)
 		self.m_ui.tableView.resizeRowsToContents()
-		self.m_ui.tableView.horizontalHeader().setStretchLastSection(True)
-		self.itemSelectionChanged()
+		
+		if (rowToSelect >= 0) :
+			rowToSelect = rowToSelect - ((self.m_currentPage-1) * self.m_rowsPerPage);
+			self.m_ui.tableView.selectRow(rowToSelect)
+			self.m_ui.tableView.scrollTo(self.m_model.createIndex(rowToSelect, 0), QtGui.QAbstractItemView.EnsureVisible)
+			self.m_selectionModel.blockSignals(False)
 
 	def itemClicked(self, modelIndex) :
 		self.rowClicked.emit(modelIndex.data(QtCore.Qt.UserRole).toPyObject())
@@ -153,10 +187,9 @@ class DataTableView(QtGui.QFrame) :
 		self.rowDoubleClicked.emit(modelIndex.data(QtCore.Qt.UserRole).toPyObject())
 		
 	def itemSelectionChanged(self) :
-		selectedRow = -1
+		self.m_selectedRow = -1
 		selectedRows = self.m_selectionModel.selectedRows()
 		if (selectedRows != None) :
 			if (len(selectedRows) > 0) :
-				selectedRow = selectedRows[0].data(QtCore.Qt.UserRole).toPyObject()
-		self.rowSelected.emit(selectedRow)
-		
+				self.m_selectedRow = selectedRows[0].data(QtCore.Qt.UserRole).toPyObject()
+		self.rowSelected.emit(self.m_selectedRow)
