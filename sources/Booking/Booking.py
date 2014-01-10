@@ -3,7 +3,11 @@
 import datetime
 from PyQt4		import QtCore
 
-# TODO : unicité des clients, unicité des chambres, au moins un client, au moins une chambre
+# TODO : controle du formulaire :
+	# unicité des clients
+	# unicité des chambres
+	# au moins un client
+	# au moins une chambre
 
 class Booking(object) :
 

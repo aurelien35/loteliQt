@@ -3,6 +3,9 @@
 from datetime	import date
 from PyQt4		import QtCore
 
+# TODO : controle du formulaire :
+	# Au moins le nom de rempli
+	
 class Client(object) :
 
 	def __init__(self) :

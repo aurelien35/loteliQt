@@ -5,8 +5,6 @@ from datetime				import *
 from PyQt4					import QtCore, QtGui
 from Tools.DataBase			import DataBase
 
-# TODO : le calendrier ne doit pas réagir à la touche "entrée" ?
-
 class BookingCalendar(QtGui.QCalendarWidget) :
 	def __init__(self, parent=None) :
 		super(BookingCalendar, self).__init__(parent)
@@ -24,7 +22,7 @@ class BookingCalendar(QtGui.QCalendarWidget) :
 		self.m_titlePen				= QtGui.QPen(QtGui.QColor(255, 255, 255), 1.0)
 		self.m_titleFont			= QtGui.QFont("Verdana", 8, 250, False)
 		self.m_roomsPen				= QtGui.QPen(QtGui.QColor(0, 0, 0), 0)
-		self.m_roomsBrush			= QtGui.QBrush(QtGui.QColor(255, 178, 0, 128))
+		self.m_roomsBrush			= QtGui.QBrush(QtGui.QColor(255, 108, 0, 168))
 		self.m_roomsFont			= QtGui.QFont("Arial", 8, 0, False)
 
 		# Connexions
@@ -68,10 +66,14 @@ class BookingCalendar(QtGui.QCalendarWidget) :
 			bookingsCount	= len(bookingsData);
 			if (bookingsCount > 0) :
 				roomsRectHMargin	= 3.0
-				roomsRectVMargin	= 0.0
-				roomsRectRadius		= 5.0
-				roomsRectSpacing	= 0.0
-				roomsRectHeight		= (rect.height()+1.0 - titleRectHeight - roomsRectVMargin - roomsRectVMargin - (roomsCount-1.0) * roomsRectSpacing) / roomsCount
+				roomsRectRadius		= 6.0
+				roomsRectHeight		= (rect.height()+1.0 - titleRectHeight) / roomsCount
+				
+				roomRects = []
+				roomRects.append(QtCore.QRect(rect.x(), rect.y() + titleRectHeight, rect.width(), roomsRectHeight));
+				for index in range(1, roomsCount) :
+					roomRects.append(QtCore.QRect(rect.x(), roomRects[index-1].bottom()+1, rect.width(), roomsRectHeight));
+				roomRects[-1].setBottom(rect.bottom());
 				
 				painter.save()
 				painter.setPen(self.m_roomsPen)
@@ -83,11 +85,8 @@ class BookingCalendar(QtGui.QCalendarWidget) :
 					start	= bookingData[0]
 					stop	= bookingData[1]
 					for roomId in bookingData[2]["rooms"] :
-						roomId = int(roomId)
-						roomRect = QtCore.QRect(rect.x(),
-												rect.y() + titleRectHeight + roomsRectVMargin + (roomsRectHeight + roomsRectSpacing) * (roomId-1.0),
-												rect.width(),
-												roomsRectHeight)
+						roomId		= int(roomId)
+						roomRect	= QtCore.QRect(roomRects[roomId-1])
 
 						# Draw rect
 						if (start == True) :
