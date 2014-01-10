@@ -3,8 +3,6 @@
 from PyQt4			import QtCore, QtGui
 from ModalDialog_ui	import Ui_ModalDialog
 
-# TODO : bloquer la touche "echap" et pas de focus aux boutons par defaut
-
 def ShowModalDialog(dialogContent, title, okText=None, cancelText=None, otherText=None, acceptSignal=None, position=None) :
 	result = QtGui.QDialog.Rejected
 	if (dialogContent != None) :
@@ -45,18 +43,26 @@ class ModalDialog(QtGui.QDialog) :
 	def __init__(self, dialogContent, title, okText, cancelText, otherText, position) :
 		super(ModalDialog, self).__init__()
 
+		# Membres
 		self.m_ui			= Ui_ModalDialog()
 		self.m_content		= dialogContent
 		self.m_position		= position
 		self.m_screenRect	= QtGui.QDesktopWidget().screenGeometry(0)
 		
+		# Initialisation
 		self.m_ui.setupUi(self)
 		self.m_ui.containerLayout.addWidget(dialogContent)
+		self.m_ui.buttonOk.installEventFilter(self)
+		self.m_ui.buttonCancel.installEventFilter(self)
+		self.m_ui.buttonOther.installEventFilter(self)
+		
+		# Connexions
 		self.finished.connect(self.aboutToClose)
 		self.m_ui.buttonOk.clicked.connect(self.accept)
 		self.m_ui.buttonCancel.clicked.connect(self.reject)
-		self.m_ui.buttonOther.clicked.connect(self.otherClicked)
+		self.m_ui.buttonOther.clicked.connect(self.buttonOtherClicked)
 		
+		#Etat initial
 		self.m_ui.labelTitle.setText(title)
 		if (okText == None) :
 			self.m_ui.buttonOk.hide()
@@ -74,10 +80,21 @@ class ModalDialog(QtGui.QDialog) :
 		self.setWindowFlags(QtCore.Qt.FramelessWindowHint);
 		self.adjustSize()
 		
-	def otherClicked(self) :
+	def buttonOtherClicked(self) :
 		self.done(ModalDialog.Result.Other)
 		
 	def resizeEvent(self, event) :
+		super(ModalDialog, self).resizeEvent(event)
+		if (self.m_position != None) :
+			self.move(self.m_position)
+		else :
+			self.move(self.m_screenRect.center() - self.rect().center())
+		
+	def keyPressEvent(self, event) :
+		event.ignore()
+		
+	def resizeEvent(self, event) :
+		super(ModalDialog, self).resizeEvent(event)
 		if (self.m_position != None) :
 			self.move(self.m_position)
 		else :
@@ -86,3 +103,9 @@ class ModalDialog(QtGui.QDialog) :
 	def aboutToClose(self) :
 		self.m_content.hide()
 		self.m_content.setParent(None)
+
+	def eventFilter(self, object, event) :
+		if (event.type() == QtCore.QEvent.KeyPress) :
+			return True;
+			
+		return super(ModalDialog, self).eventFilter(object, event)

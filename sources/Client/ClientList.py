@@ -68,7 +68,7 @@ class ClientList(QtGui.QFrame) :
 		query = u'''{0} ORDER BY name'''.format(query)
 		self.m_ui.clients.setQuery(query, {'filter':u"%{0}%".format(self.m_clientFilter)})
 		self.m_ui.labelClientsCount.setText(u"{0} résultats".format(self.m_ui.clients.rowsCount()))
-		self.m_ui.buttonEditClient.setVisible(self.m_ui.clients.rowsCount() > 0)
+		self.m_ui.buttonEditClient.setVisible(self.m_ui.clientForm.client() != None)
 		
 	def clientSelected(self, clientIndex) :
 		self.m_ui.clientForm.setClient(None)
@@ -79,6 +79,7 @@ class ClientList(QtGui.QFrame) :
 			self.m_ui.bookings.setQuery(u'''SELECT rowid, date, days, rooms FROM bookings WHERE clients LIKE :clientId ORDER BY date''', {'clientId':u"%¤{0}¤%".format(clientId)})
 			if (self.m_ui.bookings.rowsCount() > 0) :
 				self.m_ui.bookings.show()
+		self.m_ui.buttonEditClient.setVisible(self.m_ui.clientForm.client() != None)
 
 	def clientClicked(self, clientIndex) :
 		self.clientSelected(clientIndex)
