@@ -3,6 +3,7 @@
 import sip
 from PyQt4					import QtCore, QtGui
 from Tools.DatePicker		import SelectDate
+from Tools.DataBase			import DataBase
 from Tools.StringConvert	import *
 from Client					import Client
 from ClientForm_ui			import Ui_ClientForm
@@ -64,6 +65,10 @@ class ClientForm(QtGui.QFrame) :
 		self.updateFormsValues()
 		self.setReadOnly(self.isReadOnly())
 
+	def reloadClient(self) :
+		if (self.m_client != None) :
+			self.setClient(DataBase().loadClient(self.m_client.id()))
+		
 	def selectBirthDate(self) :
 		if (self.m_client != None) :
 			self.m_client.setBirthDate(SelectDate(self.m_ui.pushButtonSelectBirthDate, self.m_client.birthDate()))

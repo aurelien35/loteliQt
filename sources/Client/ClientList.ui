@@ -12,7 +12,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="1" column="0">
-    <widget class="DataTableView" name="clients">
+    <widget class="DataTableView" name="clientsTable">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -44,7 +44,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="buttonEditClient">
+      <widget class="QPushButton" name="buttonEditSelectedClient">
        <property name="text">
         <string>Modifier...</string>
        </property>
@@ -65,7 +65,7 @@
       </widget>
      </item>
      <item>
-      <widget class="DataTableView" name="bookings">
+      <widget class="DataTableView" name="bookingsTable">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -79,7 +79,7 @@
    <item row="0" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLabel" name="labelClientsCount">
+      <widget class="QLabel" name="labelClientsTableRowsCount">
        <property name="font">
         <font>
          <weight>75</weight>
@@ -118,10 +118,10 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEditClientFilter"/>
+      <widget class="QLineEdit" name="lineEditClientsTableFilter"/>
      </item>
      <item>
-      <widget class="QPushButton" name="buttonClearClientFilter">
+      <widget class="QPushButton" name="buttonClearClientsTableFilter">
        <property name="minimumSize">
         <size>
          <width>24</width>
