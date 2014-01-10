@@ -91,3 +91,8 @@ class Client(object) :
 			self.m_comment = comment
 		else :
 			raise Exception("Client::setComment : comment is " + str(type(comment)) + ", not a string.")
+			
+	def validate(self) :
+		if (len(self.m_name) < 3) :
+			return u"Le nom du client doit être rempli !";
+		return None

@@ -121,6 +121,7 @@ class ModalMessageDialog(ModalDialog) :
 		label = QtGui.QLabel(message)
 		label.setWordWrap(True)
 		label.setObjectName(u"labelDialogMessage")
+		label.setMinimumSize(QtCore.QSize(200, 40))
 		layout = QtGui.QHBoxLayout()
 		layout.addWidget(icone)
 		layout.addWidget(label)	

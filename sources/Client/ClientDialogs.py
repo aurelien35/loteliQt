@@ -18,8 +18,9 @@ class ClientCreateDialog(ModalDialog) :
 		self.setContent(self.m_clientForm, 9)
 		
 	def buttonOkClicked(self) :
-		if (len(self.m_client.name()) < 3) :
-			ShowError(u"Erreur de saisie", u"Le nom du client doit être rempli !")
+		error = self.m_client.validate()
+		if (error != None) :
+			ShowError(u"Erreur de saisie", error)
 		else :
 			# TODO : gerer les erreurs d'insertion
 			DataBase().insertClient(self.m_client)
@@ -40,8 +41,9 @@ class ClientEditDialog(ModalDialog) :
 		self.setContent(self.m_clientForm, 9)
 		
 	def buttonOkClicked(self) :
-		if (len(self.m_client.name()) < 3) :
-			ShowError(u"Erreur de saisie", u"Le nom du client doit être rempli !")
+		error = self.m_client.validate()
+		if (error != None) :
+			ShowError(u"Erreur de saisie", error)
 		else :
 			# TODO : gerer les erreurs d'update
 			DataBase().updateClient(self.m_client)
