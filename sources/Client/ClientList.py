@@ -28,10 +28,6 @@ class ClientList(QtGui.QFrame) :
 											(u"e-mail     ",	u"emails")])
 		self.m_ui.clientForm.setReadOnly(True)
 		self.m_ui.labelClientsTableRowsCount.setText("")
-		self.m_ui.bookingsTable.setColumns([(u"Id  ",		u"rowid"),
-											(u"Date    ",	u"date"),
-											(u"Days    ",	u"days"),
-											(u"Rooms    ",	u"rooms")])
 
 		# Connexions
 		self.m_ui.lineEditClientsTableFilter.textChanged.connect(self.setClientsTableFilter)
@@ -43,7 +39,7 @@ class ClientList(QtGui.QFrame) :
 
 		# Etat initial
 		self.clientsTableSelectionChanged(-1)
-		self.updateQuery()
+		self.updateData()
 		
 	def setClientsTableFilter(self, clientFilter) :
 		self.m_clientsTableFilter = None
@@ -51,13 +47,14 @@ class ClientList(QtGui.QFrame) :
 			self.m_clientsTableFilter = QString2str(clientFilter)
 			if (len(self.m_clientsTableFilter) == 0) :
 				self.m_clientsTableFilter = None
-		self.updateQuery()
+		self.updateData()
 		
 	def clearClientsTableFilter(self) :
 		self.setClientFilter(None)
 		self.m_ui.lineEditClientsTableFilter.setText(QtCore.QString())
 		
-	def updateQuery(self) :
+	def updateData(self) :
+		# Mise à jour des données affichées dans la table des clients
 		query = u'''SELECT rowid, name, firstName, phones, emails FROM clients'''
 		if (self.m_clientsTableFilter != None) :
 			query = u'''{0} WHERE name LIKE :filter OR firstName LIKE :filter OR phones LIKE :filter OR emails LIKE :filter OR address LIKE :filter OR comment LIKE :filter'''.format(query)
@@ -65,17 +62,24 @@ class ClientList(QtGui.QFrame) :
 		self.m_ui.clientsTable.setQuery(query, {'filter':u"%{0}%".format(self.m_clientsTableFilter)}, "rowid")
 		self.m_ui.labelClientsTableRowsCount.setText(u"{0} résultats".format(self.m_ui.clientsTable.rowsCount()))
 		self.m_ui.buttonEditSelectedClient.setVisible(self.m_ui.clientForm.client() != None)
+		
+		# Mise à jour des données affichées dans le formulaire des clients
 		self.m_ui.clientForm.reloadClient()
+		
+		# Mise à jour des données affichées dans la liste des reservations du client
+		# TODO : reloadBookings
 		
 	def clientsTableSelectionChanged(self, clientIndex) :
 		self.m_selectedClientIndex = clientIndex
 		self.m_ui.clientForm.setClient(None)
+		self.m_ui.bookingsTable.setBookings(None)
 		self.m_ui.bookingsTable.hide()
 		if (self.m_selectedClientIndex >= 0) :
 			clientId = self.m_ui.clientsTable.row(self.m_selectedClientIndex)["rowid"]
 			self.m_ui.clientForm.setClient(self.m_db.loadClient(clientId))
-			self.m_ui.bookingsTable.setQuery(u'''SELECT rowid, date, days, rooms FROM bookings WHERE clients LIKE :clientId ORDER BY date''', {'clientId':u"%¤{0}¤%".format(clientId)})
-			if (self.m_ui.bookingsTable.rowsCount() > 0) :
+			bookings = self.m_db.loadBookingsByClientId(clientId)
+			if (len(bookings) > 0) :
+				self.m_ui.bookingsTable.setBookings(bookings)
 				self.m_ui.bookingsTable.show()
 		self.m_ui.buttonEditSelectedClient.setVisible(self.m_ui.clientForm.client() != None)
 
@@ -84,12 +88,12 @@ class ClientList(QtGui.QFrame) :
 			
 	def newClient(self) :
 		if (ClientCreateDialog().showDialog() == ModalDialog.Result.Ok) :
-			self.updateQuery()
+			self.updateData()
 			
 	def editSelectedClient(self) :
 		if (ClientEditDialog(self.m_ui.clientForm.client()).showDialog() == ModalDialog.Result.Ok) :
-			self.updateQuery()
+			self.updateData()
 
 	def showEvent(self, event) :
 		super(ClientList, self).showEvent(event)
-		self.updateQuery()
+		self.updateData()

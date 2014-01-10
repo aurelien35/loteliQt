@@ -119,6 +119,21 @@ class DataBase(object) :
 
 		return booking
 		
+	def loadBookingsByClientId(self, clientId) :
+		# TODO : gestion des erreurs : lever une exception
+		bookings = []
+		cursor = self.m_db.cursor()
+		cursor.execute(u'''SELECT rowid FROM bookings WHERE clients LIKE :clientId''', {'clientId':u"%¤" + str(clientId) + u"¤%"})
+		data = cursor.fetchall()
+		
+		if (data != None) :
+			for element in data :
+				booking = self.loadBooking(element["rowid"])
+				if (booking != None) :
+					bookings.append(booking)
+
+		return bookings
+		
 	def updateClient(self, client) :
 		# TODO : gestion des erreurs : lever une exception
 		cursor = self.m_db.cursor()
