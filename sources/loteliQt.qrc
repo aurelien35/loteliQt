@@ -1,5 +1,9 @@
 <RCC>
   <qresource>
+    <file>resources/info.png</file>
+    <file>resources/warning.png</file>
+    <file>resources/error.png</file>
+    <file>resources/question.png</file>
     <file>resources/next.png</file>
     <file>resources/previous.png</file>
     <file>resources/remove.png</file>

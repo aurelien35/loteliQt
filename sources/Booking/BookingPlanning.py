@@ -7,6 +7,7 @@ from Booking				import Booking
 from BookingPlanning_ui		import Ui_BookingPlanning
 from Tools.DataBase			import DataBase
 from Tools.StringConvert	import *
+from Tools.ModalDialog		import *
 
 class BookingPlanning(QtGui.QFrame) :
 
@@ -45,6 +46,7 @@ class BookingPlanning(QtGui.QFrame) :
 	def calendarDateDoubleClicked(self, qDate) :
 		date = qDate.toPyDate()
 		self.dateClicked.emit(date)
+		ShowWarning("Erreur", "Erreur de test")
 		
 	def calendarDateClicked(self, qDate) :
 		date = qDate.toPyDate()

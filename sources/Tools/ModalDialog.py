@@ -15,6 +15,31 @@ def ShowModalDialog(dialogContent, title, okText=None, cancelText=None, otherTex
 		blocker.close()		
 	return result
 
+def ShowInfo(title, message) :
+	return ShowMessage(title, u":/resources/info.png", message, "Ok")
+	
+def ShowError(title, message) :
+	return ShowMessage(title, u":/resources/error.png", message, "Ok")
+	
+def ShowWarning(title, message) :
+	return ShowMessage(title, u":/resources/warning.png", message, "Ok")
+	
+def ShowConfirmation(title, message, okText, cancelText) :
+	return ShowMessage(title, u":/resources/question.png", message, okText, cancelText)
+	
+def ShowMessage(title, image, message, okText=None, cancelText=None, otherText=None) :
+	icone = QtGui.QLabel()
+	icone.setPixmap(QtGui.QPixmap(image))	
+	label = QtGui.QLabel(message)
+	label.setWordWrap(True)
+	label.setObjectName(u"labelDialogMessage")
+	layout = QtGui.QHBoxLayout()
+	layout.addWidget(icone)
+	layout.addWidget(label)	
+	content = QtGui.QFrame()
+	content.setLayout(layout)
+	return ShowModalDialog(content, title, okText, cancelText, otherText)
+
 class ModalDialogBlocker(QtGui.QDialog) :
 
 	def __init__(self) :
