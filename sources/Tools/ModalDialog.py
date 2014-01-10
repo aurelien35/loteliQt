@@ -28,17 +28,105 @@ def ShowConfirmation(title, message, okText, cancelText) :
 	return ShowMessage(title, u":/resources/question.png", message, okText, cancelText)
 	
 def ShowMessage(title, image, message, okText=None, cancelText=None, otherText=None) :
-	icone = QtGui.QLabel()
-	icone.setPixmap(QtGui.QPixmap(image))	
-	label = QtGui.QLabel(message)
-	label.setWordWrap(True)
-	label.setObjectName(u"labelDialogMessage")
-	layout = QtGui.QHBoxLayout()
-	layout.addWidget(icone)
-	layout.addWidget(label)	
-	content = QtGui.QFrame()
-	content.setLayout(layout)
-	return ShowModalDialog(content, title, okText, cancelText, otherText)
+	modalMessageDialog = ModalMessageDialog(title, image, message, okText, cancelText, otherText)
+	return modalMessageDialog.showDialog()
+
+class ModalDialog(QtGui.QDialog) :
+
+	class Result :
+		Ok		= QtGui.QDialog.Accepted
+		Cancel	= QtGui.QDialog.Rejected
+		Other	= 2
+	
+	def __init__(self, title, okText=None, cancelText=None, otherText=None) :
+		super(ModalDialog, self).__init__()
+
+		# Membres
+		self.m_uiModalDialog	= Ui_ModalDialog()
+		self.m_position			= None
+		self.m_screenRect		= QtGui.QDesktopWidget().screenGeometry(0)
+		
+		# Initialisation
+		self.m_uiModalDialog.setupUi(self)
+		self.m_uiModalDialog.buttonOk.installEventFilter(self)
+		self.m_uiModalDialog.buttonCancel.installEventFilter(self)
+		self.m_uiModalDialog.buttonOther.installEventFilter(self)
+		
+		# Connexions
+		self.m_uiModalDialog.buttonOk.clicked.connect(self.buttonOkClicked)
+		self.m_uiModalDialog.buttonCancel.clicked.connect(self.buttonCancelClicked)
+		self.m_uiModalDialog.buttonOther.clicked.connect(self.buttonOtherClicked)
+		
+		#Etat initial
+		self.m_uiModalDialog.labelTitle.setText(title)
+		if (okText == None) :
+			self.m_uiModalDialog.buttonOk.hide()
+		else :
+			self.m_uiModalDialog.buttonOk.setText(okText)
+		if (cancelText == None) :
+			self.m_uiModalDialog.buttonCancel.hide()
+		else :
+			self.m_uiModalDialog.buttonCancel.setText(cancelText)
+		if (otherText == None) :
+			self.m_uiModalDialog.buttonOther.hide()
+		else :
+			self.m_uiModalDialog.buttonOther.setText(otherText)
+		
+		self.setWindowFlags(QtCore.Qt.FramelessWindowHint);
+	
+	def setContent(self, content, margin) :
+		self.m_uiModalDialog.containerLayout.setContentsMargins(margin, margin, margin, margin)
+		self.m_uiModalDialog.containerLayout.addWidget(content)
+		content.show()
+
+	def showDialog(self, position=None) :
+		blocker = ModalDialogBlocker()
+		blocker.open()
+		self.m_position = position
+		self.adjustSize()
+		result = self.exec_()
+		blocker.close()		
+		return result
+	
+	def buttonOkClicked(self) :
+		self.done(ModalDialog.Result.Ok)
+		
+	def buttonCancelClicked(self) :
+		self.done(ModalDialog.Result.Cancel)
+		
+	def buttonOtherClicked(self) :
+		self.done(ModalDialog.Result.Other)
+		
+	def keyPressEvent(self, event) :
+		event.ignore()
+		
+	def resizeEvent(self, event) :
+		super(ModalDialog, self).resizeEvent(event)
+		if (self.m_position != None) :
+			self.move(self.m_position)
+		else :
+			self.move(self.m_screenRect.center() - self.rect().center())
+
+	def eventFilter(self, object, event) :
+		if (event.type() == QtCore.QEvent.KeyPress) :
+			return True;
+		return super(ModalDialog, self).eventFilter(object, event)
+
+class ModalMessageDialog(ModalDialog) :
+	def __init__(self, title, image, message, okText=None, cancelText=None, otherText=None) :
+		super(ModalMessageDialog, self).__init__(title, okText, cancelText, otherText)
+		
+		icone = QtGui.QLabel()
+		icone.setPixmap(QtGui.QPixmap(image))	
+		label = QtGui.QLabel(message)
+		label.setWordWrap(True)
+		label.setObjectName(u"labelDialogMessage")
+		layout = QtGui.QHBoxLayout()
+		layout.addWidget(icone)
+		layout.addWidget(label)	
+		content = QtGui.QFrame()
+		content.setLayout(layout)
+		self.setContent(content, 9)
 
 class ModalDialogBlocker(QtGui.QDialog) :
 
@@ -58,79 +146,3 @@ class ModalDialogBlocker(QtGui.QDialog) :
 		
 	def keyPressEvent(self, event) :
 		event.ignore()
-
-class ModalDialog(QtGui.QDialog) :
-	class Result :
-		Ok		= QtGui.QDialog.Accepted
-		Cancel	= QtGui.QDialog.Rejected
-		Other	= 2
-	
-	def __init__(self, dialogContent, title, okText, cancelText, otherText, position) :
-		super(ModalDialog, self).__init__()
-
-		# Membres
-		self.m_ui			= Ui_ModalDialog()
-		self.m_content		= dialogContent
-		self.m_position		= position
-		self.m_screenRect	= QtGui.QDesktopWidget().screenGeometry(0)
-		
-		# Initialisation
-		self.m_ui.setupUi(self)
-		self.m_ui.containerLayout.addWidget(dialogContent)
-		self.m_ui.buttonOk.installEventFilter(self)
-		self.m_ui.buttonCancel.installEventFilter(self)
-		self.m_ui.buttonOther.installEventFilter(self)
-		
-		# Connexions
-		self.finished.connect(self.aboutToClose)
-		self.m_ui.buttonOk.clicked.connect(self.accept)
-		self.m_ui.buttonCancel.clicked.connect(self.reject)
-		self.m_ui.buttonOther.clicked.connect(self.buttonOtherClicked)
-		
-		#Etat initial
-		self.m_ui.labelTitle.setText(title)
-		if (okText == None) :
-			self.m_ui.buttonOk.hide()
-		else :
-			self.m_ui.buttonOk.setText(okText)
-		if (cancelText == None) :
-			self.m_ui.buttonCancel.hide()
-		else :
-			self.m_ui.buttonCancel.setText(cancelText)
-		if (otherText == None) :
-			self.m_ui.buttonOther.hide()
-		else :
-			self.m_ui.buttonOther.setText(otherText)
-		
-		self.setWindowFlags(QtCore.Qt.FramelessWindowHint);
-		self.adjustSize()
-		
-	def buttonOtherClicked(self) :
-		self.done(ModalDialog.Result.Other)
-		
-	def resizeEvent(self, event) :
-		super(ModalDialog, self).resizeEvent(event)
-		if (self.m_position != None) :
-			self.move(self.m_position)
-		else :
-			self.move(self.m_screenRect.center() - self.rect().center())
-		
-	def keyPressEvent(self, event) :
-		event.ignore()
-		
-	def resizeEvent(self, event) :
-		super(ModalDialog, self).resizeEvent(event)
-		if (self.m_position != None) :
-			self.move(self.m_position)
-		else :
-			self.move(self.m_screenRect.center() - self.rect().center())
-	
-	def aboutToClose(self) :
-		self.m_content.hide()
-		self.m_content.setParent(None)
-
-	def eventFilter(self, object, event) :
-		if (event.type() == QtCore.QEvent.KeyPress) :
-			return True;
-			
-		return super(ModalDialog, self).eventFilter(object, event)

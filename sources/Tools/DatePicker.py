@@ -1,27 +1,32 @@
 ﻿# -*- coding: utf-8 -*-
 
 from PyQt4				import QtCore, QtGui
-from Tools.ModalDialog	import ShowModalDialog
-from Tools.ModalDialog	import ModalDialog
-from DatePicker_ui		import Ui_DatePicker
+from Tools.ModalDialog	import *
 
 def SelectDate(button, date) :
-	position	= button.mapToGlobal(QtCore.QPoint(0, button.height()))
 	datePicker	= DatePicker(date)
-	result		= ShowModalDialog(datePicker, "Choisir une date", None, "Annuler", "Effacer", datePicker.m_ui.calendar.clicked, position)
+	result		= datePicker.showDialog(button.mapToGlobal(QtCore.QPoint(0, button.height())))
 	if (result == ModalDialog.Result.Ok) :
-		return datePicker.m_ui.calendar.selectedDate().toPyDate()
+		return datePicker.m_calendar.selectedDate().toPyDate()
 	elif (result == ModalDialog.Result.Cancel) :
 		return date
 	return None
 
-class DatePicker(QtGui.QDialog) :
+class DatePicker(ModalDialog) :
 
 	def __init__(self, date) :
-		super(DatePicker, self).__init__()
+		super(DatePicker, self).__init__(u"Choisir une date", u"Ok", u"Annuler", u"Effacer")
 		
-		self.m_ui = Ui_DatePicker()
-		self.m_ui.setupUi(self)
+		self.m_calendar	= QtGui.QCalendarWidget()
+		self.m_calendar.setFirstDayOfWeek(QtCore.Qt.Monday)
+		self.m_calendar.setGridVisible(True)
+		self.m_calendar.setHorizontalHeaderFormat(QtGui.QCalendarWidget.LongDayNames)
+		self.m_calendar.setVerticalHeaderFormat(QtGui.QCalendarWidget.NoVerticalHeader)
+		self.m_calendar.setDateEditEnabled(False)
+		self.setContent(self.m_calendar, 0)
+		
 		if (date != None) :
-			self.m_ui.calendar.setSelectedDate(QtCore.QDate(date.year, date.month, date.day))
+			self.m_calendar.setSelectedDate(QtCore.QDate(date.year, date.month, date.day))
 		self.resize(375, 300)
+		
+		self.m_calendar.clicked.connect(self.buttonOkClicked)

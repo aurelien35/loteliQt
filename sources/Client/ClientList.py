@@ -1,13 +1,11 @@
 ﻿# -*- coding: utf-8 -*-
 
-import copy
 from PyQt4					import QtCore, QtGui
 from Client					import Client
+from ClientDialogs			import *
 from ClientForm				import ClientForm
 from ClientList_ui			import Ui_ClientList
 from Tools.DataBase			import DataBase
-from Tools.ModalDialog		import ShowModalDialog
-from Tools.ModalDialog		import ModalDialog
 from Tools.StringConvert	import *
 
 class ClientList(QtGui.QFrame) :
@@ -16,9 +14,10 @@ class ClientList(QtGui.QFrame) :
 		super(ClientList, self).__init__()
 		
 		# Membres
-		self.m_ui				= Ui_ClientList()
-		self.m_db				= DataBase()
-		self.m_clientFilter		= None
+		self.m_ui					= Ui_ClientList()
+		self.m_db					= DataBase()
+		self.m_clientFilter			= None
+		self.m_selectedClientIndex	= -1
 		
 		# Initialisation
 		self.m_ui.setupUi(self)
@@ -38,9 +37,8 @@ class ClientList(QtGui.QFrame) :
 		self.m_ui.lineEditClientFilter.textChanged.connect(self.setClientFilter)
 		self.m_ui.buttonClearClientFilter.clicked.connect(self.clearClientFilter)
 		self.m_ui.buttonNewClient.clicked.connect(self.newClient)
-		self.m_ui.buttonEditClient.clicked.connect(self.editClient)
+		self.m_ui.buttonEditClient.clicked.connect(self.editSelectedClient)
 		self.m_ui.clients.rowSelected.connect(self.clientSelected)
-		self.m_ui.clients.rowClicked.connect(self.clientClicked)
 		self.m_ui.clients.rowDoubleClicked.connect(self.clientDoubleClicked)
 		
 		# Bookings
@@ -69,41 +67,31 @@ class ClientList(QtGui.QFrame) :
 		self.m_ui.clients.setQuery(query, {'filter':u"%{0}%".format(self.m_clientFilter)}, "rowid")
 		self.m_ui.labelClientsCount.setText(u"{0} résultats".format(self.m_ui.clients.rowsCount()))
 		self.m_ui.buttonEditClient.setVisible(self.m_ui.clientForm.client() != None)
+		self.clientSelected(self.m_selectedClientIndex)
 		
 	def clientSelected(self, clientIndex) :
+		self.m_selectedClientIndex = clientIndex
 		self.m_ui.clientForm.setClient(None)
 		self.m_ui.bookings.hide()
-		if (clientIndex >= 0) :
-			clientId = self.m_ui.clients.row(clientIndex)["rowid"]
+		if (self.m_selectedClientIndex >= 0) :
+			clientId = self.m_ui.clients.row(self.m_selectedClientIndex)["rowid"]
 			self.m_ui.clientForm.setClient(self.m_db.loadClient(clientId))
 			self.m_ui.bookings.setQuery(u'''SELECT rowid, date, days, rooms FROM bookings WHERE clients LIKE :clientId ORDER BY date''', {'clientId':u"%¤{0}¤%".format(clientId)})
 			if (self.m_ui.bookings.rowsCount() > 0) :
 				self.m_ui.bookings.show()
 		self.m_ui.buttonEditClient.setVisible(self.m_ui.clientForm.client() != None)
 
-	def clientClicked(self, clientIndex) :
-		self.clientSelected(clientIndex)
-	
 	def clientDoubleClicked(self, clientIndex) :
-		self.clientSelected(clientIndex)
-		self.editClient()
+		self.editSelectedClient()
 			
 	def newClient(self) :
-		newClient		= Client()
-		newClientForm	= ClientForm()
-		newClientForm.setClient(newClient)
-		if (ShowModalDialog(newClientForm, "Ajouter un client", "Ok", "Annuler") == ModalDialog.Result.Ok) :
-			self.m_db.insertClient(newClient)
+		if (ClientCreateDialog().showDialog() == ModalDialog.Result.Ok) :
 			self.updateQuery()
 			
-	def editClient(self) :
-		if (self.m_ui.clientForm.client() != None) :
-			editClient		= copy.deepcopy(self.m_ui.clientForm.client())
-			editClientForm	= ClientForm()
-			editClientForm.setClient(editClient)
-			if (ShowModalDialog(editClientForm, "Modifier un client", "Ok", "Annuler") == ModalDialog.Result.Ok) :
-				self.m_db.updateClient(editClient)
-				self.updateQuery()
-			
+	def editSelectedClient(self) :
+		if (ClientEditDialog(self.m_ui.clientForm.client()).showDialog() == ModalDialog.Result.Ok) :
+			self.updateQuery()
+
 	def showEvent(self, event) :
 		super(ClientList, self).showEvent(event)
+		self.updateQuery()
