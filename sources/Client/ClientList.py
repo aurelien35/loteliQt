@@ -50,7 +50,7 @@ class ClientList(QtGui.QFrame) :
 		self.updateData()
 		
 	def clearClientsTableFilter(self) :
-		self.setClientFilter(None)
+		self.setClientsTableFilter(None)
 		self.m_ui.lineEditClientsTableFilter.setText(QtCore.QString())
 		
 	def updateData(self) :
