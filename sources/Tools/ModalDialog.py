@@ -1,19 +1,8 @@
 ﻿# -*- coding: utf-8 -*-
 
-from PyQt4			import QtCore, QtGui
-from ModalDialog_ui	import Ui_ModalDialog
-
-def ShowModalDialog(dialogContent, title, okText=None, cancelText=None, otherText=None, acceptSignal=None, position=None) :
-	result = QtGui.QDialog.Rejected
-	if (dialogContent != None) :
-		blocker = ModalDialogBlocker()
-		blocker.open()
-		dialog = ModalDialog(dialogContent, title, okText, cancelText, otherText, position)
-		if (acceptSignal != None) :
-			acceptSignal.connect(dialog.accept)
-		result = dialog.exec_()
-		blocker.close()		
-	return result
+from PyQt4				import QtCore, QtGui
+from ModalDialog_ui		import Ui_ModalDialog
+from MainWindow			import MainWindowInstance
 
 def ShowInfo(title, message) :
 	return ShowMessage(title, u":/resources/info.png", message, "Ok")
@@ -39,7 +28,8 @@ class ModalDialog(QtGui.QDialog) :
 		Other	= 2
 	
 	def __init__(self, title, okText=None, cancelText=None, otherText=None) :
-		super(ModalDialog, self).__init__()
+		super(ModalDialog, self).__init__(MainWindowInstance.Instance)
+		self.setWindowFlags(QtCore.Qt.Tool)
 
 		# Membres
 		self.m_uiModalDialog	= Ui_ModalDialog()
@@ -80,10 +70,12 @@ class ModalDialog(QtGui.QDialog) :
 		content.show()
 
 	def showDialog(self, position=None) :
-		blocker = ModalDialogBlocker()
+		blocker = ModalDialogBlocker(self.parentWidget())
 		blocker.open()
+		blocker.raise_()
 		self.m_position = position
 		self.adjustSize()
+		self.raise_()
 		result = self.exec_()
 		blocker.close()		
 		return result
@@ -131,9 +123,10 @@ class ModalMessageDialog(ModalDialog) :
 
 class ModalDialogBlocker(QtGui.QDialog) :
 
-	def __init__(self) :
-		super(ModalDialogBlocker, self).__init__()
+	def __init__(self, parent) :
+		super(ModalDialogBlocker, self).__init__(parent)
 
+		self.setWindowFlags(QtCore.Qt.Tool)
 		self.setAttribute(QtCore.Qt.WA_TranslucentBackground);
 		self.setWindowFlags(QtCore.Qt.FramelessWindowHint);
 		self.setGeometry(QtGui.QDesktopWidget().screenGeometry(0))

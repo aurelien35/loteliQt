@@ -1,12 +1,16 @@
 ﻿# -*- coding: utf-8 -*-
 		  
-from PyQt4						import QtCore, QtGui
-from MainWindow_ui				import Ui_MainWindow
+from PyQt4					import QtCore, QtGui
+from MainWindow_ui			import Ui_MainWindow
+import MainWindowInstance
 
 class MainWindow(QtGui.QFrame) :
 
 	def __init__(self) :
 		super(MainWindow, self).__init__()
+		print MainWindowInstance.Instance
+		MainWindowInstance.Instance = self
+		print MainWindowInstance.Instance
 		
 		# Membres
 		self.m_ui = Ui_MainWindow()
