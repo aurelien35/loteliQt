@@ -5,7 +5,7 @@ from PyQt4	import QtCore
 def str2QString(text) :
 	if (text == None) :
 		return QtCore.QString()
-	return QtCore.QString(text)
+	return QtCore.QString(unicode(text))
 	
 def strList2QStringList(strList) :
 	result = QtCore.QStringList()

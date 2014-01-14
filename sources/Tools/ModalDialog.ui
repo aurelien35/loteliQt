@@ -14,25 +14,24 @@
    <string notr="true">/* Boite de dialogue*/
 QFrame#frameDialog
 {
-	background-color:	#C4D1EC;
-	border-style:			solid;
-	border-color:			#000000;
-	border-width:			6px;
+	border-style:			inset;
+	border-width:			1px 1px 1px 1px;
+	border-color:			#BBBBBB;
 }
 
 /* Barre de titre */
 QFrame#frameTitle
 {
-	background-color:	#535353;
-	border-style:			solid;
-	border-width:			0px 0px 2px 0px;
-	border-color:			#000000;
+	background-color:	#D4D4D4;
+	border-style:			inset;
+	border-width:			1px;
+	border-color:			#777777;
 }
 
 QFrame#frameTitle &gt; QLabel
 {
-	color:					#FFFFFF;
-	font-weight:		bold;
+	color:					#000000;
+	font-weight:		normal;
 	font-style:			italic;
 	font-size:				14pt;
 	font-family:			&quot;Verdana&quot;;
@@ -41,20 +40,34 @@ QFrame#frameTitle &gt; QLabel
 /* Label contenu directement */
 QLabel#labelDialogMessage
 {
-	color:					#000000;
+	color:					#FFFFFF;
 	font-weight:		normal;
 	font-style:			normal;
 	font-size:				14pt;
 	font-family:			&quot;Verdana&quot;;
 }
 
+/* Contenu */
+QFrame#frameContent
+{
+	background-color: qlineargradient(spread:pad,
+															x1:0, y1:0,
+															x3:0, y3:1,
+															stop:0 rgb(227, 227, 227),
+															stop:0.7 rgb(227, 227, 227),
+															stop:1 rgb(210, 210, 210));
+	border-style:			outset;
+	border-width:			1px 1px 1px 1px;
+	border-color:			#FFFFFF;
+}
+
 /* Barre de pied de page */
 QFrame#frameDialog &gt; QFrame#frameButtons
 {
-	background-color:	#535353;
-	border-style:			solid;
-	border-width:			2px 0px 0px 0px;
-	border-color:			#000000;
+	background-color:	#D4D4D4;
+	border-style:			inset;
+	border-width:			1px;
+	border-color:			#777777;
 }
 </string>
   </property>

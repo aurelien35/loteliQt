@@ -5,7 +5,11 @@
     <file>resources/error.png</file>
     <file>resources/question.png</file>
     <file>resources/next.png</file>
+    <file>resources/nextUp.png</file>
+    <file>resources/nextDown.png</file>
     <file>resources/previous.png</file>
+    <file>resources/previousUp.png</file>
+    <file>resources/previousDown.png</file>
     <file>resources/remove.png</file>
     <file>resources/calendar.png</file>
     <file>resources/add.png</file>

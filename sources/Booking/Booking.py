@@ -74,3 +74,6 @@ class Booking(object) :
 			self.m_comment = comment
 		else :
 			raise Exception("Booking::setComment : comment is " + str(type(comment)) + ", not a string.")
+			
+	def validate(self) :
+		return None

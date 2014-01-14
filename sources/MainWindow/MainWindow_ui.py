@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file './sources\MainWindow/MainWindow.ui'
 #
-# Created: Sun Jan 12 16:05:05 2014
+# Created: Tue Jan 14 22:48:47 2014
 #      by: PyQt4 UI code generator 4.10.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -30,37 +30,48 @@ class Ui_MainWindow(object):
         MainWindow.setStyleSheet(_fromUtf8("/* Fenetre principale */\n"
 "QFrame#MainWindow\n"
 "{\n"
-"    background-color:    #C4D1EC;\n"
-"    border-style:            solid;\n"
-"    border-color:            #000000;\n"
-"    border-width:            2px;\n"
+"    border-style:            None;\n"
 "}\n"
 "\n"
 "/* Barre de boutons */\n"
 "QFrame#frameButtons\n"
 "{\n"
-"    background-color:    #535353;\n"
-"    border-style:            solid;\n"
-"    border-color:            #000000;\n"
-"    border-width:            0px 2px 0px 0px;\n"
+"    background-color:    #D4D4D4;\n"
+"    border-style:            inset;\n"
+"    border-width:            1px;\n"
+"    border-color:            #777777;\n"
 "}\n"
 "\n"
 "/* Barre de titre */\n"
 "QFrame#frameTitle\n"
 "{\n"
-"    background-color:    #535353;\n"
-"    border-style:            solid;\n"
-"    border-width:            0px 0px 2px 0px;\n"
-"    border-color:            #000000;\n"
+"    background-color:    #D4D4D4;\n"
+"    border-style:            inset;\n"
+"    border-width:            1px;\n"
+"    border-color:            #777777;\n"
 "}\n"
 "\n"
 "QFrame#frameTitle > QLabel\n"
 "{\n"
-"    color:                    #FFFFFF;\n"
-"    font-weight:        bold;\n"
+"    color:                    #000000;\n"
+"    font-weight:        normal;\n"
 "    font-style:            italic;\n"
 "    font-size:                14pt;\n"
 "    font-family:            \"Verdana\";\n"
+"}\n"
+"\n"
+"/* Contenut */\n"
+"QFrame#content\n"
+"{\n"
+"    background-color: qlineargradient(spread:pad,\n"
+"                                                            x1:0, y1:0,\n"
+"                                                            x3:0, y3:1,\n"
+"                                                            stop:0 rgb(227, 227, 227),\n"
+"                                                            stop:0.7 rgb(227, 227, 227),\n"
+"                                                            stop:1 rgb(210, 210, 210));\n"
+"    border-style:            outset;\n"
+"    border-width:            1px 0px 0px 1px;\n"
+"    border-color:            #FFFFFF;\n"
 "}\n"
 ""))
         self.horizontalLayout_2 = QtGui.QHBoxLayout(MainWindow)
@@ -70,21 +81,21 @@ class Ui_MainWindow(object):
         self.frameButtons = QtGui.QFrame(MainWindow)
         self.frameButtons.setObjectName(_fromUtf8("frameButtons"))
         self.verticalLayout = QtGui.QVBoxLayout(self.frameButtons)
-        self.verticalLayout.setMargin(0)
+        self.verticalLayout.setMargin(4)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.buttonBooking = QtGui.QPushButton(self.frameButtons)
-        self.buttonBooking.setMinimumSize(QtCore.QSize(128, 128))
-        self.buttonBooking.setMaximumSize(QtCore.QSize(128, 128))
+        self.buttonBooking.setMinimumSize(QtCore.QSize(96, 96))
+        self.buttonBooking.setMaximumSize(QtCore.QSize(96, 96))
         self.buttonBooking.setObjectName(_fromUtf8("buttonBooking"))
         self.verticalLayout.addWidget(self.buttonBooking)
         self.buttonClients = QtGui.QPushButton(self.frameButtons)
-        self.buttonClients.setMinimumSize(QtCore.QSize(128, 128))
-        self.buttonClients.setMaximumSize(QtCore.QSize(128, 128))
+        self.buttonClients.setMinimumSize(QtCore.QSize(96, 96))
+        self.buttonClients.setMaximumSize(QtCore.QSize(96, 96))
         self.buttonClients.setObjectName(_fromUtf8("buttonClients"))
         self.verticalLayout.addWidget(self.buttonClients)
         self.buttonBills = QtGui.QPushButton(self.frameButtons)
-        self.buttonBills.setMinimumSize(QtCore.QSize(128, 128))
-        self.buttonBills.setMaximumSize(QtCore.QSize(128, 128))
+        self.buttonBills.setMinimumSize(QtCore.QSize(96, 96))
+        self.buttonBills.setMaximumSize(QtCore.QSize(96, 96))
         self.buttonBills.setObjectName(_fromUtf8("buttonBills"))
         self.verticalLayout.addWidget(self.buttonBills)
         spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
@@ -104,18 +115,18 @@ class Ui_MainWindow(object):
         self.labelTitle.setObjectName(_fromUtf8("labelTitle"))
         self.horizontalLayout.addWidget(self.labelTitle)
         self.verticalLayout_2.addWidget(self.frameTitle)
-        self.stackedWidget = QtGui.QStackedWidget(self.frameContent)
-        self.stackedWidget.setObjectName(_fromUtf8("stackedWidget"))
+        self.content = QtGui.QStackedWidget(self.frameContent)
+        self.content.setObjectName(_fromUtf8("content"))
         self.clientList = ClientList()
         self.clientList.setObjectName(_fromUtf8("clientList"))
-        self.stackedWidget.addWidget(self.clientList)
+        self.content.addWidget(self.clientList)
         self.bookingList = BookingList()
         self.bookingList.setObjectName(_fromUtf8("bookingList"))
-        self.stackedWidget.addWidget(self.bookingList)
+        self.content.addWidget(self.bookingList)
         self.billList = QtGui.QFrame()
         self.billList.setObjectName(_fromUtf8("billList"))
-        self.stackedWidget.addWidget(self.billList)
-        self.verticalLayout_2.addWidget(self.stackedWidget)
+        self.content.addWidget(self.billList)
+        self.verticalLayout_2.addWidget(self.content)
         self.horizontalLayout_2.addWidget(self.frameContent)
 
         self.retranslateUi(MainWindow)

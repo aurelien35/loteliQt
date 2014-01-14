@@ -10,11 +10,51 @@
     <height>370</height>
    </rect>
   </property>
-  <property name="frameShape">
-   <enum>QFrame::Box</enum>
-  </property>
-  <property name="lineWidth">
-   <number>2</number>
+  <property name="styleSheet">
+   <string notr="true">QFrame#BookingPlanning
+{
+	border-style:			none;
+}
+
+QWidget#qt_calendar_calendarview
+{
+	background-color:	transparent;
+	border-style:			solid;
+	border-color:			#BBBBBB;
+	border-width:			0px 1px 1x 0px;
+}
+
+QWidget#qt_calendar_navigationbar
+{
+	background-color:	#C4E59F;
+	border-style:			solid;
+	border-color:			#BBBBBB;
+	border-width:			1px 1px 0px 1px;
+	color:						#000000;
+	font-weight:			normal;
+	font-style:				italic;
+	font-size:					14pt;	
+	font-family:				&quot;Verdana&quot;;
+}
+
+QWidget#qt_calendar_prevmonth
+{
+}
+
+QWidget#qt_calendar_nextmonth
+{
+}
+
+QWidget#qt_calendar_monthbutton,
+QWidget#qt_calendar_yearbutton
+{
+	color:						#000000;
+	font-weight:			normal;
+	font-style:				normal;
+	font-size:					14pt;	
+	font-family:				&quot;Verdana&quot;;
+}
+</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="margin">

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file './sources\Booking/BookingPlanning.ui'
 #
-# Created: Sun Jan 12 16:05:04 2014
+# Created: Tue Jan 14 22:48:46 2014
 #      by: PyQt4 UI code generator 4.10.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -27,8 +27,50 @@ class Ui_BookingPlanning(object):
     def setupUi(self, BookingPlanning):
         BookingPlanning.setObjectName(_fromUtf8("BookingPlanning"))
         BookingPlanning.resize(557, 370)
-        BookingPlanning.setFrameShape(QtGui.QFrame.Box)
-        BookingPlanning.setLineWidth(2)
+        BookingPlanning.setStyleSheet(_fromUtf8("QFrame#BookingPlanning\n"
+"{\n"
+"    border-style:            none;\n"
+"}\n"
+"\n"
+"QWidget#qt_calendar_calendarview\n"
+"{\n"
+"    background-color:    transparent;\n"
+"    border-style:            solid;\n"
+"    border-color:            #BBBBBB;\n"
+"    border-width:            0px 1px 1x 0px;\n"
+"}\n"
+"\n"
+"QWidget#qt_calendar_navigationbar\n"
+"{\n"
+"    background-color:    #C4E59F;\n"
+"    border-style:            solid;\n"
+"    border-color:            #BBBBBB;\n"
+"    border-width:            1px 1px 0px 1px;\n"
+"    color:                        #000000;\n"
+"    font-weight:            normal;\n"
+"    font-style:                italic;\n"
+"    font-size:                    14pt;    \n"
+"    font-family:                \"Verdana\";\n"
+"}\n"
+"\n"
+"QWidget#qt_calendar_prevmonth\n"
+"{\n"
+"}\n"
+"\n"
+"QWidget#qt_calendar_nextmonth\n"
+"{\n"
+"}\n"
+"\n"
+"QWidget#qt_calendar_monthbutton,\n"
+"QWidget#qt_calendar_yearbutton\n"
+"{\n"
+"    color:                        #000000;\n"
+"    font-weight:            normal;\n"
+"    font-style:                normal;\n"
+"    font-size:                    14pt;    \n"
+"    font-family:                \"Verdana\";\n"
+"}\n"
+""))
         self.gridLayout = QtGui.QGridLayout(BookingPlanning)
         self.gridLayout.setMargin(0)
         self.gridLayout.setSpacing(0)

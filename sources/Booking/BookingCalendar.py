@@ -13,16 +13,16 @@ class BookingCalendar(QtGui.QCalendarWidget) :
 		self.m_db					= DataBase()
 		self.m_roomsCatalog			= self.m_db.loadRoomsCatalog()
 		self.m_bookingsDataByDate	= {}
-		self.m_cellPen				= QtGui.QPen(QtGui.QColor(0, 0, 0), 1.0)
+		self.m_cellPen				= QtGui.QPen(QtGui.QColor(187, 187, 187), 1.0)
 		self.m_cellBrush			= QtGui.QBrush(QtGui.QColor(255, 255, 255))
-		self.m_cellDisabledBrush	= QtGui.QBrush(QtGui.QColor(160, 160, 160))
-		self.m_cellSelectedBrush	= QtGui.QBrush(QtGui.QColor(135, 139, 255))
-		self.m_headerPen			= QtGui.QPen(QtGui.QColor(0, 0, 0), 1.0)
-		self.m_headerBrush			= QtGui.QBrush(QtGui.QColor(83, 83, 83))
-		self.m_titlePen				= QtGui.QPen(QtGui.QColor(255, 255, 255), 1.0)
+		self.m_cellDisabledBrush	= QtGui.QBrush(QtGui.QColor(242, 242, 242))
+		self.m_cellSelectedBrush	= QtGui.QBrush(QtGui.QColor(196, 229, 159))
+		self.m_headerPen			= QtGui.QPen(QtGui.QColor(187, 187, 187), 1.0)
+		self.m_headerBrush			= QtGui.QBrush(QtGui.QColor(242, 242, 242))
+		self.m_titlePen				= QtGui.QPen(QtGui.QColor(0, 0, 0), 1.0)
 		self.m_titleFont			= QtGui.QFont("Verdana", 8, 250, False)
 		self.m_roomsPen				= QtGui.QPen(QtGui.QColor(0, 0, 0), 0)
-		self.m_roomsBrush			= QtGui.QBrush(QtGui.QColor(255, 108, 0, 168))
+		self.m_roomsBrush			= QtGui.QBrush(QtGui.QColor(255, 231, 155, 200))
 		self.m_roomsFont			= QtGui.QFont("Arial", 8, 0, False)
 
 		# Connexions
@@ -35,21 +35,27 @@ class BookingCalendar(QtGui.QCalendarWidget) :
 		return self.m_bookingsDataByDate
 	
 	def paintCell(self, painter, rect, date) :
+		
+		# widgets = self.findChildren(QtGui.QWidget)
+		# for widget in widgets :
+			# print str(widget.objectName())  + u"  " + str(type(widget))
+	
 		painter.setRenderHints(QtGui.QPainter.TextAntialiasing, True)
 		pyDate				= date.toPyDate()
 		titleRectHeight		= 18
 	
 		# Cellule
-		if (date == self.selectedDate()) :
-			painter.setBrush(self.m_cellSelectedBrush)
+		painter.setPen(self.m_cellPen)
+		if (date.month() != self.monthShown()) :
+			painter.setBrush(self.m_cellDisabledBrush)
 		else :
-			if (date.month() != self.monthShown()) :
-				painter.setBrush(self.m_cellDisabledBrush)
+			if (date == self.selectedDate()) :
+				painter.setBrush(self.m_cellSelectedBrush)
 			else :
 				painter.setBrush(self.m_cellBrush)
-		painter.setPen(self.m_cellPen)
+
 		painter.drawRect(rect)
-		
+
 		# Titre
 		titleRect = QtCore.QRect(rect.x(), rect.y(), rect.width(), titleRectHeight)
 		painter.setPen(self.m_headerPen)
@@ -57,7 +63,7 @@ class BookingCalendar(QtGui.QCalendarWidget) :
 		painter.drawRect(titleRect)
 		painter.setPen(self.m_titlePen)
 		painter.setFont(self.m_titleFont)
-		painter.drawText(titleRect, QtCore.Qt.AlignCenter, QtCore.QString("%1").arg(date.day()))
+		painter.drawText(titleRect.adjusted(1, 0, -2, 0), QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter, QtCore.QString("%1").arg(date.day()))
 
 		# Reservations
 		if (self.m_bookingsDataByDate.has_key(pyDate) == True) :
@@ -65,15 +71,12 @@ class BookingCalendar(QtGui.QCalendarWidget) :
 			bookingsData	= self.m_bookingsDataByDate[pyDate]
 			bookingsCount	= len(bookingsData);
 			if (bookingsCount > 0) :
-				roomsRectHMargin	= 3.0
-				roomsRectRadius		= 6.0
-				roomsRectHeight		= (rect.height()+1.0 - titleRectHeight) / roomsCount
-				
-				roomRects = []
-				roomRects.append(QtCore.QRect(rect.x(), rect.y() + titleRectHeight, rect.width(), roomsRectHeight));
+				roomsRectHeight	= (rect.height() - titleRectHeight) / roomsCount
+				roomRects		= []
+				roomRects.append(QtCore.QRect(rect.x(), rect.y() + titleRectHeight + 1, rect.width(), roomsRectHeight));
 				for index in range(1, roomsCount) :
 					roomRects.append(QtCore.QRect(rect.x(), roomRects[index-1].bottom()+1, rect.width(), roomsRectHeight));
-				roomRects[-1].setBottom(rect.bottom());
+				roomRects[-1].setBottom(rect.bottom()-1);
 				
 				painter.save()
 				painter.setPen(self.m_roomsPen)
@@ -89,25 +92,22 @@ class BookingCalendar(QtGui.QCalendarWidget) :
 						roomRect	= QtCore.QRect(roomRects[roomId-1])
 
 						# Draw rect
-						if (start == True) :
-							roomRect.adjust(roomsRectHMargin, 0, 0, 0)
+						if (start == False) :
+							roomRect.adjust(-1, 0, 0, 0)
 						else :
-							roomRect.adjust(-10, 0, 0, 0)
-							
+							roomRect.adjust(1, 0, 0, 0)
 						if (stop == True) :
-							roomRect.adjust(0, 0, -roomsRectHMargin, 0)
-						else :
-							roomRect.adjust(0, 0, 10, 0)
+							roomRect.adjust(0, 0, -1, 0)
 							
-						painter.drawRoundedRect(roomRect, roomsRectRadius, roomsRectRadius)
+							
+						painter.drawRect(roomRect)
 						
 						# Draw label
 						if (start == True) :
-							painter.drawText(roomRect.adjusted(2 + roomsRectRadius, 0.5, 0, 2), QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter, self.m_roomsCatalog[roomId].name())
+							painter.drawText(roomRect.adjusted(4, 0.5, 0, 2), QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter, self.m_roomsCatalog[roomId].name())
 							
 				painter.restore()
-				
-		
+			
 	def updateData(self) :
 		self.m_bookingsDataByDate = {}
 		

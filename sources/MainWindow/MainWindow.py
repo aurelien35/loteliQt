@@ -8,9 +8,7 @@ class MainWindow(QtGui.QFrame) :
 
 	def __init__(self) :
 		super(MainWindow, self).__init__()
-		print MainWindowInstance.Instance
 		MainWindowInstance.Instance = self
-		print MainWindowInstance.Instance
 		
 		# Membres
 		self.m_ui = Ui_MainWindow()
@@ -28,13 +26,13 @@ class MainWindow(QtGui.QFrame) :
 		
 	def bookingClicked(self) :
 		self.m_ui.labelTitle.setText(u"Planning")
-		self.m_ui.stackedWidget.setCurrentWidget(self.m_ui.bookingList)
+		self.m_ui.content.setCurrentWidget(self.m_ui.bookingList)
 	
 	def clientsClicked(self) :
 		self.m_ui.labelTitle.setText(u"Clients")
-		self.m_ui.stackedWidget.setCurrentWidget(self.m_ui.clientList)
+		self.m_ui.content.setCurrentWidget(self.m_ui.clientList)
 	
 	def billsClicked(self) :
 		self.m_ui.labelTitle.setText(u"Factures")
-		self.m_ui.stackedWidget.setCurrentWidget(self.m_ui.billList)
+		self.m_ui.content.setCurrentWidget(self.m_ui.billList)
 		

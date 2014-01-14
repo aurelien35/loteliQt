@@ -14,11 +14,11 @@ class ClientForm(QtGui.QFrame) :
 		super(ClientForm, self).__init__(parent)
 		
 		# Membres
-		self.m_ui						= Ui_ClientForm()
-		self.m_isReadOnly				= False
-		self.m_client					= None
-		self.m_phonesEditors			= []
-		self.m_emailsEditors			= []
+		self.m_ui				= Ui_ClientForm()
+		self.m_isReadOnly		= False
+		self.m_client			= None
+		self.m_phonesEditors	= []
+		self.m_emailsEditors	= []
 		
 		# Initialisation
 		self.m_ui.setupUi(self)

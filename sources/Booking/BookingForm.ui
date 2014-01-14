@@ -29,14 +29,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Date :</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QLineEdit" name="lineEditDate">
-     <property name="readOnly">
-      <bool>true</bool>
+      <string>Date d'arrivée :</string>
      </property>
     </widget>
    </item>
@@ -55,12 +48,12 @@
    </item>
    <item row="1" column="1">
     <widget class="QLineEdit" name="lineEditDays">
-     <property name="readOnly">
-      <bool>true</bool>
+     <property name="inputMask">
+      <string>9000; </string>
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="3" column="0">
     <widget class="QLabel" name="label_3">
      <property name="font">
       <font>
@@ -73,7 +66,7 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item row="4" column="0">
     <widget class="QLabel" name="label_6">
      <property name="font">
       <font>
@@ -86,10 +79,10 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
-    <widget class="QFrame" name="phonesContainer"/>
+   <item row="4" column="1">
+    <widget class="QFrame" name="roomsContainer"/>
    </item>
-   <item row="4" column="0">
+   <item row="5" column="0">
     <widget class="QLabel" name="label_5">
      <property name="font">
       <font>
@@ -102,11 +95,104 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="1">
+   <item row="5" column="1">
     <widget class="QTextEdit" name="textEditComment"/>
    </item>
+   <item row="3" column="1">
+    <widget class="QFrame" name="clientsContainer"/>
+   </item>
+   <item row="0" column="1">
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QLineEdit" name="lineEditStartDate">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonSelectStartDate">
+       <property name="minimumSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="icon">
+        <iconset resource="../loteliQt.qrc">
+         <normaloff>:/resources/calendar.png</normaloff>:/resources/calendar.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_4">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Date de départ :</string>
+     </property>
+    </widget>
+   </item>
    <item row="2" column="1">
-    <widget class="QFrame" name="frame"/>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLineEdit" name="lineEditEndDate">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonSelectEndDate">
+       <property name="minimumSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="icon">
+        <iconset resource="../loteliQt.qrc">
+         <normaloff>:/resources/calendar.png</normaloff>:/resources/calendar.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

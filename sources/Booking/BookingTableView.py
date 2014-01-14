@@ -6,6 +6,11 @@ from Tools.StringConvert	import *
 
 class BookingTableView(QtGui.QTableView) :
 
+	# Signaux
+	bookingSelected			= QtCore.pyqtSignal(object)
+	bookingClicked			= QtCore.pyqtSignal(object)
+	bookingDoubleClicked	= QtCore.pyqtSignal(object)
+	
 	def __init__(self, parent=None) :
 		super(BookingTableView, self).__init__(parent)
 		
@@ -15,9 +20,6 @@ class BookingTableView(QtGui.QTableView) :
 		self.m_selectionModel	= None
 		
 		# Initialisation
-		self.setFrameShape(QtGui.QFrame.Box)
-		self.setFrameShadow(QtGui.QFrame.Plain)
-		self.setLineWidth(2)
 		self.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
 		self.setTabKeyNavigation(False)
 		self.setDropIndicatorShown(False)
@@ -81,18 +83,15 @@ class BookingTableView(QtGui.QTableView) :
 		self.itemSelectionChanged()
 
 	def itemClicked(self, modelIndex) :
-		foo = None
-		# self.rowClicked.emit(modelIndex.data(QtCore.Qt.UserRole).toPyObject())
+		self.bookingClicked.emit(self.m_bookings[modelIndex.row()])
 		
 	def itemDoubleClicked(self, modelIndex) :
-		foo = None
-		# self.rowDoubleClicked.emit(modelIndex.data(QtCore.Qt.UserRole).toPyObject())
+		self.bookingDoubleClicked.emit(self.m_bookings[modelIndex.row()])
 		
 	def itemSelectionChanged(self) :
-		foo = None
-		# selectedRow = -1
-		# selectedRows = self.m_selectionModel.selectedRows()
-		# if (selectedRows != None) :
-			# if (len(selectedRows) > 0) :
-				# selectedRow = selectedRows[0].data(QtCore.Qt.UserRole).toPyObject()
-		# self.rowSelected.emit(selectedRow)
+		selectedBooking = None
+		selectedRows = self.m_selectionModel.selectedRows()
+		if (selectedRows != None) :
+			if (len(selectedRows) > 0) :
+				selectedBooking = self.m_bookings[selectedRows[0].row()]
+		self.bookingSelected.emit(selectedBooking)

@@ -14,37 +14,48 @@
    <string notr="true">/* Fenetre principale */
 QFrame#MainWindow
 {
-	background-color:	#C4D1EC;
-	border-style:			solid;
-	border-color:			#000000;
-	border-width:			2px;
+	border-style:			None;
 }
 
 /* Barre de boutons */
 QFrame#frameButtons
 {
-	background-color:	#535353;
-	border-style:			solid;
-	border-color:			#000000;
-	border-width:			0px 2px 0px 0px;
+	background-color:	#D4D4D4;
+	border-style:			inset;
+	border-width:			1px;
+	border-color:			#777777;
 }
 
 /* Barre de titre */
 QFrame#frameTitle
 {
-	background-color:	#535353;
-	border-style:			solid;
-	border-width:			0px 0px 2px 0px;
-	border-color:			#000000;
+	background-color:	#D4D4D4;
+	border-style:			inset;
+	border-width:			1px;
+	border-color:			#777777;
 }
 
 QFrame#frameTitle &gt; QLabel
 {
-	color:					#FFFFFF;
-	font-weight:		bold;
+	color:					#000000;
+	font-weight:		normal;
 	font-style:			italic;
 	font-size:				14pt;
 	font-family:			&quot;Verdana&quot;;
+}
+
+/* Contenut */
+QFrame#content
+{
+	background-color: qlineargradient(spread:pad,
+															x1:0, y1:0,
+															x3:0, y3:1,
+															stop:0 rgb(227, 227, 227),
+															stop:0.7 rgb(227, 227, 227),
+															stop:1 rgb(210, 210, 210));
+	border-style:			outset;
+	border-width:			1px 0px 0px 1px;
+	border-color:			#FFFFFF;
 }
 </string>
   </property>
@@ -59,20 +70,20 @@ QFrame#frameTitle &gt; QLabel
     <widget class="QFrame" name="frameButtons">
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="margin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <item>
        <widget class="QPushButton" name="buttonBooking">
         <property name="minimumSize">
          <size>
-          <width>128</width>
-          <height>128</height>
+          <width>96</width>
+          <height>96</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>128</width>
-          <height>128</height>
+          <width>96</width>
+          <height>96</height>
          </size>
         </property>
         <property name="text">
@@ -84,14 +95,14 @@ QFrame#frameTitle &gt; QLabel
        <widget class="QPushButton" name="buttonClients">
         <property name="minimumSize">
          <size>
-          <width>128</width>
-          <height>128</height>
+          <width>96</width>
+          <height>96</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>128</width>
-          <height>128</height>
+          <width>96</width>
+          <height>96</height>
          </size>
         </property>
         <property name="text">
@@ -103,14 +114,14 @@ QFrame#frameTitle &gt; QLabel
        <widget class="QPushButton" name="buttonBills">
         <property name="minimumSize">
          <size>
-          <width>128</width>
-          <height>128</height>
+          <width>96</width>
+          <height>96</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>128</width>
-          <height>128</height>
+          <width>96</width>
+          <height>96</height>
          </size>
         </property>
         <property name="text">
@@ -157,7 +168,7 @@ QFrame#frameTitle &gt; QLabel
        </widget>
       </item>
       <item>
-       <widget class="QStackedWidget" name="stackedWidget">
+       <widget class="QStackedWidget" name="content">
         <widget class="ClientList" name="clientList"/>
         <widget class="BookingList" name="bookingList"/>
         <widget class="QFrame" name="billList"/>
