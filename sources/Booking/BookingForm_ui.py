@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file './sources\Booking/BookingForm.ui'
 #
-# Created: Tue Jan 14 22:48:46 2014
+# Created: Wed Jan 15 22:07:38 2014
 #      by: PyQt4 UI code generator 4.10.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -46,9 +46,6 @@ class Ui_BookingForm(object):
         self.label_2.setFont(font)
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.formLayout.setWidget(1, QtGui.QFormLayout.LabelRole, self.label_2)
-        self.lineEditDays = QtGui.QLineEdit(BookingForm)
-        self.lineEditDays.setObjectName(_fromUtf8("lineEditDays"))
-        self.formLayout.setWidget(1, QtGui.QFormLayout.FieldRole, self.lineEditDays)
         self.label_3 = QtGui.QLabel(BookingForm)
         font = QtGui.QFont()
         font.setBold(True)
@@ -118,6 +115,11 @@ class Ui_BookingForm(object):
         self.pushButtonSelectEndDate.setObjectName(_fromUtf8("pushButtonSelectEndDate"))
         self.horizontalLayout_3.addWidget(self.pushButtonSelectEndDate)
         self.formLayout.setLayout(2, QtGui.QFormLayout.FieldRole, self.horizontalLayout_3)
+        self.spinBoxDays = QtGui.QSpinBox(BookingForm)
+        self.spinBoxDays.setMinimum(1)
+        self.spinBoxDays.setMaximum(999999)
+        self.spinBoxDays.setObjectName(_fromUtf8("spinBoxDays"))
+        self.formLayout.setWidget(1, QtGui.QFormLayout.FieldRole, self.spinBoxDays)
 
         self.retranslateUi(BookingForm)
         QtCore.QMetaObject.connectSlotsByName(BookingForm)
@@ -125,7 +127,6 @@ class Ui_BookingForm(object):
     def retranslateUi(self, BookingForm):
         self.label.setText(_translate("BookingForm", "Date d\'arrivée :", None))
         self.label_2.setText(_translate("BookingForm", "Nombre de nuits :", None))
-        self.lineEditDays.setInputMask(_translate("BookingForm", "9000; ", None))
         self.label_3.setText(_translate("BookingForm", "Clients :", None))
         self.label_6.setText(_translate("BookingForm", "Chambres :", None))
         self.label_5.setText(_translate("BookingForm", "Commentaire :", None))

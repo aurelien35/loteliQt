@@ -3,8 +3,8 @@
 from PyQt4				import QtCore, QtGui
 from Tools.ModalDialog	import *
 
-def SelectDate(button, date) :
-	datePicker	= DatePicker(date)
+def SelectDate(button, date, clearEnabled=True) :
+	datePicker	= DatePicker(date, clearEnabled)
 	result		= datePicker.showDialog(button.mapToGlobal(QtCore.QPoint(0, button.height())))
 	if (result == ModalDialog.Result.Ok) :
 		return datePicker.m_calendar.selectedDate().toPyDate()
@@ -14,8 +14,11 @@ def SelectDate(button, date) :
 
 class DatePicker(ModalDialog) :
 
-	def __init__(self, date) :
-		super(DatePicker, self).__init__(u"Choisir une date", u"Ok", u"Annuler", u"Effacer")
+	def __init__(self, date, clearEnabled) :
+		if (clearEnabled == True) :
+			super(DatePicker, self).__init__(u"Choisir une date", u"Ok", u"Annuler", u"Effacer")
+		else :
+			super(DatePicker, self).__init__(u"Choisir une date", u"Ok", u"Annuler")
 		
 		self.m_calendar	= QtGui.QCalendarWidget()
 		self.m_calendar.setFirstDayOfWeek(QtCore.Qt.Monday)

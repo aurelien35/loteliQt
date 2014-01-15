@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file './sources\Booking/BookingList.ui'
 #
-# Created: Tue Jan 14 22:48:46 2014
+# Created: Wed Jan 15 22:07:38 2014
 #      by: PyQt4 UI code generator 4.10.1
 #
 # WARNING! All changes made in this file will be lost!

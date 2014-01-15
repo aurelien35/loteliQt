@@ -7,6 +7,7 @@ from Tools.StringConvert	import *
 from Booking				import Booking
 from BookingForm_ui			import Ui_BookingForm
 from Room.RoomComboBox		import RoomComboBox
+from Room					import RoomCatalog
 
 class BookingForm(QtGui.QFrame) :
 
@@ -25,7 +26,7 @@ class BookingForm(QtGui.QFrame) :
 		
 		# Connexions
 		self.m_ui.pushButtonSelectStartDate.clicked.connect(self.selectStartDate)
-		self.m_ui.lineEditDays.textEdited.connect(self.bookingDaysChanged)
+		self.m_ui.spinBoxDays.valueChanged.connect(self.bookingDaysChanged)
 		self.m_ui.pushButtonSelectEndDate.clicked.connect(self.selectEndDate)
 		self.m_ui.textEditComment.textChanged.connect(self.bookingCommentChanged)
 
@@ -43,7 +44,7 @@ class BookingForm(QtGui.QFrame) :
 			if (self.m_booking == None) :
 				effectiveReadOnly = True
 		self.m_ui.pushButtonSelectStartDate.setVisible(not effectiveReadOnly)
-		self.m_ui.lineEditDays.setReadOnly(effectiveReadOnly)
+		self.m_ui.spinBoxDays.setReadOnly(effectiveReadOnly)
 		self.m_ui.pushButtonSelectEndDate.setVisible(not effectiveReadOnly)
 		for clientEditor in self.m_clientsEditors :
 			clientEditor[0].setReadOnly(effectiveReadOnly)
@@ -70,26 +71,36 @@ class BookingForm(QtGui.QFrame) :
 	def updateFormsValues(self) :
 		if (self.m_booking != None) :
 			self.m_ui.lineEditStartDate.setText(date2QString(self.m_booking.date()))
-			self.m_ui.lineEditDays.setText(str(self.m_booking.days()))
+			self.m_ui.spinBoxDays.setValue(self.m_booking.days())
 			self.m_ui.lineEditEndDate.setText(date2QString(self.m_booking.endDate()))
 			self.m_ui.textEditComment.setText(str2QString(self.m_booking.comment()))
 		
 			# Mise à jour des clients
 			index = 0
 			for editor in self.m_clientsEditors :
-				client = self.m_booking.clients()[index]
-				editor[0].setText(u"{0} {1}".format(client.name(), client.firstName()))
+				client = None
+				if (index < len(self.m_booking.clients())) :
+					client = self.m_booking.clients()[index]
+					
+				if (client != None) :
+					editor[0].setText(u"{0} {1}".format(client.name(), client.firstName()))
+				else :
+					editor[0].setText(u"------")
 				index += 1
 					
 			# Mise à jour des chambres
 			index = 0
 			for editor in self.m_roomsEditors :
-				editor[0].setSelectedRoom(self.m_booking.rooms()[index])
+				room = None
+				if (index < len(self.m_booking.rooms())) :
+					editor[0].setSelectedRoom(self.m_booking.rooms()[index])
+				else :
+					editor[0].setSelectedRoom(None)
 				index += 1
 				
 		else :
 			self.m_ui.lineEditStartDate.setText(QtCore.QString())
-			self.m_ui.lineEditDays.setText(QtCore.QString())
+			self.m_ui.spinBoxDays.setValue(1)
 			self.m_ui.lineEditEndDate.setText(QtCore.QString())
 			self.m_ui.textEditComment.setText(QtCore.QString())
 		
@@ -175,18 +186,18 @@ class BookingForm(QtGui.QFrame) :
 				
 	def selectStartDate(self) :
 		if (self.m_booking != None) :
-			self.m_booking.setDate(SelectDate(self.m_ui.pushButtonSelectStartDate, self.m_booking.date()))
+			self.m_booking.setDate(SelectDate(self.m_ui.pushButtonSelectStartDate, self.m_booking.date(), False))
 			self.updateFormsValues()
 			
 	def bookingDaysChanged(self) :
 		if (self.m_booking != None) :
-			days = int(self.m_ui.lineEditDays.text())
+			days = self.m_ui.spinBoxDays.value()
 			self.m_booking.setDays(days)
 			self.updateFormsValues()
 				
 	def selectEndDate(self) :
 		if (self.m_booking != None) :
-			endDate = SelectDate(self.m_ui.pushButtonSelectStartDate, self.m_booking.endDate())
+			endDate = SelectDate(self.m_ui.pushButtonSelectStartDate, self.m_booking.endDate(), False)
 			if (endDate != None) :
 				if (endDate > self.m_booking.date()) :
 					self.m_booking.setDays((endDate - self.m_booking.date()).days)
@@ -206,15 +217,44 @@ class BookingForm(QtGui.QFrame) :
 			
 	def addRoom(self) :
 		if (self.m_booking != None) :
-			print "TODO : addRoom : ouvrir une popup de choix de chambre"
+			rooms = self.m_booking.rooms()
+			rooms.append(None)
+			if (len(rooms) == 1) :
+				rooms.append(None)
+			self.m_booking.setRooms(rooms)
+			self.updateRoomsEditors()
+			self.updateFormsValues();
 
 	def removeRoom(self) :
 		if (self.m_booking != None) :
-			print "TODO : removeRoom"
+			index = 0;
+			rooms = self.m_booking.rooms()
+			for roomEditor in self.m_roomsEditors :
+				if (self.sender() == roomEditor[1]) :
+					del (rooms[index])
+					break
+				index += 1
+			self.m_booking.setRooms(rooms)
+			self.updateRoomsEditors()
+			self.updateFormsValues()
 
-	def roomChanged(self, room) :
+	def roomChanged(self, roomIndex) :
 		if (self.m_booking != None) :
-			print "TODO : roomChanged"
+		
+			index	= 0
+			room	= None
+			
+			if (roomIndex > 0) :
+				room = RoomCatalog.Instance[roomIndex]
+				
+			for roomEditor in self.m_roomsEditors :
+				if (self.sender() == roomEditor[0]) :
+					if (index == 0) and (len(self.m_booking.rooms()) == 0) :
+						self.m_booking.rooms().append(room)
+					else :
+						self.m_booking.rooms()[index] = room
+					break
+				index += 1
 				
 	def bookingCommentChanged(self) :
 		if (self.m_booking != None) :

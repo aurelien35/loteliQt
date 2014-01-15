@@ -32,9 +32,11 @@ class BookingList(QtGui.QFrame) :
 		self.m_ui.bookingForm.setReadOnly(True)
 		
 	def updateData(self) :
+		self.m_ui.planning.updateData()
 		self.selectedDateChanged(self.m_ui.planning.selectedDate())
 			
 	def selectedDateChanged(self, date) :
+		print "selectedDateChanged"
 		bookings = []
 		if (self.m_ui.planning.bookingsDataByDate().has_key(date) == True) :
 			bookingsData = self.m_ui.planning.bookingsDataByDate()[date]

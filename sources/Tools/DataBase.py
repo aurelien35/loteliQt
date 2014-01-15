@@ -47,6 +47,16 @@ class DataBase(object) :
 		self.m_db				= sqlite3.connect('./data/loteli.sqlite3', detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
 		self.m_db.row_factory	= DataBaseRowFactory
 		
+	def selectData(self, query, tokens) :
+		# TODO : gestion des erreurs : lever une exception
+		cursor = self.m_db.cursor()
+		if (tokens == None) :
+			cursor.execute(query)
+		else :
+			cursor.execute(query, tokens)
+		data = cursor.fetchall()
+		return data
+		
 	def loadRoomsCatalog(self) :
 		# TODO : gestion des erreurs : lever une exception
 		if (len(RoomCatalog.Instance) == 0) :
@@ -85,6 +95,33 @@ class DataBase(object) :
 				client.setComment	(clientData["comment"])
 
 		return client
+		
+	def insertClient(self, client) :
+		# TODO : gestion des erreurs : lever une exception
+		cursor = self.m_db.cursor()
+		cursor.execute(u'''INSERT INTO clients(name, firstName, birthDate, phones, emails, address, comment) VALUES(:name, :firstName, :birthDate, :phones, :emails, :address, :comment)''',
+						{	'name':			client.name(),
+							'firstName':	client.firstName(),
+							'birthDate':	client.birthDate(),
+							'phones':		u"¤" + u"¤".join(client.phones()) + u"¤",
+							'emails':		u"¤" + u"¤".join(client.emails()) + u"¤",
+							'address':		client.address(),
+							'comment':		client.comment()	})
+		self.m_db.commit()
+		
+	def updateClient(self, client) :
+		# TODO : gestion des erreurs : lever une exception
+		cursor = self.m_db.cursor()
+		cursor.execute(u'''UPDATE clients SET name=:name, firstName=:firstName, birthDate=:birthDate, phones=:phones, emails=:emails, address=:address, comment=:comment WHERE rowid=:rowid''',
+						{	'name':			client.name(),
+							'firstName':	client.firstName(),
+							'birthDate':	client.birthDate(),
+							'phones':		u"¤" + u"¤".join(client.phones()) + u"¤",
+							'emails':		u"¤" + u"¤".join(client.emails()) + u"¤",
+							'address':		client.address(),
+							'comment':		client.comment(),
+							'rowid':		client.id()			})
+		self.m_db.commit()
 		
 	def loadBooking(self, bookingId) :
 		# TODO : gestion des erreurs : lever une exception
@@ -131,43 +168,6 @@ class DataBase(object) :
 					bookings.append(booking)
 
 		return bookings
-		
-	def updateClient(self, client) :
-		# TODO : gestion des erreurs : lever une exception
-		cursor = self.m_db.cursor()
-		cursor.execute(u'''UPDATE clients SET name=:name, firstName=:firstName, birthDate=:birthDate, phones=:phones, emails=:emails, address=:address, comment=:comment WHERE rowid=:rowid''',
-						{	'name':			client.name(),
-							'firstName':	client.firstName(),
-							'birthDate':	client.birthDate(),
-							'phones':		u"¤" + u"¤".join(client.phones()) + u"¤",
-							'emails':		u"¤" + u"¤".join(client.emails()) + u"¤",
-							'address':		client.address(),
-							'comment':		client.comment(),
-							'rowid':		client.id()			})
-		self.m_db.commit()
-		
-	def insertClient(self, client) :
-		# TODO : gestion des erreurs : lever une exception
-		cursor = self.m_db.cursor()
-		cursor.execute(u'''INSERT INTO clients(name, firstName, birthDate, phones, emails, address, comment) VALUES(:name, :firstName, :birthDate, :phones, :emails, :address, :comment)''',
-						{	'name':			client.name(),
-							'firstName':	client.firstName(),
-							'birthDate':	client.birthDate(),
-							'phones':		u"¤" + u"¤".join(client.phones()) + u"¤",
-							'emails':		u"¤" + u"¤".join(client.emails()) + u"¤",
-							'address':		client.address(),
-							'comment':		client.comment()	})
-		self.m_db.commit()
-		
-	def selectData(self, query, tokens) :
-		# TODO : gestion des erreurs : lever une exception
-		cursor = self.m_db.cursor()
-		if (tokens == None) :
-			cursor.execute(query)
-		else :
-			cursor.execute(query, tokens)
-		data = cursor.fetchall()
-		return data
 
 	def selectBookings(self, month, year) :
 		# TODO : gestion des erreurs : lever une exception
@@ -183,3 +183,47 @@ class DataBase(object) :
 
 		return data
 		
+	def insertBooking(self, booking) :
+		# TODO : gestion des erreurs : lever une exception
+		clientsIds	= []
+		roomsIds	= []
+		cursor		= self.m_db.cursor()
+		
+		for client in booking.clients() :
+			if (client != None) :
+				clientsIds.append(str(client.id()))
+				
+		for room in booking.rooms() :
+			if (room != None) :
+				roomsIds.append(str(room.id()))
+				
+		cursor.execute(u'''INSERT INTO bookings (date, days, clients, rooms, comment) VALUES(:date, :days, :clients, :rooms, :comment)''',
+						{	'date':			booking.date(),
+							'days':			booking.days(),
+							'clients':		u"¤" + u"¤".join(clientsIds) + u"¤",
+							'rooms':		u"¤" + u"¤".join(roomsIds) + u"¤",
+							'comment':		booking.comment()		})
+		self.m_db.commit()
+		
+	def updateBooking(self, booking) :
+		# TODO : gestion des erreurs : lever une exception
+		clientsIds	= []
+		roomsIds	= []
+		cursor		= self.m_db.cursor()
+		
+		for client in booking.clients() :
+			if (client != None) :
+				clientsIds.append(str(client.id()))
+				
+		for room in booking.rooms() :
+			if (room != None) :
+				roomsIds.append(str(room.id()))
+				
+		cursor.execute(u'''UPDATE bookings SET date=:date, days=:days, clients=:clients, rooms=:rooms, comment=:comment WHERE rowid=:rowid''',
+						{	'date':			booking.date(),
+							'days':			booking.days(),
+							'clients':		u"¤" + u"¤".join(clientsIds) + u"¤",
+							'rooms':		u"¤" + u"¤".join(roomsIds) + u"¤",
+							'comment':		booking.comment(),
+							'rowid':		booking.id()			})
+		self.m_db.commit()

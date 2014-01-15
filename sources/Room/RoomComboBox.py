@@ -8,7 +8,7 @@ import RoomCatalog
 class RoomComboBox(QtGui.QFrame) :
 
 	# Signaux
-	selectedRoomChanged = QtCore.pyqtSignal(Room)
+	selectedRoomChanged = QtCore.pyqtSignal(int)
 	
 	def __init__(self, parent=None) :
 		super(RoomComboBox, self).__init__(parent)
@@ -32,6 +32,9 @@ class RoomComboBox(QtGui.QFrame) :
 			self.m_comboBox.addItem(room.fullName(), room)
 		self.setSelectedRoom(None)
 		
+		# Connexions
+		self.m_comboBox.currentIndexChanged.connect(self.onCurrentIndexChanged)
+		
 	def isReadOnly(self) :
 		return self.m_isReadOnly
 		
@@ -47,16 +50,18 @@ class RoomComboBox(QtGui.QFrame) :
 	
 	def setSelectedRoom(self, room) :
 		self.m_selectedRoom = room
+		self.m_comboBox.blockSignals(True)
 		if (room == None) :
-			self.m_comboBox.setCurrentIndex(0)
 			self.m_lineEdit.setText(u"-----")
+			self.m_comboBox.setCurrentIndex(0)
 		else :
-			self.m_comboBox.setCurrentIndex(room.id())
 			self.m_lineEdit.setText(room.fullName())		
+			self.m_comboBox.setCurrentIndex(room.id())
+		self.m_comboBox.blockSignals(False)
 	
 	def onCurrentIndexChanged(self) :
 		if (self.m_comboBox.currentIndex() == 0) :
-			setSelectedRoom(None)
+			self.setSelectedRoom(None)
 		else :
-			setSelectedRoom(self.m_roomsCatalog[self.m_comboBox.currentIndex()])
-		self.selectedRoomChanged.emit(self.m_selectedRoom)
+			self.setSelectedRoom(RoomCatalog.Instance[self.m_comboBox.currentIndex()])
+		self.selectedRoomChanged.emit(self.m_comboBox.currentIndex())

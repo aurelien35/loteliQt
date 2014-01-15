@@ -15,10 +15,12 @@ class Booking(object) :
 		# Membres
 		self.m_id		= -1
 		self.m_date		= None
-		self.m_days		= 0
+		self.m_days		= 1
 		self.m_clients	= []
 		self.m_rooms	= []
 		self.m_comment	= ""
+		
+		self.setDate(datetime.datetime.now().date())
 
 	def id(self) :
 		return self.m_id
@@ -26,11 +28,11 @@ class Booking(object) :
 	def date(self) :
 		return self.m_date
 		
-	def setDate(self, date) :
-		if (type(date) is datetime.date) :
-			self.m_date = date
+	def setDate(self, date_) :
+		if (type(date_) is datetime.date) :
+			self.m_date = date_
 		else :
-			raise Exception("Booking::setDate : date is " + str(type(date)) + ", not a date.")
+			print "Booking::setDate : date is " + str(type(date_)) + ", not a date."
 
 	def days(self) :
 		return self.m_days
@@ -61,7 +63,7 @@ class Booking(object) :
 	def setRooms(self, rooms) :
 		if (type(rooms) is list) :
 			self.m_rooms = rooms
-			while (len(self.m_rooms) > 5) :
+			while (len(self.m_rooms) > 10) :
 				del(self.m_rooms[len(self.m_rooms)-1])
 		else :
 			raise Exception("Booking::setRooms : rooms is " + str(type(rooms)) + ", not a room list.")

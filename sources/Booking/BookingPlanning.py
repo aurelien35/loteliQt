@@ -36,6 +36,9 @@ class BookingPlanning(QtGui.QFrame) :
 		self.calendarPageChanged(self.m_ui.calendar.yearShown(), self.m_ui.calendar.monthShown())
 		self.calendarSelectionChanged()
 		
+	def updateData(self) :
+		self.m_ui.calendar.updateData()
+		
 	def bookingsDataByDate(self) :
 		return self.m_ui.calendar.bookingsDataByDate()
 	

@@ -175,7 +175,7 @@ class ClientForm(QtGui.QFrame) :
 			index = 0
 			for phoneEditor in self.m_phonesEditors :
 				if (self.sender() == phoneEditor[0]) :
-					if (index == 0) :
+					if (index == 0) and (len(self.m_client.phones()) == 0) :
 						self.m_client.phones().append(QString2str(phoneEditor[0].text()))
 					else :
 						self.m_client.phones()[index] = QString2str(phoneEditor[0].text())
@@ -187,7 +187,7 @@ class ClientForm(QtGui.QFrame) :
 			index = 0
 			for emailEditor in self.m_emailsEditors :
 				if (self.sender() == emailEditor[0]) :
-					if (index == 0) :
+					if (index == 0) and (len(self.m_client.emails()) == 0) :
 						self.m_client.emails().append(QString2str(emailEditor[0].text()))
 					else :
 						self.m_client.emails()[index] = QString2str(emailEditor[0].text())
