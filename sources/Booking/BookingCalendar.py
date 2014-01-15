@@ -4,6 +4,7 @@ import copy
 from datetime				import *
 from PyQt4					import QtCore, QtGui
 from Tools.DataBase			import DataBase
+from Room					import RoomCatalog
 
 class BookingCalendar(QtGui.QCalendarWidget) :
 	def __init__(self, parent=None) :
@@ -11,7 +12,6 @@ class BookingCalendar(QtGui.QCalendarWidget) :
 		
 		# Membres
 		self.m_db					= DataBase()
-		self.m_roomsCatalog			= self.m_db.loadRoomsCatalog()
 		self.m_bookingsDataByDate	= {}
 		self.m_cellPen				= QtGui.QPen(QtGui.QColor(187, 187, 187), 1.0)
 		self.m_cellBrush			= QtGui.QBrush(QtGui.QColor(255, 255, 255))
@@ -67,7 +67,7 @@ class BookingCalendar(QtGui.QCalendarWidget) :
 
 		# Reservations
 		if (self.m_bookingsDataByDate.has_key(pyDate) == True) :
-			roomsCount		= len(self.m_roomsCatalog)
+			roomsCount		= len(RoomCatalog.Instance)
 			bookingsData	= self.m_bookingsDataByDate[pyDate]
 			bookingsCount	= len(bookingsData);
 			if (bookingsCount > 0) :
@@ -104,7 +104,7 @@ class BookingCalendar(QtGui.QCalendarWidget) :
 						
 						# Draw label
 						if (start == True) :
-							painter.drawText(roomRect.adjusted(4, 0.5, 0, 2), QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter, self.m_roomsCatalog[roomId].name())
+							painter.drawText(roomRect.adjusted(4, 0.5, 0, 2), QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter, RoomCatalog.Instance[roomId].name())
 							
 				painter.restore()
 			

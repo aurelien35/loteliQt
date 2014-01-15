@@ -30,12 +30,10 @@ from PyQt4					import QtCore
 from Booking.Booking		import Booking
 from Client.Client			import Client
 from Room.Room				import Room
+from Room					import RoomCatalog
 from Tools.StringConvert	import *
 
 #TODO : logger les requetes
-
-# Variable globale contenant le catalogue des chambres
-RoomsCatalog = {}
 
 def DataBaseRowFactory(cursor, row):
 	d = {}
@@ -51,20 +49,20 @@ class DataBase(object) :
 		
 	def loadRoomsCatalog(self) :
 		# TODO : gestion des erreurs : lever une exception
-		global RoomsCatalog
-		if (len(RoomsCatalog) == 0) :
+		if (len(RoomCatalog.Instance) == 0) :
 			cursor = self.m_db.cursor()
 			cursor.execute(u'''SELECT rowid, * FROM rooms ORDER BY rowid''')
-			roomsData		= cursor.fetchall()
-			RoomsCatalog	= {}
+
+			roomsData = cursor.fetchall()
+			RoomCatalog.Instance = {}
 			for roomData in roomsData :
 				room			= Room()
 				room.m_id		= roomData["rowid"]
 				room.m_number	= roomData["number"]
 				room.m_name		= roomData["name"]
-				RoomsCatalog[room.m_id] = room
+				RoomCatalog.Instance[room.m_id] = room
 				
-		return RoomsCatalog	
+		return RoomCatalog.Instance	
 		
 	def loadClient(self, clientId) :
 		# TODO : gestion des erreurs : lever une exception

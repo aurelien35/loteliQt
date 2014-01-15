@@ -67,7 +67,7 @@ class BookingTableView(QtGui.QTableView) :
 				
 				roomsLabels = []
 				for room in booking.rooms() :
-					roomsLabels.append(u"N°" + room.number() + u" - " + room.name())
+					roomsLabels.append(room.fullName())
 				items.append(QtGui.QStandardItem(u"\n".join(roomsLabels)))
 				
 				clientsLabels = []

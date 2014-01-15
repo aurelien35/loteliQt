@@ -6,6 +6,7 @@ from Tools.DatePicker		import SelectDate
 from Tools.StringConvert	import *
 from Booking				import Booking
 from BookingForm_ui			import Ui_BookingForm
+from Room.RoomComboBox		import RoomComboBox
 
 class BookingForm(QtGui.QFrame) :
 
@@ -83,8 +84,7 @@ class BookingForm(QtGui.QFrame) :
 			# Mise à jour des chambres
 			index = 0
 			for editor in self.m_roomsEditors :
-				room = self.m_booking.rooms()[index]
-				editor[0].setText(u"{0} {1}".format(room.number(), room.name()))
+				editor[0].setSelectedRoom(self.m_booking.rooms()[index])
 				index += 1
 				
 		else :
@@ -99,7 +99,7 @@ class BookingForm(QtGui.QFrame) :
 					
 			# Mise à jour des chambres
 			for editor in self.m_roomsEditors :
-				editor[0].setText(QtCore.QString())
+				editor[0].setSelectedRoom(None)
 				
 	def updateClientsEditors(self) :
 		for editor in self.m_clientsEditors :
@@ -155,17 +155,17 @@ class BookingForm(QtGui.QFrame) :
 		self.m_ui.roomsContainer.layout().setContentsMargins (0, 0, 0, 0)
 			
 		for index in range(roomsCount) :
-			lineEdit = QtGui.QLineEdit()
+			comboBox = RoomComboBox()
 			pushButton = QtGui.QPushButton()
 			pushButton.setMinimumSize(QtCore.QSize(20, 20))
 			pushButton.setMaximumSize(QtCore.QSize(20, 20))
 			pushButton.setIconSize(QtCore.QSize(12, 12))
 			pushButton.setFlat(True)
-			self.m_ui.roomsContainer.layout().addWidget(lineEdit, index, 0)
+			self.m_ui.roomsContainer.layout().addWidget(comboBox, index, 0)
 			self.m_ui.roomsContainer.layout().addWidget(pushButton, index, 1)
-			lineEdit.editingFinished.connect(self.roomChanged)
+			comboBox.selectedRoomChanged.connect(self.roomChanged)
 			pushButton.setVisible((not self.m_isReadOnly) and (self.m_booking != None))
-			self.m_roomsEditors.append((lineEdit, pushButton))
+			self.m_roomsEditors.append((comboBox, pushButton))
 			if (index == 0) :
 				pushButton.clicked.connect(self.addRoom)
 				pushButton.setIcon(QtGui.QIcon(":/resources/add.png"))
@@ -212,7 +212,7 @@ class BookingForm(QtGui.QFrame) :
 		if (self.m_booking != None) :
 			print "TODO : removeRoom"
 
-	def roomChanged(self) :
+	def roomChanged(self, room) :
 		if (self.m_booking != None) :
 			print "TODO : roomChanged"
 				

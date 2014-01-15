@@ -5,6 +5,7 @@ from PyQt4					import QtCore
 from PyQt4					import QtGui
 from MainMenu.MainMenu		import MainMenu
 from MainWindow.MainWindow	import MainWindow
+from Tools.DataBase			import DataBase
 
 #############################
 # Creation de l'application #
@@ -16,6 +17,7 @@ app = QtGui.QApplication(sys.argv)
 ##################################
 QtGui.QApplication.setStyle(QtGui.QStyleFactory.create("Cleanlooks"))
 QtGui.QApplication.setPalette(QtGui.QApplication.style().standardPalette())
+DataBase().loadRoomsCatalog()
 
 ###############################
 # Ouverture du menu principal #

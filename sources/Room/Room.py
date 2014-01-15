@@ -18,3 +18,6 @@ class Room(object) :
 
 	def name(self) :
 		return self.m_name
+
+	def fullName(self) :
+		return u"N°{0} - {1}".format(self.m_number, self.m_name) 
