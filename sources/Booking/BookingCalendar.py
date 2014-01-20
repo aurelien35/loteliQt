@@ -23,6 +23,7 @@ class BookingCalendar(QtGui.QCalendarWidget) :
 		self.m_titleFont			= QtGui.QFont("Verdana", 8, 250, False)
 		self.m_roomsPen				= QtGui.QPen(QtGui.QColor(0, 0, 0), 0)
 		self.m_roomsBrush			= QtGui.QBrush(QtGui.QColor(255, 231, 155, 200))
+		self.m_roomsErrorBrush		= QtGui.QBrush(QtGui.QColor(255, 0, 0, 200))
 		self.m_roomsFont			= QtGui.QFont("Arial", 8, 0, False)
 
 		# Connexions

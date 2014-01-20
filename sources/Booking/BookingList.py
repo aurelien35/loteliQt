@@ -22,6 +22,7 @@ class BookingList(QtGui.QFrame) :
 		self.m_ui.planning.setMinimumWidth(1000)
 		
 		# Connexions
+		self.m_ui.planning.dateDoubleClicked.connect(self.dateDoubleClicked)
 		self.m_ui.planning.selectedDateChanged.connect(self.selectedDateChanged)
 		self.m_ui.bookingsTable.bookingSelected.connect(self.selectedBookingChanged)
 		self.m_ui.bookingsTable.bookingDoubleClicked.connect(self.selectedBookingDoubleClicked)
@@ -35,8 +36,11 @@ class BookingList(QtGui.QFrame) :
 		self.m_ui.planning.updateData()
 		self.selectedDateChanged(self.m_ui.planning.selectedDate())
 			
+	def dateDoubleClicked(self, date) :
+		if (BookingCreateDialog(date).showDialog() == ModalDialog.Result.Ok) :
+			self.updateData()
+			
 	def selectedDateChanged(self, date) :
-		print "selectedDateChanged"
 		bookings = []
 		if (self.m_ui.planning.bookingsDataByDate().has_key(date) == True) :
 			bookingsData = self.m_ui.planning.bookingsDataByDate()[date]
@@ -54,7 +58,7 @@ class BookingList(QtGui.QFrame) :
 		self.editSelectedBooking()
 			
 	def newBooking(self) :
-		if (BookingCreateDialog().showDialog() == ModalDialog.Result.Ok) :
+		if (BookingCreateDialog(self.m_ui.planning.selectedDate()).showDialog() == ModalDialog.Result.Ok) :
 			self.updateData()
 			
 	def editSelectedBooking(self) :

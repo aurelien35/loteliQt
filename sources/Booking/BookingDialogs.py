@@ -9,10 +9,10 @@ from Tools.ModalDialog		import *
 
 class BookingCreateDialog(ModalDialog) :
 
-	def __init__(self) :
+	def __init__(self, date=None) :
 		super(BookingCreateDialog, self).__init__(u"Nouvelle réservation", u"Ok", u"Annuler")
 		
-		self.m_booking		= Booking()
+		self.m_booking		= Booking(date)
 		self.m_bookingForm	= BookingForm()
 		self.m_bookingForm.setBooking(self.m_booking)
 		self.setContent(self.m_bookingForm, 9)

@@ -11,16 +11,17 @@ from PyQt4		import QtCore
 
 class Booking(object) :
 
-	def __init__(self) :
+	def __init__(self, date=None) :
 		# Membres
 		self.m_id		= -1
-		self.m_date		= None
+		self.m_date		= date
 		self.m_days		= 1
 		self.m_clients	= []
 		self.m_rooms	= []
 		self.m_comment	= ""
 		
-		self.setDate(datetime.datetime.now().date())
+		if (date == None) :
+			self.setDate(datetime.datetime.now().date())
 
 	def id(self) :
 		return self.m_id

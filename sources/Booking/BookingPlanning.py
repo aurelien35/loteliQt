@@ -47,12 +47,11 @@ class BookingPlanning(QtGui.QFrame) :
 		
 	def calendarDateDoubleClicked(self, qDate) :
 		date = qDate.toPyDate()
-		self.dateClicked.emit(date)
-		ShowWarning("Erreur", "Erreur de test")
+		self.dateDoubleClicked.emit(date)
 		
 	def calendarDateClicked(self, qDate) :
 		date = qDate.toPyDate()
-		self.dateDoubleClicked.emit(date)
+		self.dateClicked.emit(date)
 	
 	def calendarPageChanged(self, year, month) :
 		foo = None
