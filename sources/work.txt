@@ -1,0 +1,41 @@
+Client
+	- Client.Client : un client, editable
+		- id		: int - rowid
+		- name		: string - le nom
+		- firstName	: string - le prénom
+		- birthDate	: date ou None - la date de naissance
+		- phones	: list de string, 5 maximum
+		- emails	: list de string, 5 maximum
+		- address	: string - l'adresse
+		- comment	: string - un commentaire
+		- validate	: controle la validité des données
+			=> le nom doit être remplit
+
+	- Client.ClientCreateDialog	: dialogue de creation d'un client
+	
+	- Client.ClientEditDialog	: dialogue d'edition d'un client
+	
+	- Client.ClientForm			: formulaire d'edition d'un client
+
+	- Client.ClientList			: fenetre d'edition de la liste des clients
+	
+	
+	
+	
+Room
+	- Room.Room : une chambre, non editable
+		- id		: int - rowid, entre 1 et le nombre de chambres
+		- number	: string
+		- name		: string
+		- fullName	: string "N°xxx - yyyy"
+		
+	- Room.RoomCatalog : singleton, non editable
+		- dictionnaire :
+			- key	: room id (int)
+			- value	: room (Room object)
+			
+	- Room.RoomComboBox : combobox de selection de chambre
+		- propose de choisir une chambre, ou aucune
+		
+
+		
