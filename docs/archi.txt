@@ -1,0 +1,35 @@
+Loteli.Loteli
+
+							Loteli.MainWindow.MainWindow
+							Loteli.MainWindow.BookingsTab
+							Loteli.MainWindow.ClientsTab
+							Loteli.MainWindow.BillsTab
+
+Loteli.Room.Room
+Loteli.Room.RoomCatalog
+
+Loteli.Client.Client
+Loteli.Client.ClientList
+							Loteli.Client.ClientForm
+							Loteli.Client.OpenEditDialog
+							Loteli.Client.OpenCreateDialog
+							Loteli.Client.ClientTableView
+
+							Loteli.Booking.Booking
+							Loteli.Booking.BookingList
+							Loteli.Booking.BookingForm
+							Loteli.Booking.OpenEditDialog
+							Loteli.Booking.OpenCreateDialog
+							Loteli.Booking.BookingTableView
+							Loteli.Booking.BookingCalendarView
+
+							Loteli.Tools.DataBase
+							Loteli.Tools.ModalDialog
+							Loteli.Tools.SelectDate
+							Loteli.Tools.BookingDatesWidget
+							Loteli.Tools.PhoneEmailWidget
+							Loteli.Tools.PhoneEmailListWidget
+							Loteli.Tools.RoomComboBox
+							Loteli.Tools.RoomListWidget
+							Loteli.Tools.ClientComboBox
+							Loteli.Tools.ClientListWidget

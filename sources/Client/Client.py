@@ -1,23 +1,12 @@
 ﻿# -*- coding: utf-8 -*-
 		  
-from datetime	import date
-from PyQt4		import QtCore
-
-# TODO : controle du formulaire :
-	# Au moins le nom de rempli
+from PyQt4 import QtCore
+import Tools.DataBase
 	
 class Client(object) :
 
-	def __init__(self) :
-		# Membres
-		self.m_id			= -1
-		self.m_name			= ""
-		self.m_firstName	= ""
-		self.m_birthDate	= None
-		self.m_phones		= []
-		self.m_emails		= []
-		self.m_address		= ""
-		self.m_comment		= ""
+	def __init__(self, id=-1) :
+		self.load(id)
 
 	def id(self) :
 		return self.m_id
@@ -39,18 +28,6 @@ class Client(object) :
 			self.m_firstName = firstName
 		else :
 			raise Exception("Client::setFirstName : firstName is " + str(type(firstName)) + ", not a string.")
-
-	def birthDate(self) :
-		return self.m_birthDate
-		
-	def setBirthDate(self, birthDate) :
-		if (birthDate is None) :
-			self.m_birthDate = None
-		else :
-			if (type(birthDate) is date) :
-				self.m_birthDate = birthDate
-			else :
-				raise Exception("Client::setBirthDate : birthDate is " + str(type(birthDate)) + ", not a date.")
 
 	def phones(self) :
 		return self.m_phones
@@ -91,8 +68,49 @@ class Client(object) :
 			self.m_comment = comment
 		else :
 			raise Exception("Client::setComment : comment is " + str(type(comment)) + ", not a string.")
-			
+
 	def validate(self) :
 		if (len(self.m_name) < 3) :
 			return u"Le nom du client doit être rempli !";
 		return None
+
+	def load(self, id) :
+		# Clear
+		self.m_id			= -1
+		self.m_name			= ""
+		self.m_firstName	= ""
+		self.m_phones		= []
+		self.m_emails		= []
+		self.m_address		= ""
+		self.m_comment		= ""
+		# Load
+		if (id != -1) :
+			# TODO : gestion des erreurs : lever une exception
+			data = Tools.DataBase.selectOne(u'''SELECT rowid, * FROM clients WHERE rowid=:clientId''', {'clientId':id})
+			self.loadData(data)
+	
+	def loadData(self, data) :
+		self.m_id 			= data["rowid"]
+		self.setName		(data["name"])
+		self.setFirstName	(data["firstName"])
+		self.setPhones		(filter(None, data["phones"].split(u"¤")))
+		self.setEmails		(filter(None, data["emails"].split(u"¤")))
+		self.setAddress		(data["address"])
+		self.setComment		(data["comment"])
+
+	def save(self) :
+		values = {	'name':			self.m_name,
+					'firstName':	self.m_firstName,
+					'phones':		u"¤" + u"¤".join(self.m_phones) + u"¤",
+					'emails':		u"¤" + u"¤".join(self.m_emails) + u"¤",
+					'address':		self.m_address,
+					'comment':		self.m_comment,
+					'rowid':		self.m_id	}
+
+		# TODO : gestion des erreurs : lever une exception
+		if (self.m_id == -1) :
+			self.m_id = Tools.DataBase.insert(u'''INSERT INTO clients(name, firstName, phones, emails, address, comment)
+												  VALUES(:name, :firstName, :phones, :emails, :address, :comment)''', values)
+		else :
+			 Tools.DataBase.update(u'''UPDATE clients SET name=:name, firstName=:firstName, phones=:phones, emails=:emails, address=:address, comment=:comment
+									   WHERE rowid=:rowid''', values)
