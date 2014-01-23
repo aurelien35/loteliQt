@@ -2,21 +2,21 @@
 		  
 from PyQt4 import QtCore
 from PyQt4 import QtGui
-import MainWindow_ui
+import ClientTab_ui
 
-class MainWindow(QtGui.QFrame) :
+class ClientTab(QtGui.QFrame) :
 
 	def __init__(self) :
 		super(QtGui.QFrame, self).__init__()
 		
 		# Membres
-		self.m_ui = MainWindow_ui.Ui_MainWindow()
-
+		self.m_ui = ClientTab_ui.Ui_ClientTab()
+		
 		# Etat initial
 		self.m_ui.setupUi(self)
 		
 		# Connexions
-		
+				
 	# def bookingClicked(self) :
 		# self.m_ui.content.setCurrentWidget(self.m_ui.bookingList)
 	

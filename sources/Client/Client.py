@@ -35,6 +35,7 @@ class Client(object) :
 	def setPhones(self, phones) :
 		if (type(phones) is list) :
 			self.m_phones = phones
+			print phones
 			while (len(self.m_phones) > 5) :
 				del(self.m_phones[len(self.m_phones)-1])
 		else :

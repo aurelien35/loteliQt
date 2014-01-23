@@ -146,7 +146,7 @@ subcontrol-position: right bottom;
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="buttonClients">
+       <widget class="QPushButton" name="buttonClient">
         <property name="minimumSize">
          <size>
           <width>96</width>
@@ -165,7 +165,7 @@ subcontrol-position: right bottom;
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="buttonBills">
+       <widget class="QPushButton" name="buttonInvoice">
         <property name="minimumSize">
          <size>
           <width>96</width>
@@ -213,9 +213,9 @@ subcontrol-position: right bottom;
         <property name="class" stdset="0">
          <string>Panel</string>
         </property>
-        <widget class="ClientList" name="clientList"/>
-        <widget class="BookingList" name="bookingList"/>
-        <widget class="QFrame" name="billList"/>
+        <widget class="ClientTab" name="client"/>
+        <widget class="QFrame" name="booking"/>
+        <widget class="QFrame" name="invoice"/>
         <widget class="QWidget" name="page">
          <layout class="QGridLayout" name="gridLayout">
           <item row="0" column="0">
@@ -234,7 +234,7 @@ subcontrol-position: right bottom;
              <string>PushButton</string>
             </property>
             <property name="icon">
-             <iconset resource="../loteliQt.qrc">
+             <iconset>
               <normaloff>:/resources/addIcon.png</normaloff>:/resources/addIcon.png</iconset>
             </property>
             <property name="class" stdset="0">
@@ -282,20 +282,12 @@ subcontrol-position: right bottom;
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ClientList</class>
+   <class>ClientTab</class>
    <extends>QFrame</extends>
-   <header>Client.ClientList</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>BookingList</class>
-   <extends>QFrame</extends>
-   <header>Booking.BookingList</header>
+   <header>ClientTab</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../loteliQt.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
