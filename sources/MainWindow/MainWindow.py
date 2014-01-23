@@ -5,6 +5,7 @@ from PyQt4 import QtGui
 import Room.RoomCatalog
 import Client.Client
 import Client.ClientList
+import Booking.Booking
 
 class MainWindow(QtGui.QMainWindow) :
 
@@ -12,12 +13,13 @@ class MainWindow(QtGui.QMainWindow) :
 		super(QtGui.QMainWindow, self).__init__()
 		
 		# Membres
-		print Room.RoomCatalog
+		
+		# print Room.RoomCatalog
 	
-		print Client.Client()
-		client = Client.Client(409)
-		print client.name()
-		client.save()
+		# print Client.Client()
+		# client = Client.Client(409)
+		# print client.name()
+		# client.save()
 		
 		# client = Client.Client()
 		# client.setName(u"Machin")
@@ -26,12 +28,20 @@ class MainWindow(QtGui.QMainWindow) :
 		# client.save()
 		# print client.id()
 
-		clientList = Client.ClientList()
-		print "========================"
-		print clientList.clients()
-		clientList.load("to")
-		print "========================"
-		print clientList.clients()
+		# clientList = Client.ClientList()
+		# print "========================"
+		# print clientList.clients()
+		# clientList.load("to")
+		# print "========================"
+		# print clientList.clients()
+
+		print Booking.Booking()
+		booking = Booking.Booking(50)
+		print booking.date()
+		print booking.days()
+		print booking.clients()
+		print booking.rooms()
+		
 		# Connexions
 		
 		# Etat initial

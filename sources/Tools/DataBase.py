@@ -17,7 +17,10 @@ def cursor() :
 def select(query, values={}) :
 	cursor = PersistentConnexion.cursor()
 	cursor.execute(query, values)
-	return cursor.fetchall()
+	result = cursor.fetchall()
+	if (result == None) :
+		result = []
+	return result
 	
 def selectOne(query, values={}) :
 	cursor = PersistentConnexion.cursor()

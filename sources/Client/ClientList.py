@@ -24,5 +24,5 @@ class ClientList(object) :
 		result = Tools.DataBase.select(query, {'filter':u"%{0}%".format(filter)})
 		for data in result :
 			client = Client.Client()
-			client.loadData(data)
+			client.loadData(data) # TODO : verifier la validité
 			self.m_clients.append(client)

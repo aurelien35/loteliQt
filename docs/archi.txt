@@ -11,12 +11,12 @@ Loteli.Room.RoomCatalog
 Loteli.Client.Client
 Loteli.Client.ClientList
 							Loteli.Client.ClientForm
-							Loteli.Client.OpenEditDialog
-							Loteli.Client.OpenCreateDialog
+							Loteli.Client.OpenEditDialog()
+							Loteli.Client.OpenCreateDialog()
 							Loteli.Client.ClientTableView
 
-							Loteli.Booking.Booking
-							Loteli.Booking.BookingList
+		Loteli.Booking.Booking
+		Loteli.Booking.BookingList
 							Loteli.Booking.BookingForm
 							Loteli.Booking.OpenEditDialog
 							Loteli.Booking.OpenCreateDialog

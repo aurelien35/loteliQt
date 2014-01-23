@@ -87,30 +87,34 @@ class Client(object) :
 		if (id != -1) :
 			# TODO : gestion des erreurs : lever une exception
 			data = Tools.DataBase.selectOne(u'''SELECT rowid, * FROM clients WHERE rowid=:clientId''', {'clientId':id})
-			self.loadData(data)
+			return self.loadData(data)
+		return True
 	
 	def loadData(self, data) :
-		self.m_id 			= data["rowid"]
-		self.setName		(data["name"])
-		self.setFirstName	(data["firstName"])
-		self.setPhones		(filter(None, data["phones"].split(u"¤")))
-		self.setEmails		(filter(None, data["emails"].split(u"¤")))
-		self.setAddress		(data["address"])
-		self.setComment		(data["comment"])
+		if (data != None) :
+			self.m_id 			= data["rowid"]
+			self.setName		(data["name"])
+			self.setFirstName	(data["firstName"])
+			self.setPhones		(filter(None, data["phones"].split(u"¤")))
+			self.setEmails		(filter(None, data["emails"].split(u"¤")))
+			self.setAddress		(data["address"])
+			self.setComment		(data["comment"])
+			return True
+		return False
 
 	def save(self) :
-		values = {	'name':			self.m_name,
+		values = {	'rowid':		self.m_id,
+					'name':			self.m_name,
 					'firstName':	self.m_firstName,
 					'phones':		u"¤" + u"¤".join(self.m_phones) + u"¤",
 					'emails':		u"¤" + u"¤".join(self.m_emails) + u"¤",
 					'address':		self.m_address,
-					'comment':		self.m_comment,
-					'rowid':		self.m_id	}
+					'comment':		self.m_comment}
 
 		# TODO : gestion des erreurs : lever une exception
 		if (self.m_id == -1) :
-			self.m_id = Tools.DataBase.insert(u'''INSERT INTO clients(name, firstName, phones, emails, address, comment)
-												  VALUES(:name, :firstName, :phones, :emails, :address, :comment)''', values)
+			self.m_id = Tools.DataBase.insert(u'''INSERT INTO clients (name, firstName, phones, emails, address, comment)
+												  VALUES (:name, :firstName, :phones, :emails, :address, :comment)''', values)
 		else :
 			 Tools.DataBase.update(u'''UPDATE clients SET name=:name, firstName=:firstName, phones=:phones, emails=:emails, address=:address, comment=:comment
 									   WHERE rowid=:rowid''', values)
