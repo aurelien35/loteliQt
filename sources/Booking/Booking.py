@@ -25,7 +25,7 @@ class Booking(object) :
 		if (type(date_) is datetime.date) :
 			self.m_date = date_
 		else :
-			print "Booking::setDate : date is " + str(type(date_)) + ", not a date."
+			raise Exception("Booking::setDate : date is " + str(type(date_)) + ", not a date.")
 
 	def days(self) :
 		return self.m_days

@@ -22,6 +22,13 @@ class ClientTableView(QtGui.QTableView) :
 		initialPalette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Highlight,			initialPalette.brush(QtGui.QPalette.Active, QtGui.QPalette.Highlight))
 		initialPalette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.HighlightedText,	initialPalette.brush(QtGui.QPalette.Active, QtGui.QPalette.HighlightedText))
 		self.setPalette(initialPalette)
+		self.setAlternatingRowColors(True)
+		self.setAutoScroll(True)
+		self.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+		self.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+		self.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+		self.setHorizontalScrollMode(QtGui.QAbstractItemView.ScrollPerPixel)
+		self.setVerticalScrollMode(QtGui.QAbstractItemView.ScrollPerPixel)
 		
 		self.setModel(self.m_model)
 		self.m_selectionModel = self.selectionModel()
@@ -31,6 +38,7 @@ class ClientTableView(QtGui.QTableView) :
 		self.m_model.setHorizontalHeaderLabels(labels)
 		self.m_model.setColumnCount(labels.count())
 		self.horizontalHeader().setMinimumSectionSize(100)
+		self.verticalHeader().setVisible(False)
 		self.resizeColumnsToContents()
 		self.horizontalHeader().setStretchLastSection(True)
 		
@@ -52,7 +60,7 @@ class ClientTableView(QtGui.QTableView) :
 		
 	def createItems(self, client) :
 		result = []
-		result.append(QtGui.QStandardItem(client.id()))
+		result.append(QtGui.QStandardItem(str(client.id())))
 		result.append(QtGui.QStandardItem(client.name()))
 		result.append(QtGui.QStandardItem(client.firstName()))
 		result.append(QtGui.QStandardItem(u"\n".join(client.emails())))
