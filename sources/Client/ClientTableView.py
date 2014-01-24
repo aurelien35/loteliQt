@@ -7,6 +7,12 @@ import ClientList
 
 class ClientTableView(QtGui.QTableView) :
 
+	# Signaux
+	rowSelected			= QtCore.pyqtSignal(int)
+	rowClicked			= QtCore.pyqtSignal(int)
+	rowDoubleClicked	= QtCore.pyqtSignal(int)
+	dataLoaded			= QtCore.pyqtSignal(int)
+	
 	def __init__(self, parent) :
 		super(QtGui.QTableView, self).__init__(parent)
 		
@@ -57,6 +63,10 @@ class ClientTableView(QtGui.QTableView) :
 			items = self.createItems(client)
 			self.m_model.appendRow(items)
 		self.resizeRowsToContents()
+		self.dataLoaded.emit(len(self.m_clientList.clients()))
+		
+	def clients(self) :
+		return self.m_clientList.clients()
 		
 	def createItems(self, client) :
 		result = []

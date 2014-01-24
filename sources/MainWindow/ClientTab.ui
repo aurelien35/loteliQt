@@ -80,7 +80,7 @@
     </layout>
    </item>
    <item>
-    <widget class="ClientTableView" name="frame">
+    <widget class="ClientTableView" name="clientTableView">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
